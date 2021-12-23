@@ -23,7 +23,10 @@
   },
   "theiaExtensions": [
     {
-      "frontend": "lib/browser/theia-hello-world-extension-frontend-module"
+      "frontend": "lib/browser/frontend-module"
+    },
+    {
+      "frontend": "lib/browser/menu/sample-browser-menu-module"
     }
   ]
 }
