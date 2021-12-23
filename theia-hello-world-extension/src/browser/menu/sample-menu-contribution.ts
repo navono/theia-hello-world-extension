@@ -150,20 +150,8 @@ export class PlaceholderMenuNode implements MenuNode {
 
 }
 
-// @injectable()
-// export class TheiaHelloWorldExtensionMenuContribution implements MenuContribution {
-
-//     registerMenus(menus: MenuModelRegistry): void {
-//         menus.registerMenuAction(CommonMenus.EDIT_FIND, {
-//             commandId: TheiaHelloWorldExtensionCommand.id,
-//             label: TheiaHelloWorldExtensionCommand.label
-//         });
-//     }
-// }
-
 
 export const bindSampleMenu = (bind: interfaces.Bind) => {
     bind(CommandContribution).to(SampleCommandContribution).inSingletonScope();
     bind(MenuContribution).to(SampleMenuContribution).inSingletonScope();
-    // bind(MenuContribution).to(TheiaHelloWorldExtensionMenuContribution).inSingletonScope();
 };
