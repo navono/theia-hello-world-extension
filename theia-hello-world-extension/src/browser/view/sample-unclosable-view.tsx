@@ -1,4 +1,4 @@
-/********************************************************************************
+/** ******************************************************************************
  * Copyright (C) 2020 TORO Limited and others.
  *
  * This program and the accompanying materials are made available under the
@@ -12,7 +12,7 @@
  * https://www.gnu.org/software/classpath/license.html.
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
- ********************************************************************************/
+ ******************************************************************************* */
 
 import { ReactWidget } from '@theia/core/lib/browser';
 import { injectable, postConstruct } from '@theia/core/shared/inversify';
@@ -39,7 +39,7 @@ export class SampleViewUnclosableView extends ReactWidget {
     return (
       <div>
         Closable
-        <input type="checkbox" defaultChecked={this.title.closable} onChange={e => this.title.closable = e.target.checked} />
+        <input type="checkbox" defaultChecked={this.title.closable} onChange={(e) => this.title.closable = e.target.checked} />
         <span>
           这是自定义 View 界面
         </span>

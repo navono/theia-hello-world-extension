@@ -6,7 +6,7 @@ import { bindTreeWidget } from './tree-widget/test-widget-contribution';
 
 import '../../src/browser/style/branding.css';
 
-export default new ContainerModule(bind => {
+export default new ContainerModule((bind) => {
   bindDynamicLabelProvider(bind);
   bindSampleUnclosableView(bind);
   bindSampleMenu(bind);

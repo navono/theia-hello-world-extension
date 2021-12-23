@@ -3,22 +3,22 @@ import {
   CompositeTreeNode,
   TreeNode,
   ExpandableTreeNode,
-  SelectableTreeNode
-} from "@theia/core/lib/browser";
-import { injectable } from "inversify";
+  SelectableTreeNode,
+} from '@theia/core/lib/browser';
+import { injectable } from 'inversify';
 
 @injectable()
 export class FamilyTree extends TreeImpl {
   protected resolveChildren(parent: CompositeTreeNode): Promise<TreeNode[]> {
     if (FamilyRootNode.is(parent)) {
       return Promise.resolve(
-        parent.family.members.map(m => this.makeMemberNode(m))
+        parent.family.members.map((m) => this.makeMemberNode(m)),
       );
     }
 
     if (MemberNode.is(parent) && parent.children) {
       return Promise.resolve(
-        parent.member.children?.map(m => this.makeMemberNode(m)) || []
+        parent.member.children?.map((m) => this.makeMemberNode(m)) || [],
       );
     }
 
@@ -33,7 +33,7 @@ export class FamilyTree extends TreeImpl {
       expanded: false,
       selected: false,
       children: [],
-      member: m
+      member: m,
     };
     return node;
   }
@@ -45,7 +45,7 @@ export interface FamilyRootNode extends CompositeTreeNode {
 
 export namespace FamilyRootNode {
   export function is(node: object): node is FamilyRootNode {
-    return !!node && "family" in node;
+    return !!node && 'family' in node;
   }
 }
 
@@ -58,6 +58,6 @@ export interface MemberNode
 
 export namespace MemberNode {
   export function is(node: object): node is MemberNode {
-    return !!node && "member" in node;
+    return !!node && 'member' in node;
   }
 }

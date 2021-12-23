@@ -17,6 +17,7 @@
   },
   "scripts": {
     "prepare": "yarn run clean && yarn run build",
+    "lint": "eslint --fix --ext .tsx,.ts ./src",
     "clean": "rimraf lib",
     "build": "tsc",
     "watch": "tsc -w"
