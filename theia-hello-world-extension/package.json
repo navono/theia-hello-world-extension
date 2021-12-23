@@ -12,6 +12,7 @@
     "@theia/core": "latest"
   },
   "devDependencies": {
+    "prettier": "^2.5.1",
     "rimraf": "latest",
     "typescript": "latest"
   },

@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /** ******************************************************************************
  * Copyright (C) 2019 Arm and others.
  *
@@ -35,11 +36,11 @@ export class SampleDynamicLabelProviderCommandContribution implements FrontendAp
   @inject(SampleDynamicLabelProviderContribution)
   protected readonly labelProviderContribution: SampleDynamicLabelProviderContribution;
 
-    initialize(): void { }
+  initialize(): void { }
 
-    registerCommands(commands: CommandRegistry): void {
-      commands.registerCommand(ExampleLabelProviderCommands.TOGGLE_SAMPLE, new ExampleLabelProviderCommandHandler(this.labelProviderContribution));
-    }
+  registerCommands(commands: CommandRegistry): void {
+    commands.registerCommand(ExampleLabelProviderCommands.TOGGLE_SAMPLE, new ExampleLabelProviderCommandHandler(this.labelProviderContribution));
+  }
 }
 
 export class ExampleLabelProviderCommandHandler implements CommandHandler {

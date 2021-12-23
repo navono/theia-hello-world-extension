@@ -58,7 +58,6 @@ class SampleMenuCommandRegistry extends MenuCommandRegistry {
     this.placeholders.set(id, menu);
   }
 
-  
   snapshot(): this {
     super.snapshot();
     for (const menu of this.placeholders.values()) {
