@@ -5,6 +5,7 @@
   "dependencies": {
     "@theia/core": "latest",
     "@theia/editor": "latest",
+    "@theia/file-search": "^1.21.0",
     "@theia/filesystem": "latest",
     "@theia/markers": "latest",
     "@theia/messages": "latest",
@@ -12,6 +13,7 @@
     "@theia/navigator": "latest",
     "@theia/preferences": "latest",
     "@theia/process": "latest",
+    "@theia/search-in-workspace": "^1.21.0",
     "@theia/terminal": "latest",
     "@theia/workspace": "latest",
     "theia-hello-world-extension": "0.1.0"
@@ -21,7 +23,7 @@
   },
   "scripts": {
     "prepare": "theia build --mode development",
-    "start": "theia start",
+    "start": "theia start --plugins=local-dir:D:\\sourcecode\\fe\\theia-ide\\plugins",
     "watch": "theia build --watch --mode development"
   },
   "theia": {
