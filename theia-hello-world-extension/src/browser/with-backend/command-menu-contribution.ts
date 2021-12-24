@@ -24,14 +24,14 @@ export class BackendExampleCommandContribution implements CommandContribution {
     registerCommands(commands: CommandRegistry): void {
       commands.registerCommand(SayHelloViaBackendCommandWithCallBack, {
             execute: () => {
-              console.debug('command via backend with callback');
-              this.helloBackendWithClientService.greet().then(r => console.debug(r));
+              console.info('command via backend with callback');
+              this.helloBackendWithClientService.greet().then(r => console.info(r));
             }
         });
         commands.registerCommand(SayHelloViaBackendCommand, {
             execute: () => {
-              console.debug('command via backend');
-              this.helloBackendService.sayHelloTo('World').then(r => console.debug(r));
+              console.info('command via backend');
+              this.helloBackendService.sayHelloTo('World').then(r => console.info(r));
             }
         });
     }
