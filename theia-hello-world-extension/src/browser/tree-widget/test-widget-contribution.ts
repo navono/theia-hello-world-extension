@@ -8,9 +8,9 @@ import {
 } from '@theia/core/lib/browser';
 import { Command, CommandRegistry } from '@theia/core/lib/common/command';
 
-import { TestWidgetWidget } from './_Test-widget-widget';
+import { TestWidgetWidget } from './Test-widget-widget';
 import { FamilyTreeWidgetContribution } from './tree/family-tree-contribution';
-import { FamilyTreeWidget } from './tree/_Family-tree-widget';
+import { FamilyTreeWidget } from './tree/Family-tree-widget';
 import { createFamilyTreeWidget } from './test-widget-frontend-module';
 
 export const TestWidgetCommand: Command = { id: 'test-widget:command', label: 'test widget' };
