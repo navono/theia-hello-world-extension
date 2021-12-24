@@ -15,7 +15,7 @@ const SayHelloViaBackendCommand: Command = {
 };
 
 @injectable()
-export class BackendExampleCommandContribution implements CommandContribution {
+class BackendExampleCommandContribution implements CommandContribution {
   constructor(
     @inject(HelloBackendWithClientService)
     private readonly helloBackendWithClientService: HelloBackendWithClientService,

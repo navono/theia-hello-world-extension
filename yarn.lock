@@ -1369,7 +1369,7 @@
     bent "^7.1.0"
     semver "^5.4.1"
 
-"@theia/preferences@latest":
+"@theia/preferences@1.21.0", "@theia/preferences@latest":
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/@theia/preferences/-/preferences-1.21.0.tgz#38627885d3e330dab792031fb41a986dbcc7ecd0"
   integrity sha512-nIXM/p1sg/GJTdK/uk4kvUWAvYd9H3/zKgf17KLyl3cmeH2ndLTeBH+luTy9z/nQqquTbjKM/hjqt8PXg181VA==
@@ -1406,7 +1406,28 @@
     minimatch "^3.0.4"
     vscode-ripgrep "^1.2.4"
 
-"@theia/terminal@latest":
+"@theia/task@^1.21.0":
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/@theia/task/-/task-1.21.0.tgz#e2e705c228a70a34f133e140441671f13cfd18f9"
+  integrity sha512-09J4m4VARuMfmFqwyjYIrkoFL+t28CW42CcHtaSe04nJLBvIPtR7qPBFd14vKWS3ckPBjcg5w175J+lacpaAJA==
+  dependencies:
+    "@theia/core" "1.21.0"
+    "@theia/editor" "1.21.0"
+    "@theia/filesystem" "1.21.0"
+    "@theia/markers" "1.21.0"
+    "@theia/monaco" "1.21.0"
+    "@theia/preferences" "1.21.0"
+    "@theia/process" "1.21.0"
+    "@theia/terminal" "1.21.0"
+    "@theia/userstorage" "1.21.0"
+    "@theia/variable-resolver" "1.21.0"
+    "@theia/workspace" "1.21.0"
+    ajv "^6.5.3"
+    async-mutex "^0.3.1"
+    jsonc-parser "^2.2.0"
+    p-debounce "^2.1.0"
+
+"@theia/terminal@1.21.0", "@theia/terminal@latest":
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/@theia/terminal/-/terminal-1.21.0.tgz#ff4258334b7c34a1d36199ab3461534ea8ecb5e9"
   integrity sha512-od5c2ZpiVf89fsilMHxXKiKcHK4FsSqPKgD9No9a63r5/yzRxOohtL6t0WqZVjJT3Kma8cXxMXxw366ScagfsA==
