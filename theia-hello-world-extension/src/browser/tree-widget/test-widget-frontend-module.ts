@@ -8,7 +8,7 @@ import { interfaces } from '@theia/core/shared/inversify';
 
 /* eslint-disable */
 import '../../../src/browser/tree-widget/style/index.css';
-import { FamilyTreeWidget } from './tree/family-tree-widget';
+import { FamilyTreeWidget } from './tree/_Family-tree-widget';
 import { FamilyTree } from './tree/family-tree';
 
 export function createFamilyTreeWidget(

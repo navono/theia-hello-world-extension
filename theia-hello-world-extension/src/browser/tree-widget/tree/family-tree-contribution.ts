@@ -1,7 +1,7 @@
 import { AbstractViewContribution } from '@theia/core/lib/browser';
 import { injectable } from '@theia/core/shared/inversify';
 import { Command, CommandRegistry, MenuModelRegistry } from '@theia/core';
-import { FamilyTreeWidget } from './family-tree-widget';
+import { FamilyTreeWidget } from './_Family-tree-widget';
 
 export const FamilyTreeWidgetCommand: Command = {
   id: 'family-tree-widget:command',
