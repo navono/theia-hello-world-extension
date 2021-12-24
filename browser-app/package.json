@@ -27,6 +27,16 @@
     "watch": "theia build --watch --mode development"
   },
   "theia": {
-    "target": "browser"
+    "target": "browser",
+    "frontend": {
+      "config": {
+          "applicationName": "Theia Preload Example"
+      }
+    },
+    "generator": {
+        "config": {
+            "preloadTemplate": "../preload.html"
+        }
+    }
   }
 }
