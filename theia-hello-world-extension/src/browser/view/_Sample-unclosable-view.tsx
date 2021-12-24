@@ -39,7 +39,7 @@ export class SampleViewUnclosableView extends ReactWidget {
     return (
       <div>
         Closable
-        <input type="checkbox" defaultChecked={this.title.closable} onChange={(e) => this.title.closable = e.target.checked} />
+        <input type="checkbox" defaultChecked={this.title.closable} onChange={(e) => { this.title.closable = e.target.checked; }} />
         <span>
           这是自定义 View 界面
         </span>

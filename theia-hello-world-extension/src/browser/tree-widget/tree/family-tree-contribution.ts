@@ -1,5 +1,5 @@
 import { AbstractViewContribution } from '@theia/core/lib/browser';
-import { injectable } from 'inversify';
+import { injectable } from '@theia/core/shared/inversify';
 import { Command, CommandRegistry, MenuModelRegistry } from '@theia/core';
 import { FamilyTreeWidget } from './family-tree-widget';
 

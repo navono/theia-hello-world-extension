@@ -32,20 +32,26 @@ export namespace ExampleLabelProviderCommands {
 }
 
 @injectable()
-export class SampleDynamicLabelProviderCommandContribution implements FrontendApplicationContribution, CommandContribution {
+export class SampleDynamicLabelProviderCommandContribution
+implements FrontendApplicationContribution, CommandContribution {
   @inject(SampleDynamicLabelProviderContribution)
   protected readonly labelProviderContribution: SampleDynamicLabelProviderContribution;
 
   initialize(): void { }
 
   registerCommands(commands: CommandRegistry): void {
-    commands.registerCommand(ExampleLabelProviderCommands.TOGGLE_SAMPLE, new ExampleLabelProviderCommandHandler(this.labelProviderContribution));
+    commands.registerCommand(
+      ExampleLabelProviderCommands.TOGGLE_SAMPLE,
+      new ExampleLabelProviderCommandHandler(this.labelProviderContribution),
+    );
   }
 }
 
 export class ExampleLabelProviderCommandHandler implements CommandHandler {
-  constructor(private readonly labelProviderContribution: SampleDynamicLabelProviderContribution) {
-  }
+  // eslint-disable-next-line no-useless-constructor
+  constructor(
+    private readonly labelProviderContribution: SampleDynamicLabelProviderContribution,
+  ) { }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   execute(...args: any[]): any {

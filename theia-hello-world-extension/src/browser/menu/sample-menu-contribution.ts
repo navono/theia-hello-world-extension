@@ -64,7 +64,7 @@ export class SampleCommandContribution implements CommandContribution {
             placeHolder: 'Please provide a positive integer',
             validateInput: async (input: string) => {
               const numericValue = Number(input);
-              if (isNaN(numericValue)) {
+              if (Number.isNaN(numericValue)) {
                 return 'Invalid: NaN';
               } if (numericValue % 2 === 1) {
                 return 'Invalid: Odd Number';
@@ -73,6 +73,8 @@ export class SampleCommandContribution implements CommandContribution {
               } if (!Number.isInteger(numericValue)) {
                 return 'Invalid: Only Integers Allowed';
               }
+
+              return undefined;
             },
           });
           if (result) {
@@ -116,8 +118,8 @@ export class SampleMenuContribution implements MenuContribution {
     menus.registerMenuNode(subSubMenuPath, placeholder);
 
     /**
-         * Register an action menu with an invalid command (un-registered and without a label) in order
-         * to determine that menus and the layout does not break on startup.
+         * Register an action menu with an invalid command (un-registered and without a label)
+         * in order to determine that menus and the layout does not break on startup.
          */
     menus.registerMenuAction(subMenuPath, { commandId: 'invalid-command' });
 
@@ -132,7 +134,12 @@ export class SampleMenuContribution implements MenuContribution {
  * Special menu node that is not backed by any commands and is always disabled.
  */
 export class PlaceholderMenuNode implements MenuNode {
-  constructor(readonly id: string, public readonly label: string, protected options?: SubMenuOptions) { }
+  // eslint-disable-next-line no-useless-constructor
+  constructor(
+    readonly id: string,
+    public readonly label: string,
+    protected options?: SubMenuOptions,
+  ) { }
 
   get icon(): string | undefined {
     return this.options?.iconClass;

@@ -29,19 +29,26 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
 @injectable()
 class SampleBrowserMainMenuFactory extends BrowserMainMenuFactory {
   protected handleDefault(menuCommandRegistry: MenuCommandRegistry, menuNode: MenuNode): void {
-    if (menuNode instanceof PlaceholderMenuNode && menuCommandRegistry instanceof SampleMenuCommandRegistry) {
+    if (menuNode instanceof PlaceholderMenuNode
+      && menuCommandRegistry instanceof SampleMenuCommandRegistry) {
       menuCommandRegistry.registerPlaceholderMenu(menuNode);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected createMenuCommandRegistry(menu: CompositeMenuNode, args: any[] = []): MenuCommandRegistry {
+  protected createMenuCommandRegistry(
+    menu: CompositeMenuNode,
+    args: any[] = [],
+  ): MenuCommandRegistry {
     const menuCommandRegistry = new SampleMenuCommandRegistry(this.services);
     this.registerMenu(menuCommandRegistry, menu, args);
     return menuCommandRegistry;
   }
 
-  createMenuWidget(menu: CompositeMenuNode, options: MenuWidget.IOptions & { commands: MenuCommandRegistry }): DynamicMenuWidget {
+  createMenuWidget(
+    menu: CompositeMenuNode,
+    options: MenuWidget.IOptions & { commands: MenuCommandRegistry },
+  ): DynamicMenuWidget {
     return new SampleDynamicMenuWidget(menu, options, this.services);
   }
 }
@@ -60,6 +67,7 @@ class SampleMenuCommandRegistry extends MenuCommandRegistry {
 
   snapshot(): this {
     super.snapshot();
+    // eslint-disable-next-line no-restricted-syntax
     for (const menu of this.placeholders.values()) {
       this.toDispose.push(this.registerPlaceholder(menu));
     }

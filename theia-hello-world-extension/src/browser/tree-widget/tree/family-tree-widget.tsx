@@ -6,8 +6,9 @@ import {
   TreeNode,
   ExpandableTreeNode,
 } from '@theia/core/lib/browser';
-import { inject, injectable } from 'inversify';
+import { inject, injectable } from '@theia/core/shared/inversify';
 import { FamilyRootNode, MemberNode } from './family-tree';
+import { Family } from './family';
 
 @injectable()
 export class FamilyTreeWidget extends TreeWidget {

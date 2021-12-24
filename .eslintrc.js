@@ -13,7 +13,7 @@ module.exports = {
       jsx: true,
     },
     ecmaVersion: 13,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: [
     'react',
@@ -26,19 +26,17 @@ module.exports = {
     // we use 2 spaces to indent our code
     indent: ['error', 2],
     // we want to avoid extraneous spaces
+    'no-plusplus': 'off',
     'no-multi-spaces': ['error'],
+    'no-unused-vars': 'off',
     'import/prefer-default-export': 'off',
-    'class-methods-use-this': 'warn',
-    'import/no-useless-path-segments': 'wanr',
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        js: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never',
-      },
-    ],
+    'max-classes-per-file': 'off',
+    'class-methods-use-this': 'off',
+    'import/no-useless-path-segments': 'warn',
+    'no-empty-function': 'warn',
+    'no-use-before-define': 'off',
+    'react/jsx-filename-extension': [0],
+    'import/extensions': 'off',
+    'import/no-unresolved': 'off',
   },
 };

@@ -19,7 +19,7 @@ import { AbstractViewContribution, bindViewContribution } from '@theia/core/lib/
 import { TabBarToolbarContribution, TabBarToolbarRegistry } from '@theia/core/lib/browser/shell/tab-bar-toolbar';
 import { Command, CommandRegistry, MessageService } from '@theia/core/lib/common';
 import { codicon, Widget, WidgetFactory } from '@theia/core/lib/browser';
-import { SampleViewUnclosableView } from './sample-unclosable-view';
+import { SampleViewUnclosableView } from './_Sample-unclosable-view';
 
 export const SampleToolBarCommand: Command = {
   id: 'sample.toggle.toolbarCommand',
@@ -27,7 +27,9 @@ export const SampleToolBarCommand: Command = {
 };
 
 @injectable()
-export class SampleUnclosableViewContribution extends AbstractViewContribution<SampleViewUnclosableView> implements TabBarToolbarContribution {
+export class SampleUnclosableViewContribution
+  extends AbstractViewContribution<SampleViewUnclosableView>
+  implements TabBarToolbarContribution {
   static readonly SAMPLE_UNCLOSABLE_VIEW_TOGGLE_COMMAND_ID = 'sampleUnclosableView:toggle';
 
   protected toolbarItemState = false;
@@ -52,8 +54,8 @@ export class SampleUnclosableViewContribution extends AbstractViewContribution<S
           this.toolbarItemState = !this.toolbarItemState;
           this.messageService.info(`Sample Toolbar Command is toggled = ${this.toolbarItemState}`);
         },
-        isEnabled: (widget) => this.withWidget(widget, () => true),
-        isVisible: (widget) => this.withWidget(widget, () => true),
+        isEnabled: (widget) => this.withWidget(() => true, widget),
+        isVisible: (widget) => this.withWidget(() => true, widget),
         isToggled: () => this.toolbarItemState,
       });
     }
@@ -67,7 +69,10 @@ export class SampleUnclosableViewContribution extends AbstractViewContribution<S
       });
     }
 
-    protected withWidget<T>(widget: Widget | undefined = this.tryGetWidget(), cb: (sampleView: SampleViewUnclosableView) => T): T | false {
+    protected withWidget<T>(
+      cb: (sampleView: SampleViewUnclosableView)=> T,
+      widget: Widget | undefined = this.tryGetWidget(),
+    ): T | false {
       if (widget instanceof SampleViewUnclosableView && widget.id === SampleViewUnclosableView.ID) {
         return cb(widget);
       }

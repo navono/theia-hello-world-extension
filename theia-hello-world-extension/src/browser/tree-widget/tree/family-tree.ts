@@ -5,7 +5,8 @@ import {
   ExpandableTreeNode,
   SelectableTreeNode,
 } from '@theia/core/lib/browser';
-import { injectable } from 'inversify';
+import { injectable } from '@theia/core/shared/inversify';
+import { Member, Family } from './family';
 
 @injectable()
 export class FamilyTree extends TreeImpl {
@@ -43,6 +44,7 @@ export interface FamilyRootNode extends CompositeTreeNode {
   family: Family;
 }
 
+// eslint-disable-next-line no-redeclare
 export namespace FamilyRootNode {
   export function is(node: object): node is FamilyRootNode {
     return !!node && 'family' in node;
@@ -56,6 +58,7 @@ export interface MemberNode
   member: Member;
 }
 
+// eslint-disable-next-line no-redeclare
 export namespace MemberNode {
   export function is(node: object): node is MemberNode {
     return !!node && 'member' in node;

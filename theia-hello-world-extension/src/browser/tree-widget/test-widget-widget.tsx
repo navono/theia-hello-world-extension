@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from '@theia/core/shared/react';
 import { MessageService } from '@theia/core';
 import { injectable, postConstruct, inject } from '@theia/core/shared/inversify';
 import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
@@ -30,13 +30,13 @@ export class TestWidgetWidget extends ReactWidget {
         <div id="widget-container">
           <AlertMessage type="INFO" header={header} />
           <h2>Test</h2>
-          <button className="theia-button secondary" title="Display Message" onClick={(_a) => this.displayMessage()}>Display Message</button>
+          <button type="button" className="theia-button secondary" title="Display Message" onClick={(_a) => this.displayMessage()}>Display Message</button>
           <div style={{ display: 'grid', gridTemplateColumns: 'max-content 1fr max-content' }}>
             <div style={{ verticalAlign: 'center' }}>
               My Field:
             </div>
             <input type="text" />
-            <button>Browser...</button>
+            <button type="button">Browser...</button>
           </div>
         </div>
       );

@@ -5,6 +5,7 @@ import { bindSampleUnclosableView } from './view/sample-unclosable-view-contribu
 import { bindTreeWidget } from './tree-widget/test-widget-contribution';
 import { bindMarkdownResource } from './markdown/markdonw-contribution';
 
+/* eslint-disable */
 import '../../src/browser/style/branding.css';
 
 export default new ContainerModule((bind) => {

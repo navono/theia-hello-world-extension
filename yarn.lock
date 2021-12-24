@@ -1317,7 +1317,7 @@
   resolved "https://registry.yarnpkg.com/@theia/monaco-editor-core/-/monaco-editor-core-0.23.0.tgz#7a1cbb7a857a509ce8e75c9965abea752bd76e80"
   integrity sha512-WyrotTd6ZfeXAX4icgFALTzlqE356tAQ5nRuwa2E0Qdp2YIO9GDcw5G2l2NJ8INO2ygujbE5pEdD5kJM5N4TOQ==
 
-"@theia/monaco@1.21.0", "@theia/monaco@latest":
+"@theia/monaco@1.21.0", "@theia/monaco@^1.21.0", "@theia/monaco@latest":
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/@theia/monaco/-/monaco-1.21.0.tgz#830bb25bce712e3938ec554a10bd8073cb5a9174"
   integrity sha512-XG7ym1BblqmJQVYphWPSxVgfx88wU4R5XKxieUvCuVPriGGklPhleQY+dsQ6rsqJEQPC/nLuGR1sdcf+GMRNsg==
