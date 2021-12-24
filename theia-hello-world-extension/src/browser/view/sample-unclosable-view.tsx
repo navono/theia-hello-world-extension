@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ******************************************************************************* */
 
+import * as React from '@theia/core/shared/react';
 import { ReactWidget } from '@theia/core/lib/browser';
 import { injectable, postConstruct } from '@theia/core/shared/inversify';
-import * as React from '@theia/core/shared/react';
 
 /**
  * This sample view is used to demo the behavior of "Widget.title.closable".

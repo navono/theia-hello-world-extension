@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { injectable, postConstruct, inject } from 'inversify';
+import { MessageService } from '@theia/core';
+import { injectable, postConstruct, inject } from '@theia/core/shared/inversify';
 import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
 import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
-import { MessageService } from '@theia/core';
 
 @injectable()
 export class TestWidgetWidget extends ReactWidget {
