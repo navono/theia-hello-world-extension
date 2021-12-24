@@ -1427,7 +1427,7 @@
     jsonc-parser "^2.2.0"
     p-debounce "^2.1.0"
 
-"@theia/terminal@1.21.0", "@theia/terminal@latest":
+"@theia/terminal@1.21.0", "@theia/terminal@^1.21.0", "@theia/terminal@latest":
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/@theia/terminal/-/terminal-1.21.0.tgz#ff4258334b7c34a1d36199ab3461534ea8ecb5e9"
   integrity sha512-od5c2ZpiVf89fsilMHxXKiKcHK4FsSqPKgD9No9a63r5/yzRxOohtL6t0WqZVjJT3Kma8cXxMXxw366ScagfsA==

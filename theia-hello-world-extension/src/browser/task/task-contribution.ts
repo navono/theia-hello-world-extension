@@ -1,4 +1,11 @@
-import { CommandContribution, CommandRegistry, MAIN_MENU_BAR, MenuContribution, MenuModelRegistry } from '@theia/core';
+import {
+  Command,
+  CommandContribution,
+  CommandRegistry,
+  MAIN_MENU_BAR,
+  MenuContribution,
+  MenuModelRegistry,
+} from '@theia/core';
 import { TaskContribution, TaskProviderRegistry, TaskService } from '@theia/task/lib/browser';
 import { TaskConfiguration } from '@theia/task/lib/common/task-protocol';
 import { inject, injectable, interfaces } from '@theia/core/shared/inversify';
@@ -21,6 +28,8 @@ const myDeleteTask: TaskConfiguration = {
   _scope: '',
 };
 
+const taskCommand: Command = { id: 'my-task.command', label: 'Run ' + myCreateTask.label };
+
 @injectable()
 class MyTasksContribution implements TaskContribution {
   registerProviders(providers: TaskProviderRegistry) {
@@ -36,17 +45,15 @@ class MyTaskCommandsContribution implements CommandContribution {
   private readonly taskService: TaskService;
 
   registerCommands(registry: CommandRegistry): void {
-    registry.registerCommand(
-      { id: 'my-task.command', label: 'Run ' + myCreateTask.label },
-      { execute: () => this.taskService.runTask(myCreateTask) }
-    );
+    registry.registerCommand(taskCommand, { execute: () => this.taskService.runTask(myCreateTask) });
   }
 }
+
 const MY_MAIN_MENU = [...MAIN_MENU_BAR, '9_mymenu'];
 @injectable()
 class MyTaskMenuContribution implements MenuContribution {
   registerMenus(menus: MenuModelRegistry): void {
-    menus.registerMenuAction(MY_MAIN_MENU, { commandId: 'my-task.command' });
+    menus.registerMenuAction(MY_MAIN_MENU, { commandId: taskCommand.id });
   }
 }
 
