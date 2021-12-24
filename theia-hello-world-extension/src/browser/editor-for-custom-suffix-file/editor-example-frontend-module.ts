@@ -4,7 +4,7 @@ import { MyOpenHandler } from './my-openhandler';
 import { MyWidgetFactory } from './my-widget-factory';
 
 /* eslint-disable */
-import '../../../src/browser/editor/style/example.css';
+import './style/example.css';
 
 export const bindEditorWidget = (bind: interfaces.Bind) => {
   // bind open handler

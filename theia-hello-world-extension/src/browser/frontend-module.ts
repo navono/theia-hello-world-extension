@@ -5,7 +5,7 @@ import { bindSampleUnclosableView } from './view/sample-unclosable-view-contribu
 import { bindTreeWidget } from './tree-widget/test-widget-contribution';
 import { bindMarkdownResource } from './markdown/markdonw-contribution';
 import { bindCommandWithBackendMenu } from './with-backend/command-menu-contribution';
-import { bindEditorWidget } from './editor/editor-example-frontend-module';
+import { bindEditorWidget } from './editor-for-custom-suffix-file/editor-example-frontend-module';
 
 /* eslint-disable */
 import '../../src/browser/style/branding.css';
