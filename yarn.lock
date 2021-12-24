@@ -1235,7 +1235,7 @@
     ws "^7.1.2"
     yargs "^15.3.1"
 
-"@theia/editor@1.21.0", "@theia/editor@latest":
+"@theia/editor@1.21.0", "@theia/editor@^1.21.0", "@theia/editor@latest":
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/@theia/editor/-/editor-1.21.0.tgz#1baf2ef7c8088a3ce3417151e871210f4f7fb8ce"
   integrity sha512-I8V6fESiQL4loUNLuXuhWBEt90v1mSY2qwYBemoevRsmR1dOs067BoWaTGsLsvLZYuPzqRoBePReqas2/45CpQ==

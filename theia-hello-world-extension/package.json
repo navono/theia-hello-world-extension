@@ -10,6 +10,7 @@
   ],
   "dependencies": {
     "@theia/core": "latest",
+    "@theia/editor": "^1.21.0",
     "@theia/monaco": "^1.21.0",
     "@theia/task": "^1.21.0",
     "highlight.js": "^11.3.1",
