@@ -9,9 +9,7 @@ export const FamilyTreeWidgetCommand: Command = {
 };
 
 @injectable()
-export class FamilyTreeWidgetContribution extends AbstractViewContribution<
-  FamilyTreeWidget
-> {
+export class FamilyTreeWidgetContribution extends AbstractViewContribution<FamilyTreeWidget> {
   constructor() {
     super({
       widgetId: FamilyTreeWidget.ID,

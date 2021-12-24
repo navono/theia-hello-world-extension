@@ -23,50 +23,50 @@ export class MarkdownPreviewOpenHandler implements OpenHandler {
 
   protected readonly widgets = new Map<string, Promise<MarkdownPreviewWidget>>();
 
-    @inject(FrontendApplication)
+  @inject(FrontendApplication)
   protected readonly app: FrontendApplication;
 
-    @inject(MarkdownUri)
-    protected readonly markdownUri: MarkdownUri;
+  @inject(MarkdownUri)
+  protected readonly markdownUri: MarkdownUri;
 
-    @inject(ResourceProvider)
-    protected readonly resourceProvider: ResourceProvider;
+  @inject(ResourceProvider)
+  protected readonly resourceProvider: ResourceProvider;
 
-    canHandle(uri: URI): number {
-      try {
-        this.markdownUri.to(uri);
-        return 50;
-      } catch {
-        return 0;
-      }
+  canHandle(uri: URI): number {
+    try {
+      this.markdownUri.to(uri);
+      return 50;
+    } catch {
+      return 0;
     }
+  }
 
-    async open(uri: URI): Promise<MarkdownPreviewWidget | undefined> {
-      const widget = await this.getWidget(uri);
-      this.app.shell.activateWidget(widget.id);
+  async open(uri: URI): Promise<MarkdownPreviewWidget | undefined> {
+    const widget = await this.getWidget(uri);
+    this.app.shell.activateWidget(widget.id);
+    return widget;
+  }
+
+  protected getWidget(uri: URI): Promise<MarkdownPreviewWidget> {
+    const widget = this.widgets.get(uri.toString());
+    if (widget) {
       return widget;
     }
+    const promise = this.createWidget(uri);
+    promise.then((val) => val.disposed.connect(() => this.widgets.delete(uri.toString())));
+    this.widgets.set(uri.toString(), promise);
+    return promise;
+  }
 
-    protected getWidget(uri: URI): Promise<MarkdownPreviewWidget> {
-      const widget = this.widgets.get(uri.toString());
-      if (widget) {
-        return widget;
-      }
-      const promise = this.createWidget(uri);
-      promise.then((val) => val.disposed.connect(() => this.widgets.delete(uri.toString())));
-      this.widgets.set(uri.toString(), promise);
-      return promise;
-    }
-
-    protected async createWidget(uri: URI): Promise<MarkdownPreviewWidget> {
-      const markdownUri = this.markdownUri.to(uri);
-      const resource = await this.resourceProvider(markdownUri);
-      const widget = new MarkdownPreviewWidget(resource);
-      widget.id = `markdown-preview-${this.widgetSequence++}`;
-      widget.title.label = `Preview '${uri.path.base}'`;
-      widget.title.caption = widget.title.label;
-      widget.title.closable = true;
-      this.app.shell.addWidget(widget, { area: 'main' });
-      return widget;
-    }
+  protected async createWidget(uri: URI): Promise<MarkdownPreviewWidget> {
+    const markdownUri = this.markdownUri.to(uri);
+    const resource = await this.resourceProvider(markdownUri);
+    const widget = new MarkdownPreviewWidget(resource);
+    widget.id = `markdown-preview-${this.widgetSequence++}`;
+    widget.title.label = `Preview '${uri.path.base}'`;
+    widget.title.caption = widget.title.label;
+    widget.title.closable = true;
+    this.app.shell.addWidget(widget, { area: 'main' });
+    return widget;
+  }
 }

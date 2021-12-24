@@ -16,8 +16,15 @@
 
 import { QuickInputService, CommonMenus } from '@theia/core/lib/browser';
 import {
-  Command, CommandContribution, CommandRegistry, MAIN_MENU_BAR,
-  MenuContribution, MenuModelRegistry, MenuNode, MessageService, SubMenuOptions,
+  Command,
+  CommandContribution,
+  CommandRegistry,
+  MAIN_MENU_BAR,
+  MenuContribution,
+  MenuModelRegistry,
+  MenuNode,
+  MessageService,
+  SubMenuOptions,
 } from '@theia/core/lib/common';
 import { inject, injectable, interfaces } from '@theia/core/shared/inversify';
 
@@ -41,52 +48,55 @@ const TheiaHelloWorldExtensionCommand: Command = {
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
-    @inject(QuickInputService)
+  @inject(QuickInputService)
   protected readonly quickInputService: QuickInputService;
 
-    @inject(MessageService)
-    protected readonly messageService: MessageService;
+  @inject(MessageService)
+  protected readonly messageService: MessageService;
 
-    registerCommands(commands: CommandRegistry): void {
-      commands.registerCommand(SampleCommand, {
-        execute: () => {
-          alert('This is a sample command!');
-        },
-      });
-      commands.registerCommand(SampleCommand2, {
-        execute: () => {
-          alert('This is sample command2!');
-        },
-      });
-      commands.registerCommand(SampleQuickInputCommand, {
-        execute: async () => {
-          const result = await this.quickInputService.input({
-            placeHolder: 'Please provide a positive integer',
-            validateInput: async (input: string) => {
-              const numericValue = Number(input);
-              if (Number.isNaN(numericValue)) {
-                return 'Invalid: NaN';
-              } if (numericValue % 2 === 1) {
-                return 'Invalid: Odd Number';
-              } if (numericValue < 0) {
-                return 'Invalid: Negative Number';
-              } if (!Number.isInteger(numericValue)) {
-                return 'Invalid: Only Integers Allowed';
-              }
+  registerCommands(commands: CommandRegistry): void {
+    commands.registerCommand(SampleCommand, {
+      execute: () => {
+        alert('This is a sample command!');
+      },
+    });
+    commands.registerCommand(SampleCommand2, {
+      execute: () => {
+        alert('This is sample command2!');
+      },
+    });
+    commands.registerCommand(SampleQuickInputCommand, {
+      execute: async () => {
+        const result = await this.quickInputService.input({
+          placeHolder: 'Please provide a positive integer',
+          validateInput: async (input: string) => {
+            const numericValue = Number(input);
+            if (Number.isNaN(numericValue)) {
+              return 'Invalid: NaN';
+            }
+            if (numericValue % 2 === 1) {
+              return 'Invalid: Odd Number';
+            }
+            if (numericValue < 0) {
+              return 'Invalid: Negative Number';
+            }
+            if (!Number.isInteger(numericValue)) {
+              return 'Invalid: Only Integers Allowed';
+            }
 
-              return undefined;
-            },
-          });
-          if (result) {
-            this.messageService.info(`Positive Integer: ${result}`);
-          }
-        },
-      });
+            return undefined;
+          },
+        });
+        if (result) {
+          this.messageService.info(`Positive Integer: ${result}`);
+        }
+      },
+    });
 
-      commands.registerCommand(TheiaHelloWorldExtensionCommand, {
-        execute: () => this.messageService.info('Hello World!'),
-      });
-    }
+    commands.registerCommand(TheiaHelloWorldExtensionCommand, {
+      execute: () => this.messageService.info('Hello World!'),
+    });
+  }
 }
 
 @injectable()
@@ -114,13 +124,15 @@ export class SampleMenuContribution implements MenuContribution {
       commandId: SampleCommand2.id,
       order: '3',
     });
-    const placeholder = new PlaceholderMenuNode([...subSubMenuPath, 'placeholder'].join('-'), 'Placeholder', { order: '0' });
+    const placeholder = new PlaceholderMenuNode([...subSubMenuPath, 'placeholder'].join('-'), 'Placeholder', {
+      order: '0',
+    });
     menus.registerMenuNode(subSubMenuPath, placeholder);
 
     /**
-         * Register an action menu with an invalid command (un-registered and without a label)
-         * in order to determine that menus and the layout does not break on startup.
-         */
+     * Register an action menu with an invalid command (un-registered and without a label)
+     * in order to determine that menus and the layout does not break on startup.
+     */
     menus.registerMenuAction(subMenuPath, { commandId: 'invalid-command' });
 
     menus.registerMenuAction(CommonMenus.EDIT_FIND, {
@@ -135,11 +147,7 @@ export class SampleMenuContribution implements MenuContribution {
  */
 export class PlaceholderMenuNode implements MenuNode {
   // eslint-disable-next-line no-useless-constructor
-  constructor(
-    readonly id: string,
-    public readonly label: string,
-    protected options?: SubMenuOptions,
-  ) { }
+  constructor(readonly id: string, public readonly label: string, protected options?: SubMenuOptions) {}
 
   get icon(): string | undefined {
     return this.options?.iconClass;

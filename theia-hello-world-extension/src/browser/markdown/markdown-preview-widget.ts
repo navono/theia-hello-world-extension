@@ -12,9 +12,7 @@ import { BaseWidget, Message } from '@theia/core/lib/browser';
 export const MARKDOWN_WIDGET_CLASS = 'theia-markdown-widget';
 
 export class MarkdownPreviewWidget extends BaseWidget {
-  constructor(
-        protected readonly resource: Resource,
-  ) {
+  constructor(protected readonly resource: Resource) {
     super();
     this.addClass(MARKDOWN_WIDGET_CLASS);
     this.node.tabIndex = 0;
@@ -33,6 +31,8 @@ export class MarkdownPreviewWidget extends BaseWidget {
 
   onUpdateRequest(msg: Message): void {
     super.onUpdateRequest(msg);
-    this.resource.readContents().then((html) => { this.node.innerHTML = html; });
+    this.resource.readContents().then((html) => {
+      this.node.innerHTML = html;
+    });
   }
 }

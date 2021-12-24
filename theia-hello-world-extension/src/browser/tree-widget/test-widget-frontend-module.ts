@@ -1,9 +1,4 @@
-import {
-  createTreeContainer,
-  TreeWidget,
-  TreeImpl,
-  Tree,
-} from '@theia/core/lib/browser';
+import { createTreeContainer, TreeWidget, TreeImpl, Tree } from '@theia/core/lib/browser';
 import { interfaces } from '@theia/core/shared/inversify';
 
 /* eslint-disable */

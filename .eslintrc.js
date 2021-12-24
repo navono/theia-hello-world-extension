@@ -16,29 +16,27 @@ module.exports = {
     },
     ecmaVersion: 13,
     sourceType: 'module',
+    project: 'tsconfig.json',
   },
   plugins: [
     'react',
     '@typescript-eslint',
   ],
   rules: {
-    quotes: ['error', 'single'],
-    // we want to force semicolons
-    semi: ['error', 'always'],
-    // we use 2 spaces to indent our code
-    indent: ['error', 2],
-    // we want to avoid extraneous spaces
+    '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/no-namespace': 'warn',
     'no-plusplus': 'off',
     'no-multi-spaces': ['error'],
     'no-unused-vars': 'off',
     'import/prefer-default-export': 'off',
     'max-classes-per-file': 'off',
     'class-methods-use-this': 'off',
-    'import/no-useless-path-segments': 'warn',
+    'import/no-useless-path-segments': 'off',
     'no-empty-function': 'warn',
     'no-use-before-define': 'off',
     'react/jsx-filename-extension': [0],
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
 };

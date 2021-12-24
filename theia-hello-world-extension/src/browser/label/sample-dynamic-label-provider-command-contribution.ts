@@ -16,45 +16,42 @@
  ******************************************************************************* */
 
 import { injectable, inject, interfaces } from '@theia/core/shared/inversify';
-import {
-  Command, CommandContribution, CommandRegistry, CommandHandler,
-} from '@theia/core';
+import { Command, CommandContribution, CommandRegistry, CommandHandler } from '@theia/core';
 import { FrontendApplicationContribution, LabelProviderContribution } from '@theia/core/lib/browser';
 import { SampleDynamicLabelProviderContribution } from './sample-dynamic-label-provider-contribution';
 
 export namespace ExampleLabelProviderCommands {
-    const EXAMPLE_CATEGORY = 'Examples';
-    export const TOGGLE_SAMPLE: Command = {
-      id: 'example_label_provider.toggle',
-      category: EXAMPLE_CATEGORY,
-      label: 'Toggle Dynamically-Changing Labels',
-    };
+  const EXAMPLE_CATEGORY = 'Examples';
+  export const TOGGLE_SAMPLE: Command = {
+    id: 'example_label_provider.toggle',
+    category: EXAMPLE_CATEGORY,
+    label: 'Toggle Dynamically-Changing Labels',
+  };
 }
 
 @injectable()
 export class SampleDynamicLabelProviderCommandContribution
-implements FrontendApplicationContribution, CommandContribution {
+  implements FrontendApplicationContribution, CommandContribution
+{
   @inject(SampleDynamicLabelProviderContribution)
   protected readonly labelProviderContribution: SampleDynamicLabelProviderContribution;
 
-  initialize(): void { }
+  initialize(): void {}
 
   registerCommands(commands: CommandRegistry): void {
     commands.registerCommand(
       ExampleLabelProviderCommands.TOGGLE_SAMPLE,
-      new ExampleLabelProviderCommandHandler(this.labelProviderContribution),
+      new ExampleLabelProviderCommandHandler(this.labelProviderContribution)
     );
   }
 }
 
 export class ExampleLabelProviderCommandHandler implements CommandHandler {
   // eslint-disable-next-line no-useless-constructor
-  constructor(
-    private readonly labelProviderContribution: SampleDynamicLabelProviderContribution,
-  ) { }
+  constructor(private readonly labelProviderContribution: SampleDynamicLabelProviderContribution) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  execute(...args: any[]): any {
+  execute(): any {
     this.labelProviderContribution.toggle();
   }
 }

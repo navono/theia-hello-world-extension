@@ -7,14 +7,12 @@
  */
 
 import { injectable, inject } from '@theia/core/shared/inversify';
-import {
-  ResourceResolver, Resource, ResourceProvider, DisposableCollection, Emitter, Event,
-} from '@theia/core';
+import { ResourceResolver, Resource, ResourceProvider, DisposableCollection, Emitter, Event } from '@theia/core';
 import URI from '@theia/core/lib/common/uri';
 import { MonacoWorkspace } from '@theia/monaco/lib/browser/monaco-workspace';
 
 import hljs = require('highlight.js');
-import MarkdownIt = require('markdown-it')
+import MarkdownIt = require('markdown-it');
 import { MarkdownUri } from './markdown-uri';
 
 export class MarkdownResource implements Resource {
@@ -25,10 +23,10 @@ export class MarkdownResource implements Resource {
   protected readonly onDidChangeContentsEmitter = new Emitter<void>();
 
   constructor(
-        public readonly uri: URI,
-        protected readonly originalResource: Resource,
-        protected readonly workspace: MonacoWorkspace,
-        protected readonly engine: MarkdownIt,
+    public readonly uri: URI,
+    protected readonly originalResource: Resource,
+    protected readonly workspace: MonacoWorkspace,
+    protected readonly engine: MarkdownIt
   ) {
     this.originalUri = this.originalResource.uri.toString();
     this.toDispose.push(originalResource);
@@ -36,15 +34,11 @@ export class MarkdownResource implements Resource {
     if (originalResource.onDidChangeContents) {
       this.toDispose.push(originalResource.onDidChangeContents(() => this.fireDidChangeContents()));
     }
+    this.toDispose.push(this.workspace.onDidOpenTextDocument((document) => this.fireDidChangeContents(document.uri)));
     this.toDispose.push(
-      this.workspace.onDidOpenTextDocument((document) => this.fireDidChangeContents(document.uri)),
+      this.workspace.onDidChangeTextDocument((params) => this.fireDidChangeContents(params.model.uri))
     );
-    this.toDispose.push(this.workspace.onDidChangeTextDocument(
-      (params) => this.fireDidChangeContents(params.model.uri),
-    ));
-    this.toDispose.push(
-      this.workspace.onDidCloseTextDocument((document) => this.fireDidChangeContents(document.uri)),
-    );
+    this.toDispose.push(this.workspace.onDidCloseTextDocument((document) => this.fireDidChangeContents(document.uri)));
   }
 
   dispose(): void {
@@ -65,7 +59,7 @@ export class MarkdownResource implements Resource {
     return !affectedUri || affectedUri === this.originalUri;
   }
 
-  async readContents(options?: { encoding?: string | undefined; }): Promise<string> {
+  async readContents(options?: { encoding?: string | undefined }): Promise<string> {
     const document = this.workspace.textDocuments.find((v) => v.uri === this.originalUri);
     if (document) {
       return this.render(document.getText());
@@ -83,39 +77,39 @@ export class MarkdownResourceResolver implements ResourceResolver {
   //   @inject(FileService)
   // protected readonly fileService: FileService;
 
-    @inject(MarkdownUri)
+  @inject(MarkdownUri)
   protected readonly markdownUri: MarkdownUri;
 
-    @inject(MonacoWorkspace)
-    protected readonly workspace: MonacoWorkspace;
+  @inject(MonacoWorkspace)
+  protected readonly workspace: MonacoWorkspace;
 
-    @inject(ResourceProvider)
-    protected readonly resourceProvider: ResourceProvider;
+  @inject(ResourceProvider)
+  protected readonly resourceProvider: ResourceProvider;
 
-    async resolve(uri: URI): Promise<MarkdownResource> {
-      const resourceUri = this.markdownUri.from(uri);
-      const originalResource = await this.resourceProvider(resourceUri);
-      return new MarkdownResource(uri, originalResource, this.workspace, this.getEngine());
-    }
+  async resolve(uri: URI): Promise<MarkdownResource> {
+    const resourceUri = this.markdownUri.from(uri);
+    const originalResource = await this.resourceProvider(resourceUri);
+    return new MarkdownResource(uri, originalResource, this.workspace, this.getEngine());
+  }
 
-    protected engine: MarkdownIt| undefined;
+  protected engine: MarkdownIt | undefined;
 
-    protected getEngine(): MarkdownIt {
-      if (!this.engine) {
-        this.engine = MarkdownIt({
-          html: true,
-          linkify: true,
-          highlight: (str, lang) => {
-            if (lang && hljs.default.getLanguage(lang)) {
-              try {
-                return `<pre class="hljs"><code>${hljs.default.highlight(lang, str, true).value}</code></pre>`;
+  protected getEngine(): MarkdownIt {
+    if (!this.engine) {
+      this.engine = MarkdownIt({
+        html: true,
+        linkify: true,
+        highlight: (str, lang) => {
+          if (lang && hljs.default.getLanguage(lang)) {
+            try {
+              return `<pre class="hljs"><code>${hljs.default.highlight(lang, str, true).value}</code></pre>`;
               // eslint-disable-next-line no-empty
-              } catch { }
-            }
-            return `<pre class="hljs"><code>${this.engine!.utils.escapeHtml(str)}</code></pre>`;
-          },
-        });
-      }
-      return this.engine;
+            } catch {}
+          }
+          return `<pre class="hljs"><code>${this.engine!.utils.escapeHtml(str)}</code></pre>`;
+        },
+      });
     }
+    return this.engine;
+  }
 }

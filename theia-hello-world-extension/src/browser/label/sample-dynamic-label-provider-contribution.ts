@@ -21,10 +21,11 @@ import { Emitter, Event } from '@theia/core';
 
 @injectable()
 export class SampleDynamicLabelProviderContribution extends DefaultUriLabelProviderContribution {
-  protected isActive: boolean = false;
+  protected isActive = false;
 
   constructor() {
     super();
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const outer = this;
 
     setInterval(() => {
@@ -68,7 +69,7 @@ export class SampleDynamicLabelProviderContribution extends DefaultUriLabelProvi
 
   protected readonly onDidChangeEmitter = new Emitter<DidChangeLabelEvent>();
 
-  private x: number = 0;
+  private x = 0;
 
   getName(element: URI): string | undefined {
     const uri = this.getUri(element);

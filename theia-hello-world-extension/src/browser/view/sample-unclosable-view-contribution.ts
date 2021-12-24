@@ -29,55 +29,56 @@ export const SampleToolBarCommand: Command = {
 @injectable()
 export class SampleUnclosableViewContribution
   extends AbstractViewContribution<SampleViewUnclosableView>
-  implements TabBarToolbarContribution {
+  implements TabBarToolbarContribution
+{
   static readonly SAMPLE_UNCLOSABLE_VIEW_TOGGLE_COMMAND_ID = 'sampleUnclosableView:toggle';
 
   protected toolbarItemState = false;
 
-    @inject(MessageService) protected readonly messageService: MessageService;
+  @inject(MessageService) protected readonly messageService: MessageService;
 
-    constructor() {
-      super({
-        widgetId: SampleViewUnclosableView.ID,
-        widgetName: 'Sample Unclosable View',
-        toggleCommandId: SampleUnclosableViewContribution.SAMPLE_UNCLOSABLE_VIEW_TOGGLE_COMMAND_ID,
-        defaultWidgetOptions: {
-          area: 'main',
-        },
-      });
-    }
+  constructor() {
+    super({
+      widgetId: SampleViewUnclosableView.ID,
+      widgetName: 'Sample Unclosable View',
+      toggleCommandId: SampleUnclosableViewContribution.SAMPLE_UNCLOSABLE_VIEW_TOGGLE_COMMAND_ID,
+      defaultWidgetOptions: {
+        area: 'main',
+      },
+    });
+  }
 
-    registerCommands(registry: CommandRegistry): void {
-      super.registerCommands(registry);
-      registry.registerCommand(SampleToolBarCommand, {
-        execute: () => {
-          this.toolbarItemState = !this.toolbarItemState;
-          this.messageService.info(`Sample Toolbar Command is toggled = ${this.toolbarItemState}`);
-        },
-        isEnabled: (widget) => this.withWidget(() => true, widget),
-        isVisible: (widget) => this.withWidget(() => true, widget),
-        isToggled: () => this.toolbarItemState,
-      });
-    }
+  registerCommands(registry: CommandRegistry): void {
+    super.registerCommands(registry);
+    registry.registerCommand(SampleToolBarCommand, {
+      execute: () => {
+        this.toolbarItemState = !this.toolbarItemState;
+        this.messageService.info(`Sample Toolbar Command is toggled = ${this.toolbarItemState}`);
+      },
+      isEnabled: (widget) => this.withWidget(() => true, widget),
+      isVisible: (widget) => this.withWidget(() => true, widget),
+      isToggled: () => this.toolbarItemState,
+    });
+  }
 
-    async registerToolbarItems(toolbarRegistry: TabBarToolbarRegistry): Promise<void> {
-      toolbarRegistry.registerItem({
-        id: SampleToolBarCommand.id,
-        command: SampleToolBarCommand.id,
-        tooltip: 'Click to Toggle Toolbar Item',
-        priority: 0,
-      });
-    }
+  async registerToolbarItems(toolbarRegistry: TabBarToolbarRegistry): Promise<void> {
+    toolbarRegistry.registerItem({
+      id: SampleToolBarCommand.id,
+      command: SampleToolBarCommand.id,
+      tooltip: 'Click to Toggle Toolbar Item',
+      priority: 0,
+    });
+  }
 
-    protected withWidget<T>(
-      cb: (sampleView: SampleViewUnclosableView)=> T,
-      widget: Widget | undefined = this.tryGetWidget(),
-    ): T | false {
-      if (widget instanceof SampleViewUnclosableView && widget.id === SampleViewUnclosableView.ID) {
-        return cb(widget);
-      }
-      return false;
+  protected withWidget<T>(
+    cb: (sampleView: SampleViewUnclosableView) => T,
+    widget: Widget | undefined = this.tryGetWidget()
+  ): T | false {
+    if (widget instanceof SampleViewUnclosableView && widget.id === SampleViewUnclosableView.ID) {
+      return cb(widget);
     }
+    return false;
+  }
 }
 
 export const bindSampleUnclosableView = (bind: interfaces.Bind) => {

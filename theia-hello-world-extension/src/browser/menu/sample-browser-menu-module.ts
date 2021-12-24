@@ -19,7 +19,11 @@ import { injectable, ContainerModule } from '@theia/core/shared/inversify';
 import { Menu as MenuWidget } from '@theia/core/shared/@phosphor/widgets';
 import { Disposable } from '@theia/core/lib/common/disposable';
 import { MenuNode, CompositeMenuNode } from '@theia/core/lib/common/menu';
-import { BrowserMainMenuFactory, MenuCommandRegistry, DynamicMenuWidget } from '@theia/core/lib/browser/menu/browser-menu-plugin';
+import {
+  BrowserMainMenuFactory,
+  MenuCommandRegistry,
+  DynamicMenuWidget,
+} from '@theia/core/lib/browser/menu/browser-menu-plugin';
 import { PlaceholderMenuNode } from './sample-menu-contribution';
 
 export default new ContainerModule((bind, unbind, isBound, rebind) => {
@@ -29,17 +33,13 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
 @injectable()
 class SampleBrowserMainMenuFactory extends BrowserMainMenuFactory {
   protected handleDefault(menuCommandRegistry: MenuCommandRegistry, menuNode: MenuNode): void {
-    if (menuNode instanceof PlaceholderMenuNode
-      && menuCommandRegistry instanceof SampleMenuCommandRegistry) {
+    if (menuNode instanceof PlaceholderMenuNode && menuCommandRegistry instanceof SampleMenuCommandRegistry) {
       menuCommandRegistry.registerPlaceholderMenu(menuNode);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected createMenuCommandRegistry(
-    menu: CompositeMenuNode,
-    args: any[] = [],
-  ): MenuCommandRegistry {
+  protected createMenuCommandRegistry(menu: CompositeMenuNode, args: any[] = []): MenuCommandRegistry {
     const menuCommandRegistry = new SampleMenuCommandRegistry(this.services);
     this.registerMenu(menuCommandRegistry, menu, args);
     return menuCommandRegistry;
@@ -47,7 +47,7 @@ class SampleBrowserMainMenuFactory extends BrowserMainMenuFactory {
 
   createMenuWidget(
     menu: CompositeMenuNode,
-    options: MenuWidget.IOptions & { commands: MenuCommandRegistry },
+    options: MenuWidget.IOptions & { commands: MenuCommandRegistry }
   ): DynamicMenuWidget {
     return new SampleDynamicMenuWidget(menu, options, this.services);
   }
@@ -77,7 +77,9 @@ class SampleMenuCommandRegistry extends MenuCommandRegistry {
   protected registerPlaceholder(menu: PlaceholderMenuNode): Disposable {
     const { id } = menu;
     const unregisterCommand = this.addCommand(id, {
-      execute: () => { /* NOOP */ },
+      execute: () => {
+        /* NOOP */
+      },
       label: menu.label,
       icon: menu.icon,
       isEnabled: () => false,
@@ -90,10 +92,12 @@ class SampleMenuCommandRegistry extends MenuCommandRegistry {
 class SampleDynamicMenuWidget extends DynamicMenuWidget {
   protected handleDefault(menuNode: MenuNode): MenuWidget.IItemOptions[] {
     if (menuNode instanceof PlaceholderMenuNode) {
-      return [{
-        command: menuNode.id,
-        type: 'command',
-      }];
+      return [
+        {
+          command: menuNode.id,
+          type: 'command',
+        },
+      ];
     }
     return [];
   }

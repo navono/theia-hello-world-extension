@@ -18,13 +18,13 @@ export const TestWidgetCommand: Command = { id: 'test-widget:command', label: 't
 @injectable()
 export class TestWidgetContribution extends AbstractViewContribution<TestWidgetWidget> {
   /**
-     * `AbstractViewContribution` handles the creation and registering
-     *  of the widget including commands, menus, and keybindings.
-     *
-     * We can pass `defaultWidgetOptions` which define widget properties such as
-     * its location `area` (`main`, `left`, `right`, `bottom`), `mode`, and `ref`.
-     *
-     */
+   * `AbstractViewContribution` handles the creation and registering
+   *  of the widget including commands, menus, and keybindings.
+   *
+   * We can pass `defaultWidgetOptions` which define widget properties such as
+   * its location `area` (`main`, `left`, `right`, `bottom`), `mode`, and `ref`.
+   *
+   */
   constructor() {
     super({
       widgetId: TestWidgetWidget.ID,

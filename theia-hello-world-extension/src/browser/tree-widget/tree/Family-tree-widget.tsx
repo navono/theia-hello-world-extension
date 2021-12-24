@@ -19,7 +19,7 @@ export class FamilyTreeWidget extends TreeWidget {
   constructor(
     @inject(TreeProps) readonly props: TreeProps,
     @inject(TreeModel) readonly model: TreeModel,
-    @inject(ContextMenuRenderer) contextMenuRenderer: ContextMenuRenderer,
+    @inject(ContextMenuRenderer) contextMenuRenderer: ContextMenuRenderer
   ) {
     super(props, model, contextMenuRenderer);
 
