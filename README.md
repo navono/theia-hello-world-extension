@@ -1,4 +1,5 @@
 # theia-hello-world-extension
+
 The example of how to build the Theia-based applications with the theia-hello-world-extension.
 
 ## Getting started
@@ -28,7 +29,7 @@ Install yarn.
 
 *or:* launch `Start Browser Backend` configuration from VS code.
 
-Open http://localhost:3000 in the browser.
+Open `http://localhost:3000` in the browser.
 
 ## Running the Electron example
 
@@ -41,7 +42,6 @@ Open http://localhost:3000 in the browser.
     yarn start
 
 *or:* launch `Start Electron Backend` configuration from VS code.
-
 
 ## Developing with the browser example
 
@@ -60,6 +60,7 @@ and the browser example.
     yarn watch
 
 Run the example as [described above](#Running-the-browser-example)
+
 ## Developing with the Electron example
 
 Start watching all packages, including `electron-app`, of your application with
