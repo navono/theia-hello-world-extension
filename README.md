@@ -9,8 +9,8 @@ Install [nvm](https://github.com/creationix/nvm#install-script).
 
 Install npm and node.
 
-    nvm install 10
-    nvm use 10
+    nvm install 14
+    nvm use 14.xx.xx
 
 Install yarn.
 
