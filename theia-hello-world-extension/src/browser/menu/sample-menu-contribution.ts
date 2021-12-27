@@ -43,7 +43,7 @@ const SampleQuickInputCommand: Command = {
 };
 const TheiaHelloWorldExtensionCommand: Command = {
   id: 'TheiaHelloWorldExtension.command',
-  label: 'Say Hello',
+  label: 'Say Hello from menu',
 };
 
 @injectable()
