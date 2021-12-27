@@ -6,9 +6,11 @@ import {
   MenuModelRegistry,
   MessageService,
 } from '@theia/core/lib/common';
-import { CommonMenus } from '@theia/core/lib/browser';
+import { CommonMenus, OpenHandler, WidgetFactory } from '@theia/core/lib/browser';
+import { JsonschemaFormOpenHandler } from './jsonschema-form-open-handler';
+import { JsonschemaFormWidget, JsonschemaFormWidgetOptions } from './Jsonschema-form-widget';
 
-const JsonschemaFormCommand = {
+export const JsonschemaFormCommand = {
   id: 'JsonschemaForm.command',
   label: 'Shows a message',
 };
@@ -37,4 +39,15 @@ class JsonschemaFormMenuContribution implements MenuContribution {
 export const bindJsonSchema = (bind: interfaces.Bind) => {
   bind(CommandContribution).to(JsonschemaFormCommandContribution).inSingletonScope();
   bind(MenuContribution).to(JsonschemaFormMenuContribution).inSingletonScope();
+
+  bind(OpenHandler).to(JsonschemaFormOpenHandler).inSingletonScope();
+  bind(WidgetFactory).toDynamicValue(({ container }) => ({
+    id: JsonschemaFormWidget.id,
+    createWidget: (options: JsonschemaFormWidgetOptions) => {
+      const child = container.createChild();
+      child.bind(JsonschemaFormWidgetOptions).toConstantValue(options);
+      child.bind(JsonschemaFormWidget).toSelf();
+      return child.get(JsonschemaFormWidget);
+    },
+  }));
 };
