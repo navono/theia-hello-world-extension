@@ -16,7 +16,10 @@ import { createFamilyTreeWidget } from './test-widget-frontend-module';
 export const TestWidgetCommand: Command = { id: 'test-widget:command', label: 'test widget' };
 
 @injectable()
-export class TestWidgetContribution extends AbstractViewContribution<TestWidgetWidget> {
+export class TestWidgetContribution
+  extends AbstractViewContribution<TestWidgetWidget>
+  implements FrontendApplicationContribution
+{
   /**
    * `AbstractViewContribution` handles the creation and registering
    *  of the widget including commands, menus, and keybindings.
@@ -74,6 +77,10 @@ export class TestWidgetContribution extends AbstractViewContribution<TestWidgetW
      */
   registerMenus(menus: MenuModelRegistry): void {
     super.registerMenus(menus);
+  }
+
+  async initializeLayout(): Promise<void> {
+    await this.openView({ activate: false });
   }
 }
 

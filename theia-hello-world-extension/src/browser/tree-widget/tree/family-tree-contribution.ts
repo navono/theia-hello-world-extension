@@ -1,4 +1,4 @@
-import { AbstractViewContribution } from '@theia/core/lib/browser';
+import { AbstractViewContribution, FrontendApplicationContribution } from '@theia/core/lib/browser';
 import { injectable } from '@theia/core/shared/inversify';
 import { Command, CommandRegistry, MenuModelRegistry } from '@theia/core';
 import { FamilyTreeWidget } from './Family-tree-widget';
@@ -9,7 +9,10 @@ export const FamilyTreeWidgetCommand: Command = {
 };
 
 @injectable()
-export class FamilyTreeWidgetContribution extends AbstractViewContribution<FamilyTreeWidget> {
+export class FamilyTreeWidgetContribution
+  extends AbstractViewContribution<FamilyTreeWidget>
+  implements FrontendApplicationContribution
+{
   constructor() {
     super({
       widgetId: FamilyTreeWidget.ID,
@@ -27,5 +30,9 @@ export class FamilyTreeWidgetContribution extends AbstractViewContribution<Famil
 
   registerMenus(menus: MenuModelRegistry): void {
     super.registerMenus(menus);
+  }
+
+  async initializeLayout(): Promise<void> {
+    await this.openView({ activate: false });
   }
 }
