@@ -912,6 +912,15 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.6.tgz#d5e0706cf8c6acd8c6032f8d54070af261bbbb2f"
   integrity sha512-ws57AidsDvREKrZKYffXddNkyaF14iHNHm8VQnZH6t99E8gczjNN0GpvcGny0imC80yQ0tHz1xVUKk/KFQSUyA==
 
+"@eclipse-emfcloud/theia-tree-editor@next":
+  version "0.7.0-next.1cc6a31"
+  resolved "https://registry.yarnpkg.com/@eclipse-emfcloud/theia-tree-editor/-/theia-tree-editor-0.7.0-next.1cc6a31.tgz#f8a88b6835ebc1db4c47a46e6a9d93b74213db9b"
+  integrity sha512-ztNPAO2NXO+PHMWH8uZc8MT+iLah0i2zk3kM7lAFuytYKCLEwqgDwndpqjhhZMdktmRPhUAQsONJkwcSAxOmtA==
+  dependencies:
+    "@jsonforms/core" "3.0.0-alpha.2"
+    "@jsonforms/react" "3.0.0-alpha.2"
+    "@jsonforms/vanilla-renderers" "3.0.0-alpha.2"
+
 "@eslint/eslintrc@^1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.0.5.tgz#33f1b838dbf1f923bfa517e008362b78ddbbf318"
@@ -945,6 +954,28 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@improved/node/-/node-1.1.1.tgz#7be3d401b7cd2f848d5bb8713d2826b84fc51817"
   integrity sha512-ePDxG9UuU9Kobk90ZUjtmDW8IT9U7aRb1/Rl9683MRNM+ur0ocHL2v7TPH2ajTiVSBUFbbeW8vKIt9jrb0JIAA==
+
+"@jsonforms/core@3.0.0-alpha.2":
+  version "3.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@jsonforms/core/-/core-3.0.0-alpha.2.tgz#c2fbf70d53bdd3dd61eeb7dda4b3ff70b41c29db"
+  integrity sha512-5RUqGjJMhV577k0KXtAdgCkVWtTle1wVIKZahe5yWzo7cpLJq7PVfbTMeJsaxZokyw8382uu35K20R71xUPnww==
+  dependencies:
+    "@types/json-schema" "^7.0.3"
+    ajv "^8.6.1"
+    ajv-formats "^2.1.0"
+    lodash "^4.17.15"
+
+"@jsonforms/react@3.0.0-alpha.2":
+  version "3.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@jsonforms/react/-/react-3.0.0-alpha.2.tgz#e1b5edfd9cba9d1cc81ce26443748de00324dfc4"
+  integrity sha512-ZBKYOrJg1AJ2N75ANsQhVF59LxvdLH2ahn+nC9zuw28gbEWD3KOwlZCQmuBs3OGp2cAvxUC9ZnN2z0gZsVC8xQ==
+  dependencies:
+    lodash "^4.17.15"
+
+"@jsonforms/vanilla-renderers@3.0.0-alpha.2":
+  version "3.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@jsonforms/vanilla-renderers/-/vanilla-renderers-3.0.0-alpha.2.tgz#82dd99afe38080fda621266b5671a212200658cd"
+  integrity sha512-okLash03PG3/YhkEsy+QsM2MZBtWFIMmnipMJ9RHqUPSTpBDqigP/NZEp8QMEqdBisqDNFhNTXw1UhMzMirC6Q==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1586,7 +1617,7 @@
   dependencies:
     highlight.js "*"
 
-"@types/json-schema@*", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.8", "@types/json-schema@^7.0.9":
+"@types/json-schema@*", "@types/json-schema@^7.0.3", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.8", "@types/json-schema@^7.0.9":
   version "7.0.9"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
   integrity sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==
@@ -2150,7 +2181,7 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
-ajv-formats@^2.1.1:
+ajv-formats@^2.1.0, ajv-formats@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ajv-formats/-/ajv-formats-2.1.1.tgz#6e669400659eb74973bbf2e33327180a0996b520"
   integrity sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==
@@ -2179,7 +2210,7 @@ ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5, ajv@^6.5.3:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.0.0, ajv@^8.8.0:
+ajv@^8.0.0, ajv@^8.6.1, ajv@^8.8.0:
   version "8.8.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.8.2.tgz#01b4fef2007a28bf75f0b7fc009f62679de4abbb"
   integrity sha512-x9VuX+R/jcFj1DHo/fCp99esgGDWiHENrKxaCENuCxpoMCmAt/COCGVDwA7kleEpEzJjDnvh3yGoOuLu0Dtllw==

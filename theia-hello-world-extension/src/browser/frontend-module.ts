@@ -8,6 +8,7 @@ import { bindCommandWithBackendMenu } from './with-backend/command-menu-contribu
 import { bindEditorWidget } from './editor-for-custom-suffix-file/editor-example-frontend-module';
 import { bindTerminal } from './terminal/terminal-contribution';
 import { bindJsonSchema } from './jsonschema-form/jsonschema-form-contribution';
+import { bindTreeEditor } from './tree-editor/tree-example-frontend-module';
 
 /* eslint-disable */
 import '../../src/browser/style/branding.css';
@@ -22,4 +23,5 @@ export default new ContainerModule((bind) => {
   bindEditorWidget(bind);
   bindTerminal(bind);
   bindJsonSchema(bind);
+  bindTreeEditor(bind);
 });

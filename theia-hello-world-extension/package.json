@@ -9,6 +9,7 @@
     "src"
   ],
   "dependencies": {
+    "@eclipse-emfcloud/theia-tree-editor": "next",
     "@theia/core": "latest",
     "@theia/editor": "^1.21.0",
     "@theia/monaco": "^1.21.0",
