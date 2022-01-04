@@ -36,9 +36,6 @@
     {
       "frontend": "lib/browser/frontend-module",
       "backend": "lib/backend/node/backend-module"
-    },
-    {
-      "frontend": "lib/browser/menu/sample-browser-menu-module"
     }
   ]
 }

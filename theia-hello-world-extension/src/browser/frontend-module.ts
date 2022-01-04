@@ -11,6 +11,7 @@ import { bindJsonSchema } from './jsonschema-form/jsonschema-form-contribution';
 import { bindTreeEditor } from './tree-editor/tree-example-frontend-module';
 
 import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
+import { MenuContribution } from '@theia/core/lib/common';
 
 /* eslint-disable */
 import '../../src/browser/style/branding.css';
@@ -33,5 +34,13 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
     registerMenus: () => { },
     registerKeybindings: () => { },
     registerToolbarItems: () => { }
-} as any);
+  } as any);
+
+  rebind(MenuContribution).toConstantValue({
+    registerCommands: () => { },
+    registerMenus: () => { },
+    registerKeybindings: () => { },
+    registerToolbarItems: () => { }
+  } as any);
+
 });
