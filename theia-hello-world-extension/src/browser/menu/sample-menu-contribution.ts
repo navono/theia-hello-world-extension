@@ -149,7 +149,7 @@ export class SampleMenuContribution implements MenuContribution {
     // 注销 帮助 菜单
     // CommonMenus.HELP
     menus.unregisterMenuAction(CommonCommands.ABOUT_COMMAND);
-    menus.unregisterMenuAction('1_file');
+    // menus.unregisterMenuAction('1_file');
   }
 }
 
