@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ******************************************************************************* */
 
-import { QuickInputService, CommonMenus } from '@theia/core/lib/browser';
+import { QuickInputService, CommonMenus, CommonCommands } from '@theia/core/lib/browser';
 import {
   Command,
   CommandContribution,
@@ -96,6 +96,9 @@ export class SampleCommandContribution implements CommandContribution {
     commands.registerCommand(TheiaHelloWorldExtensionCommand, {
       execute: () => this.messageService.info('Hello World!'),
     });
+
+    // 注销 帮助 命令
+    commands.unregisterCommand(CommonCommands.ABOUT_COMMAND);
   }
 }
 
@@ -139,6 +142,9 @@ export class SampleMenuContribution implements MenuContribution {
       commandId: TheiaHelloWorldExtensionCommand.id,
       label: TheiaHelloWorldExtensionCommand.label,
     });
+
+    // 注销 帮助 菜单
+    menus.unregisterMenuAction(CommonCommands.ABOUT_COMMAND);
   }
 }
 

@@ -10,10 +10,12 @@ import { bindTerminal } from './terminal/terminal-contribution';
 import { bindJsonSchema } from './jsonschema-form/jsonschema-form-contribution';
 import { bindTreeEditor } from './tree-editor/tree-example-frontend-module';
 
+import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
+
 /* eslint-disable */
 import '../../src/browser/style/branding.css';
 
-export default new ContainerModule((bind) => {
+export default new ContainerModule((bind, unbind, isBound, rebind) => {
   bindDynamicLabelProvider(bind);
   bindSampleUnclosableView(bind);
   bindSampleMenu(bind);
@@ -24,4 +26,12 @@ export default new ContainerModule((bind) => {
   bindTerminal(bind);
   bindJsonSchema(bind);
   bindTreeEditor(bind);
+
+  // 注销右侧 outline 功能
+  rebind(OutlineViewContribution).toConstantValue({
+    registerCommands: () => { },
+    registerMenus: () => { },
+    registerKeybindings: () => { },
+    registerToolbarItems: () => { }
+} as any);
 });
