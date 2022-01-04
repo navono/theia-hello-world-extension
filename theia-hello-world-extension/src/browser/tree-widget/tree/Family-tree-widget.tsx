@@ -24,6 +24,7 @@ export class FamilyTreeWidget extends TreeWidget {
     super(props, model, contextMenuRenderer);
 
     this.title.label = FamilyTreeWidget.LABEL;
+    this.title.caption = FamilyTreeWidget.LABEL;
     this.title.iconClass = 'codicon codicon-person';
     this.id = FamilyTreeWidget.ID;
 

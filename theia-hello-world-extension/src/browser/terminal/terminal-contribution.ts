@@ -38,10 +38,11 @@ export class MyTerminalCommandsContribution implements CommandContribution {
   }
 }
 
-const MY_MAIN_MENU = [...MAIN_MENU_BAR, '9_mymenu'];
+const MY_MAIN_MENU = [...MAIN_MENU_BAR, '10_mymenu'];
 @injectable()
 class MyTerminalMenuContribution implements MenuContribution {
   registerMenus(menus: MenuModelRegistry): void {
+    menus.registerSubmenu(MY_MAIN_MENU, 'X');
     menus.registerMenuAction(MY_MAIN_MENU, { commandId: terminalCommand.id });
   }
 }

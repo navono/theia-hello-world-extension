@@ -9,9 +9,14 @@ import { bindEditorWidget } from './editor-for-custom-suffix-file/editor-example
 import { bindTerminal } from './terminal/terminal-contribution';
 import { bindJsonSchema } from './jsonschema-form/jsonschema-form-contribution';
 import { bindTreeEditor } from './tree-editor/tree-example-frontend-module';
+// import { bindHideTopMenu } from './top-menu/custom-application-shell';
 
 import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
-import { MenuContribution } from '@theia/core/lib/common';
+
+// import { MenuContribution } from '@theia/core/lib/common';
+
+// import { WorkspacePreferenceContribution } from '@theia/workspace/lib/browser';
+// import { PreferenceSchema } from '@theia/core/lib/browser/preferences';
 
 /* eslint-disable */
 import '../../src/browser/style/branding.css';
@@ -27,6 +32,7 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   bindTerminal(bind);
   bindJsonSchema(bind);
   bindTreeEditor(bind);
+  // bindHideTopMenu(bind, rebind);
 
   // 注销右侧 outline 功能
   rebind(OutlineViewContribution).toConstantValue({
@@ -36,11 +42,18 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
     registerToolbarItems: () => { }
   } as any);
 
-  rebind(MenuContribution).toConstantValue({
-    registerCommands: () => { },
-    registerMenus: () => { },
-    registerKeybindings: () => { },
-    registerToolbarItems: () => { }
-  } as any);
+  // rebind(MenuContribution).toConstantValue({
+  //   registerCommands: () => { },
+  //   registerMenus: () => { },
+  //   registerKeybindings: () => { },
+  //   registerToolbarItems: () => { }
+  // } as any);
+
+  // rebind(WorkspacePreferenceContribution).toConstantValue({
+  //   schema: <PreferenceSchema>{
+  //       type: 'object',
+  //       properties: {}
+  //   }
+  // });
 
 });

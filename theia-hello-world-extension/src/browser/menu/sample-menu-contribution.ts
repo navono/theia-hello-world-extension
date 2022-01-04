@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ******************************************************************************* */
 
-import { QuickInputService, CommonMenus, CommonCommands } from '@theia/core/lib/browser';
+import { QuickInputService, CommonMenus, CommonCommands, ApplicationShell } from '@theia/core/lib/browser';
 import {
   Command,
   CommandContribution,
@@ -30,7 +30,7 @@ import { inject, injectable, interfaces } from '@theia/core/shared/inversify';
 
 const SampleCommand: Command = {
   id: 'sample-command',
-  label: 'Sample Command',
+  label: 'Remove Setting',
 };
 const SampleCommand2: Command = {
   id: 'sample-command2',
@@ -54,10 +54,13 @@ export class SampleCommandContribution implements CommandContribution {
   @inject(MessageService)
   protected readonly messageService: MessageService;
 
+  @inject(ApplicationShell)
+  protected readonly shell: ApplicationShell;
+
   registerCommands(commands: CommandRegistry): void {
     commands.registerCommand(SampleCommand, {
       execute: () => {
-        alert('This is a sample command!');
+        this.shell.leftPanelHandler.removeBottomMenu('settings-menu');
       },
     });
     commands.registerCommand(SampleCommand2, {
@@ -144,7 +147,9 @@ export class SampleMenuContribution implements MenuContribution {
     });
 
     // 注销 帮助 菜单
+    // CommonMenus.HELP
     menus.unregisterMenuAction(CommonCommands.ABOUT_COMMAND);
+    menus.unregisterMenuAction('1_file');
   }
 }
 
