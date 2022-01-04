@@ -39,4 +39,9 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': 'off',
   },
+  settings: {
+    react: {
+      version: "detect",
+    }
+  }
 };
