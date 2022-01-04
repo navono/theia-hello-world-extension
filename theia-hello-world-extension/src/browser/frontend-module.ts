@@ -10,6 +10,7 @@ import { bindTerminal } from './terminal/terminal-contribution';
 import { bindJsonSchema } from './jsonschema-form/jsonschema-form-contribution';
 import { bindTreeEditor } from './tree-editor/tree-example-frontend-module';
 // import { bindHideTopMenu } from './top-menu/custom-application-shell';
+import { bindSampleOutputChannelWithSeverity } from './output/sample-output-channel-with-severity';
 
 import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
 
@@ -33,6 +34,7 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   bindJsonSchema(bind);
   bindTreeEditor(bind);
   // bindHideTopMenu(bind, rebind);
+  bindSampleOutputChannelWithSeverity(bind);
 
   // 注销右侧 outline 功能
   rebind(OutlineViewContribution).toConstantValue({

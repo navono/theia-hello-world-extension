@@ -13,6 +13,7 @@
     "@theia/messages": "latest",
     "@theia/monaco": "latest",
     "@theia/navigator": "latest",
+    "@theia/output": "^1.21.0",
     "@theia/preferences": "latest",
     "@theia/process": "latest",
     "@theia/search-in-workspace": "^1.21.0",
