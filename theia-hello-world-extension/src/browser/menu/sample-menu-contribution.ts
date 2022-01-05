@@ -14,7 +14,15 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ******************************************************************************* */
 
-import { QuickInputService, CommonMenus, CommonCommands, ApplicationShell } from '@theia/core/lib/browser';
+import {
+  QuickInputService,
+  CommonMenus,
+  CommonCommands,
+  ApplicationShell,
+  StatusBar,
+  PreferenceService,
+  // CorePreferences,
+} from '@theia/core/lib/browser';
 import {
   Command,
   CommandContribution,
@@ -57,10 +65,22 @@ export class SampleCommandContribution implements CommandContribution {
   @inject(ApplicationShell)
   protected readonly shell: ApplicationShell;
 
+  @inject(StatusBar)
+  protected readonly statusBar: StatusBar;
+
+  @inject(PreferenceService)
+  protected readonly preferenceService: PreferenceService;
+
+  // @inject(CorePreferences)
+  // protected readonly preferences: CorePreferences;
+
   registerCommands(commands: CommandRegistry): void {
     commands.registerCommand(SampleCommand, {
       execute: () => {
         this.shell.leftPanelHandler.removeBottomMenu('settings-menu');
+        this.shell.leftPanelHandler.collapse();
+        this.shell.bottomPanel.hide();
+        this.preferenceService.updateValue('workbench.statusBar.visible', false);
       },
     });
     commands.registerCommand(SampleCommand2, {
