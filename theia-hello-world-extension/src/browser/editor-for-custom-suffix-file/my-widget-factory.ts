@@ -29,7 +29,7 @@ export class MyWidgetFactory implements WidgetFactory {
       newEditor.id = this.id + ':' + uri.toString();
       newEditor.title.closable = true;
       newEditor.title.label = 'My Editor for ' + this.labelProvider.getName(uri);
-      newEditor.title.iconClass = icon + ' my-tab';
+      newEditor.title.iconClass = icon;
       newEditor.title.caption = 'My description for ' + this.labelProvider.getLongName(uri);
       return newEditor;
     });
