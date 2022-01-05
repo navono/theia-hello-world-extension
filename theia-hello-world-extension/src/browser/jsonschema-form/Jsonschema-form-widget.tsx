@@ -3,6 +3,7 @@ import * as React from '@theia/core/shared/react';
 import * as ReactDOM from '@theia/core/shared/react-dom';
 // import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
 import { injectable, inject, postConstruct } from '@theia/core/shared/inversify';
+import { LabelProvider } from '@theia/core/lib/browser/label-provider';
 
 import URI from '@theia/core/lib/common/uri';
 import { Disposable } from '@theia/core';
@@ -20,6 +21,8 @@ export class JsonschemaFormWidget extends BaseWidget {
 
   @inject(JsonschemaFormWidgetOptions)
   protected readonly options: JsonschemaFormWidgetOptions;
+
+  @inject(LabelProvider) protected readonly labelProvider: LabelProvider;
 
   // @inject(CommandService)
   // protected readonly commands: CommandService;
@@ -52,7 +55,8 @@ export class JsonschemaFormWidget extends BaseWidget {
   protected async init(): Promise<void> {
     const { uri } = this.options;
     this.id = JsonschemaFormWidget.id + ':' + uri;
-    this.title.label = 'Form ' + new URI(uri).displayName;
+    // this.title.label = 'Form ' + new URI(uri).displayName;
+    this.title.label = this.labelProvider.getName(new URI(uri));
     this.title.closable = true;
 
     this.node.style.padding = '0px 15px';

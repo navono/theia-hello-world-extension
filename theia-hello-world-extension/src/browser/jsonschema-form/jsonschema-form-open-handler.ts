@@ -8,8 +8,6 @@ import { EditorManager } from '@theia/editor/lib/browser';
 export class JsonschemaFormOpenHandler extends WidgetOpenHandler<JsonschemaFormWidget> {
   readonly id = JsonschemaFormWidget.id;
 
-  readonly label = 'Form';
-
   @inject(EditorManager)
   protected readonly editorManager: EditorManager;
 
