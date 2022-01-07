@@ -2,7 +2,7 @@ import { ContainerModule } from '@theia/core/shared/inversify';
 import { bindDynamicLabelProvider } from './label/sample-dynamic-label-provider-command-contribution';
 import { bindSampleMenu } from './menu/sample-menu-contribution';
 import { bindSampleUnclosableView } from './view/sample-unclosable-view-contribution';
-import { bindTreeWidget } from './tree-widget/test-widget-contribution';
+import { bindTreeWidget } from './tree-widget/frontend-module';
 import { bindMarkdownResource } from './markdown/markdonw-contribution';
 import { bindCommandWithBackendMenu } from './with-backend/command-menu-contribution';
 import { bindEditorWidget } from './editor-for-custom-suffix-file/editor-example-frontend-module';
