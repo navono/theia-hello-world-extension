@@ -1,3 +1,4 @@
+import * as React from '@theia/core/shared/react';
 import {
   ContextMenuRenderer,
   TreeModel,
@@ -5,10 +6,12 @@ import {
   TreeWidget,
   TreeNode,
   ExpandableTreeNode,
+  LabelProvider,
 } from '@theia/core/lib/browser';
 import { inject, injectable } from '@theia/core/shared/inversify';
 import { FamilyRootNode, MemberNode } from './family-tree';
 import { Family } from './family';
+import { ReactNode } from '@theia/core/shared/react';
 
 @injectable()
 export class FamilyTreeWidget extends TreeWidget {
@@ -19,6 +22,7 @@ export class FamilyTreeWidget extends TreeWidget {
   constructor(
     @inject(TreeProps) readonly props: TreeProps,
     @inject(TreeModel) readonly model: TreeModel,
+    @inject(LabelProvider) readonly labelProvider: LabelProvider,
     @inject(ContextMenuRenderer) contextMenuRenderer: ContextMenuRenderer
   ) {
     super(props, model, contextMenuRenderer);
@@ -78,6 +82,10 @@ export class FamilyTreeWidget extends TreeWidget {
     };
 
     this.model.root = root;
+
+    this.model.onSelectionChanged((e) => {
+      console.log((e as any)[0].id);
+    });
   }
 
   protected isExpandable(node: TreeNode): node is ExpandableTreeNode {
@@ -86,5 +94,9 @@ export class FamilyTreeWidget extends TreeWidget {
     if (MemberNode.is(node) && node.member.children) return node.member.children.length > 0;
 
     return false;
+  }
+
+  protected renderIcon(node: TreeNode): ReactNode {
+    return <div className={this.labelProvider.getIcon(node)}></div>;
   }
 }
