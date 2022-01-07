@@ -9,6 +9,7 @@
     "@theia/electron": "latest",
     "@theia/file-search": "^1.21.0",
     "@theia/filesystem": "latest",
+    "@theia/getting-started": "^1.21.0",
     "@theia/markers": "latest",
     "@theia/messages": "latest",
     "@theia/monaco": "latest",

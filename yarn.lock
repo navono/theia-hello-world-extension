@@ -1354,6 +1354,29 @@
     uuid "^8.0.0"
     vscode-languageserver-textdocument "^1.0.1"
 
+"@theia/getting-started@^1.21.0":
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/@theia/getting-started/-/getting-started-1.21.0.tgz#ae391dfdf993ed929f7eb6450d518d4ca5117fbe"
+  integrity sha512-iC4f4P0Y+x2MqNmRaAmwB70HDdLHGFaa2BijtpsVTzCXqiLm7YDf5LJ5rpm5qLLsC3u5NCAFojORyNAik3fvKw==
+  dependencies:
+    "@theia/core" "1.21.0"
+    "@theia/filesystem" "1.21.0"
+    "@theia/keymaps" "1.21.0"
+    "@theia/workspace" "1.21.0"
+
+"@theia/keymaps@1.21.0":
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/@theia/keymaps/-/keymaps-1.21.0.tgz#774f396b7a4cbdd08f3cc11f8a5cd4a5983bf322"
+  integrity sha512-HCo8JRTzTP9ZjcV+j/19O2xxshahIcNpLzoBslfRkSAlSoZ3lCJXc/y0ew63QWpTjVOGpXDPF6JaFopzI53uog==
+  dependencies:
+    "@theia/core" "1.21.0"
+    "@theia/monaco" "1.21.0"
+    "@theia/userstorage" "1.21.0"
+    "@theia/workspace" "1.21.0"
+    "@types/lodash.debounce" "4.0.3"
+    ajv "^6.5.3"
+    jsonc-parser "^2.2.0"
+
 "@theia/localization-manager@1.21.0":
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/@theia/localization-manager/-/localization-manager-1.21.0.tgz#77310ef063fb724bf2d49c774bb3e594558db723"
@@ -3782,7 +3805,7 @@ dot-prop@^5.0.0:
   dependencies:
     is-obj "^2.0.0"
 
-drivelist@*, drivelist@^9.0.2:
+drivelist@^9.0.2:
   version "9.2.4"
   resolved "https://registry.yarnpkg.com/drivelist/-/drivelist-9.2.4.tgz#f89d2233d86c9fcdbc0daacae257d7b27a658d20"
   integrity sha512-F36yn+qXwiOGZM16FYPKcIRjC7qXDIA0SBZ0vvTEe01ai788Se8z78acYdgXC8NAsghiO+9c/GYXgU7E9hhUpg==
@@ -4520,13 +4543,6 @@ find-cache-dir@^3.3.1:
     commondir "^1.0.1"
     make-dir "^3.0.2"
     pkg-dir "^4.1.0"
-
-find-git-repositories@*:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/find-git-repositories/-/find-git-repositories-0.2.1.tgz#a77c5675fa98eed35d0281640697e13a7e7a1916"
-  integrity sha512-+D2Ou5AelHekoHFCqRaQTKfYh6pj1p69SYOKHMqSKxANN0viGsH1jbXnnYVeK6tmrljWgSoJ5BDmWX36eo72Jg==
-  dependencies:
-    node-addon-api "*"
 
 find-up@3.0.0, find-up@^3.0.0:
   version "3.0.0"
@@ -6375,11 +6391,6 @@ napi-build-utils@^1.0.1:
   resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-1.0.2.tgz#b1fddc0b2c46e380a0b7a76f984dd47c41a13806"
   integrity sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==
 
-native-keymap@*:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/native-keymap/-/native-keymap-3.0.3.tgz#7f846f2136ea31785ac06cd917c84abac1c88bfb"
-  integrity sha512-XBKD3jpRI4GsrVIe5TB1PAk2ZLEJY/HcH4N9ZssnzP3+HD5V+ABqXs37VLQtiUF/EsmQ1xEeWquPyWFFpeeIpg==
-
 native-keymap@^2.1.2:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/native-keymap/-/native-keymap-2.5.0.tgz#4d567497efb0d2efbfd53048f14093f25984c2b4"
@@ -6475,13 +6486,6 @@ node-gyp@^7.0.0:
     tar "^6.0.2"
     which "^2.0.2"
 
-node-pty@*:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/node-pty/-/node-pty-0.10.1.tgz#cd05d03a2710315ec40221232ec04186f6ac2c6d"
-  integrity sha512-JTdtUS0Im/yRsWJSx7yiW9rtpfmxqxolrtnyKwPLI+6XqTAPW/O2MjS8FYL4I5TsMbH2lVgDb2VMjp+9LoQGNg==
-  dependencies:
-    nan "^2.14.0"
-
 node-releases@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.1.tgz#3d1d395f204f1f2f29a54358b9fb678765ad2fc5"
@@ -6566,7 +6570,7 @@ npmlog@^4.0.1, npmlog@^4.1.2:
     gauge "~2.7.3"
     set-blocking "~2.0.0"
 
-nsfw@*, nsfw@^2.1.2:
+nsfw@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/nsfw/-/nsfw-2.1.2.tgz#4fa841e7f7122b60b2e1f61187d1b57ad3403428"
   integrity sha512-zGPdt32aJ5b1laK9rvgXQmXGAagrx3VkcMt0JePtu6wBfzC1o4xLCM3kq7FxZxUnxyxYhODyBYzpt3H16FhaGA==

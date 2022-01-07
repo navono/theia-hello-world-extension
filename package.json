@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "prepare": "lerna run prepare",
+    "rebuild": "yarn rebuild:browser && yarn rebuild:electron",
     "rebuild:browser": "theia rebuild:browser",
     "rebuild:electron": "theia rebuild:electron",
     "start:browser": "yarn rebuild:browser && yarn --cwd browser-app start",

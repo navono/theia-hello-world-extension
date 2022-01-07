@@ -23,6 +23,8 @@ import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline
 import '../../src/browser/style/branding.css';
 
 export default new ContainerModule((bind, unbind, isBound, rebind) => {
+  console.log('ContainerModule');
+  
   bindDynamicLabelProvider(bind);
   bindSampleUnclosableView(bind);
   bindSampleMenu(bind);
