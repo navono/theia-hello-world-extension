@@ -37,6 +37,7 @@ export function createFamilyTreeWidget(
 export const bindTreeWidget = (bind: interfaces.Bind) => {
   bindViewContribution(bind, FamilyTreeWidgetContribution);
   bind(FrontendApplicationContribution).toService(FamilyTreeWidgetContribution);
+  
   bind(WidgetFactory)
     .toDynamicValue((ctx) => ({
       id: FamilyTreeWidget.ID,

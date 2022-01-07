@@ -1,3 +1,4 @@
+import { Emitter, Event } from '@theia/core';
 import * as React from '@theia/core/shared/react';
 import {
   ContextMenuRenderer,
@@ -8,7 +9,7 @@ import {
   ExpandableTreeNode,
   LabelProvider,
 } from '@theia/core/lib/browser';
-import { inject, injectable } from '@theia/core/shared/inversify';
+import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
 import { FamilyRootNode, MemberNode } from './family-tree';
 import { Family } from './family';
 import { ReactNode } from '@theia/core/shared/react';
@@ -18,6 +19,8 @@ export class FamilyTreeWidget extends TreeWidget {
   static readonly ID = 'family-tree-widget';
 
   static readonly LABEL = 'Family Tree';
+
+  protected onTreeWidgetSelectionEmitter = new Emitter<readonly Readonly<MemberNode>[]>();
 
   constructor(
     @inject(TreeProps) readonly props: TreeProps,
@@ -82,10 +85,22 @@ export class FamilyTreeWidget extends TreeWidget {
     };
 
     this.model.root = root;
+  }
 
+  @postConstruct()
+  protected init(): void {
+    super.init();
+
+    this.toDispose.push(this.onTreeWidgetSelectionEmitter);
     this.model.onSelectionChanged((e) => {
       console.log((e as any)[0].id);
+
+      this.onTreeWidgetSelectionEmitter.fire(e as readonly Readonly<MemberNode>[]);
     });
+  }
+
+  get onSelectionChange(): Event<readonly Readonly<MemberNode>[]> {
+    return this.onTreeWidgetSelectionEmitter.event;
   }
 
   protected isExpandable(node: TreeNode): node is ExpandableTreeNode {
