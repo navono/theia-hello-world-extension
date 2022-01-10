@@ -17,6 +17,7 @@
     "@theia/output": "^1.21.0",
     "@theia/preferences": "latest",
     "@theia/process": "latest",
+    "@theia/property-view": "^1.21.0",
     "@theia/search-in-workspace": "^1.21.0",
     "@theia/terminal": "latest",
     "@theia/workspace": "latest",

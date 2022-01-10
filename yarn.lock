@@ -1499,6 +1499,14 @@
     "@theia/node-pty" "0.9.0-theia.6"
     string-argv "^0.1.1"
 
+"@theia/property-view@^1.21.0":
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/@theia/property-view/-/property-view-1.21.0.tgz#56d293f6e18430dc8317efe1662478bf05778cda"
+  integrity sha512-5l5uSTmvLBpw9VQzBSKP+X5deqyy+9eLTr8M6fbD3vsbiF7WVfzZ1UTNPoPa7d4JFJQqXeqGejAmGMNI36cJbw==
+  dependencies:
+    "@theia/core" "1.21.0"
+    "@theia/filesystem" "1.21.0"
+
 "@theia/search-in-workspace@^1.21.0":
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/@theia/search-in-workspace/-/search-in-workspace-1.21.0.tgz#9920112bc3852934ebdcd68bab0cbca281df7299"
