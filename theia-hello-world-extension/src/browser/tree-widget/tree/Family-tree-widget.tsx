@@ -8,6 +8,7 @@ import {
   TreeNode,
   ExpandableTreeNode,
   LabelProvider,
+  codicon,
 } from '@theia/core/lib/browser';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
 import { FamilyRootNode, MemberNode } from './family-tree';
@@ -32,7 +33,7 @@ export class FamilyTreeWidget extends TreeWidget {
 
     this.title.label = FamilyTreeWidget.LABEL;
     this.title.caption = FamilyTreeWidget.LABEL;
-    this.title.iconClass = 'codicon codicon-person';
+    this.title.iconClass = codicon('person');
     this.id = FamilyTreeWidget.ID;
 
     const family: Family = {

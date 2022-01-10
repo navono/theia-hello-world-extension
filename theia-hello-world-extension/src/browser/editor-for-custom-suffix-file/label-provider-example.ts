@@ -1,4 +1,4 @@
-import { LabelProviderContribution } from '@theia/core/lib/browser';
+import { LabelProviderContribution, codicon } from '@theia/core/lib/browser';
 import { FileStatNode } from '@theia/filesystem/lib/browser/file-tree/file-tree';
 import { FileTreeLabelProvider } from '@theia/filesystem/lib/browser/file-tree/file-tree-label-provider';
 import { injectable } from '@theia/core/shared/inversify';
@@ -16,7 +16,7 @@ export class CustomLabelProviderContribution implements LabelProviderContributio
 
   getIcon(): string {
     // return 'fa fa-star-o';
-    return 'codicon codicon-home my-file-icon';
+    return codicon('home my-file-icon');
   }
 }
 
@@ -36,6 +36,6 @@ export class CustomTreeLabelProviderContribution extends FileTreeLabelProvider {
 
   getIcon(): string {
     // return 'fa fa-star-o';
-    return 'codicon codicon-home my-file-icon';
+    return codicon('home my-file-icon');
   }
 }
