@@ -15,7 +15,6 @@ export class CustomLabelProviderContribution implements LabelProviderContributio
   }
 
   getIcon(): string {
-    // return 'fa fa-star-o';
     return codicon('home my-file-icon');
   }
 }
@@ -35,7 +34,6 @@ export class CustomTreeLabelProviderContribution extends FileTreeLabelProvider {
   }
 
   getIcon(): string {
-    // return 'fa fa-star-o';
     return codicon('home my-file-icon');
   }
 }

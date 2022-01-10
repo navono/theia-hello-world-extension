@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable max-classes-per-file */
 /** ******************************************************************************
  * Copyright (C) 2019 Arm and others.
