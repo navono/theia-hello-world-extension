@@ -187,11 +187,11 @@ export class ExperimentManager {
     }
   }
 
-  private removeExperiment(): any | undefined {
-    // const deletedExperiment = this.fOpenExperiments.get(experimentUUID);
-    // this.fOpenExperiments.delete(experimentUUID);
-    // return deletedExperiment;
-  }
+  // private removeExperiment(): any | undefined {
+  //   // const deletedExperiment = this.fOpenExperiments.get(experimentUUID);
+  //   // this.fOpenExperiments.delete(experimentUUID);
+  //   // return deletedExperiment;
+  // }
 }
 
 const instance: ExperimentManager = new ExperimentManager();

@@ -43,13 +43,13 @@ export class ViewerToolbarContribution implements TabBarToolbarContribution, Com
     // signalManager().on(Signals.MARKERSETS_FETCHED, this.onMarkerSetsFetchedSignal);
   }
 
-  private doHandleMarkerCategoriesFetchedSignal() {
-    this.onMarkerCategoriesChangedEmitter.fire();
-  }
+  // private doHandleMarkerCategoriesFetchedSignal() {
+  //   this.onMarkerCategoriesChangedEmitter.fire();
+  // }
 
-  private doHandleMarkerSetsFetchedSignal() {
-    this.onMakerSetsChangedEmitter.fire();
-  }
+  // private doHandleMarkerSetsFetchedSignal() {
+  //   this.onMakerSetsChangedEmitter.fire();
+  // }
 
   registerCommands(registry: CommandRegistry): void {
     registry.registerCommand(TraceViewerToolbarCommands.ZOOM_IN, {

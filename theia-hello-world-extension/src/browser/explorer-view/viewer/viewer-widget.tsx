@@ -64,11 +64,11 @@ export class ViewerWidget extends ReactWidget {
 
   protected explorerWidget: ExplorerWidget;
 
-  private markerCategoriesMap: Map<string, string[]> = new Map<string, string[]>();
+  // private markerCategoriesMap: Map<string, string[]> = new Map<string, string[]>();
 
-  private toolbarMarkerCategoriesMap: Map<string, { categoryCount: number; toggleInd: boolean }> = new Map();
+  // private toolbarMarkerCategoriesMap: Map<string, { categoryCount: number; toggleInd: boolean }> = new Map();
 
-  private selectedMarkerCategoriesMap: Map<string, string[]> = new Map<string, string[]>();
+  // private selectedMarkerCategoriesMap: Map<string, string[]> = new Map<string, string[]>();
 
   // private markerSetsMap: Map<MarkerSet, boolean> = new Map<MarkerSet, boolean>();
 
