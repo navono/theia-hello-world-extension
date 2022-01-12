@@ -1,4 +1,6 @@
-var name = 'name';
+var name = 'my name';
 function a () {
-    return "a";
+    return name;
 }
+
+console.log(a());
