@@ -20,6 +20,7 @@
     "@theia/property-view": "^1.21.0",
     "@theia/search-in-workspace": "^1.21.0",
     "@theia/terminal": "latest",
+    "@theia/vsx-registry": "^1.21.0",
     "@theia/workspace": "latest",
     "theia-hello-world-extension": "0.1.0"
   },
@@ -28,12 +29,13 @@
   },
   "scripts": {
     "prepare": "theia build --mode development",
-    "start": "theia start --log-level=debug ../workspace",
+    "start": "theia start --log-level=debug --plugins=local-dir:../plugins",
     "watch": "theia build --watch --mode development"
   },
   "theia": {
     "target": "electron"
   },
+  "theiaPluginsDir": "../plugins",
   "frontend": {
     "config": {
       "applicationName": "Theia Preload Example"

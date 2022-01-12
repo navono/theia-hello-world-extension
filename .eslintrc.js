@@ -22,6 +22,14 @@ module.exports = {
     'react',
     '@typescript-eslint',
   ],
+  ignorePatterns: [
+    'node_modules',
+    'lib',
+    '.eslintrc.js',
+    'plugins',
+    '**/__tests__',
+    'jestSetup.ts'
+  ],
   rules: {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-namespace': 'warn',
