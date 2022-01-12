@@ -12,9 +12,9 @@ import { ThemeService } from '@theia/core/lib/browser/theming';
 // import { TspClient } from 'tsp-typescript-client/lib/protocol/tsp-client';
 // import { TspClientProvider } from '../tsp-client-provider-impl';
 // import { TraceManager } from 'traceviewer-base/lib/trace-manager';
-// import { ExperimentManager } from 'traceviewer-base/lib/experiment-manager';
+import { experimentManager } from '../util/experiment-manager';
 // import { TraceContextComponent } from 'traceviewer-react-components/lib/components/trace-context-component';
-// import { Experiment } from 'tsp-typescript-client/lib/models/experiment';
+import { Experiment } from '../util/experiment';
 // import { TheiaMessageManager } from '../theia-message-manager';
 import { signalManager, Signals } from '../util/signal-manager';
 // import { OutputAddedSignalPayload } from 'traceviewer-base/lib/signals/output-added-signal-payload';
@@ -37,7 +37,7 @@ export class ViewerWidget extends ReactWidget {
 
   protected uri: Path;
 
-  protected openedExperiment = 0;
+  protected openedExperiment: Experiment | undefined;
 
   // protected outputDescriptors: OutputDescriptor[] = [];
 
@@ -45,7 +45,7 @@ export class ViewerWidget extends ReactWidget {
 
   // protected traceManager: TraceManager;
 
-  // protected experimentManager: ExperimentManager;
+  protected experimentManager = experimentManager();
 
   protected backgroundTheme: string;
 
@@ -270,6 +270,12 @@ export class ViewerWidget extends ReactWidget {
           //     this.messageService.warn('Invalid trace(s): ' + invalidTraces.toString());
           //   }
           // }
+
+          const experiment = await this.experimentManager.openExperiment(this.uri.name + this.uri.ext);
+          if (experiment) {
+            this.openedExperiment = experiment;
+            signalManager().fireTraceViewerTabActivatedSignal(experiment);
+          }
 
           this.traceExplorerContribution.openView({
             activate: true,

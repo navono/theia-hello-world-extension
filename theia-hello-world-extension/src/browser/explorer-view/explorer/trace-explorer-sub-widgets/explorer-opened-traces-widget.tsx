@@ -3,10 +3,10 @@ import { CommandService } from '@theia/core';
 import { ReactWidget, Widget, WidgetManager } from '@theia/core/lib/browser';
 import * as React from '@theia/core/shared/react';
 
-// import { Experiment } from 'tsp-typescript-client/lib/models/experiment';
-// import { ExperimentManager } from 'traceviewer-base/lib/experiment-manager';
+// import { any } from 'tsp-typescript-client/lib/models/experiment';
+import { experimentManager } from '../../util/experiment-manager';
 // import { TspClientProvider } from '../../tsp-client-provider-impl';
-// import { signalManager } from 'traceviewer-base/lib/signals/signal-manager';
+import { signalManager, Signals } from '../../util/signal-manager';
 import { ExplorerPropertyWidget } from './explorer-item-property-widget';
 import { ContextMenuRenderer } from '@theia/core/lib/browser';
 import { TraceViewerCommand } from '../../viewer/viewer-commands';
@@ -34,7 +34,30 @@ export class ExplorerOpenedTracesWidget extends ReactWidget {
 
   @inject(WidgetManager) protected readonly widgetManager!: WidgetManager;
 
-  // private _experimentManager!: ExperimentManager;
+  private _selectedExperiment: any | undefined;
+
+  private _openedExperiments: any[] = [];
+
+  private _selectedExperimentIndex = -1;
+
+  private _experimentManager = experimentManager();
+
+  private _onExperimentOpened = (experiment: any): Promise<void> => this.doHandleExperimentOpenedSignal(experiment);
+
+  // private _onExperimentClosed = (experiment: any): void => this.doHandleExperimentClosed(experiment);
+
+  // private _onExperimentDeleted = (experiment: any): Promise<void> => this.doHandleExperimentDeletedSignal(experiment);
+
+  private _onOpenedTracesWidgetActivated = (experiment: any): void =>
+    this.doHandleTracesWidgetActivatedSignal(experiment);
+
+  constructor() {
+    super();
+    signalManager().on(Signals.EXPERIMENT_OPENED, this._onExperimentOpened);
+    // signalManager().on(Signals.EXPERIMENT_CLOSED, this._onExperimentClosed);
+    // signalManager().on(Signals.EXPERIMENT_DELETED, this._onExperimentDeleted);
+    signalManager().on(Signals.TRACEVIEWERTAB_ACTIVATED, this._onOpenedTracesWidgetActivated);
+  }
 
   @postConstruct()
   async init(): Promise<void> {
@@ -47,12 +70,63 @@ export class ExplorerOpenedTracesWidget extends ReactWidget {
     this.update();
   }
 
+  public async doHandleExperimentOpenedSignal(experiment: any): Promise<void> {
+    console.error('open ', experiment);
+
+    await this.updateOpenedExperiments();
+    this.updateSelectedExperiment();
+  }
+
+  protected updateOpenedExperiments = async (): Promise<void> => this.doUpdateOpenedExperiments();
+
+  protected async doUpdateOpenedExperiments(): Promise<void> {
+    const remoteExperiments = await this._experimentManager.getOpenedExperiments();
+    remoteExperiments.forEach((experiment) => {
+      this._experimentManager.addExperiment(experiment);
+    });
+    this._selectedExperimentIndex = remoteExperiments.findIndex(
+      (experiment) => this._selectedExperiment && experiment.UUID === this._selectedExperiment.UUID
+    );
+    this._openedExperiments = remoteExperiments;
+
+    signalManager().fireOpenedTracesChangedSignal(remoteExperiments.length);
+  }
+
   protected doHandleContextMenuEvent(event: React.MouseEvent<HTMLDivElement>): void {
     this.contextMenuRenderer.render({
       menuPath: ExplorerMenus.PREFERENCE_EDITOR_CONTEXT_MENU,
       anchor: { x: event.clientX, y: event.clientY },
       args: [],
     });
+  }
+
+  private updateSelectedExperiment(): void {
+    if (
+      this._openedExperiments &&
+      this._selectedExperimentIndex >= 0 &&
+      this._selectedExperimentIndex < this._openedExperiments.length
+    ) {
+      this._selectedExperiment = this._openedExperiments[this._selectedExperimentIndex];
+      signalManager().fireExperimentSelectedSignal(this._selectedExperiment);
+    }
+  }
+
+  protected doHandleTracesWidgetActivatedSignal(experiment: any): void {
+    if (this._selectedExperiment?.UUID !== experiment.UUID) {
+      this._selectedExperiment = experiment;
+      const selectedIndex = this._openedExperiments.findIndex(
+        (openedExperiment) => openedExperiment.UUID === experiment.UUID
+      );
+      this.selectExperiment(selectedIndex);
+    }
+  }
+
+  private selectExperiment(index: number): void {
+    if (index >= 0 && index !== this._selectedExperimentIndex) {
+      this._selectedExperimentIndex = index;
+      this._selectedExperiment = this._openedExperiments[index];
+      signalManager().fireExperimentSelectedSignal(this._selectedExperiment);
+    }
   }
 
   protected doHandleClickEvent(event: React.MouseEvent<HTMLDivElement>): void {

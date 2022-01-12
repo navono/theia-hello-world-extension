@@ -6,9 +6,12 @@
 // import { TraceManager } from './trace-manager';
 // import { TspClientResponse } from 'tsp-typescript-client/lib/protocol/tsp-client-response';
 import { signalManager, Signals } from './signal-manager';
+import { Experiment } from '../util/experiment';
 
 export class ExperimentManager {
-  private fOpenExperiments: Map<string, any> = new Map();
+  //   private fOpenExperiments: Map<string, any> = new Map();
+
+  private _experiment: Experiment | undefined;
 
   //   private fTspClient: TspClient;
 
@@ -24,44 +27,59 @@ export class ExperimentManager {
    * Get an array of opened experiments
    * @returns Array of experiment
    */
-  async getOpenedExperiments(): Promise<any[]> {
-    const openedExperiments: Array<any> = [];
-    // Look on the server for opened experiments
-    const experimentsResponse = await this.fTspClient.fetchExperiments();
-    const experiments = experimentsResponse.getModel();
-    if (experimentsResponse.isOk() && experiments) {
-      openedExperiments.push(...experiments);
+  async getOpenedExperiments(): Promise<Experiment[]> {
+    // const openedExperiments: Array<any> = [];
+    // // Look on the server for opened experiments
+    // const experimentsResponse = await this.fTspClient.fetchExperiments();
+    // const experiments = experimentsResponse.getModel();
+    // if (experimentsResponse.isOk() && experiments) {
+    //   openedExperiments.push(...experiments);
+    // }
+
+    if (!this._experiment) {
+      this._experiment = {
+        name: 'experiment',
+        UUID: '1',
+      };
     }
-    return openedExperiments;
+
+    return [this._experiment];
   }
 
   /**
    * Get a specific experiment information
    * @param experimentUUID experiment UUID
    */
-  async getExperiment(experimentUUID: string): Promise<any | undefined> {
-    // Check if the experiment is in "cache"
-    let experiment = this.fOpenExperiments.get(experimentUUID);
+  async getExperiment(experimentUUID: string): Promise<Experiment | undefined> {
+    // // Check if the experiment is in "cache"
+    // let experiment = this.fOpenExperiments.get(experimentUUID);
 
-    // If the experiment is undefined, check on the server
-    if (!experiment) {
-      const experimentResponse = await this.fTspClient.fetchExperiment(experimentUUID);
-      if (experimentResponse.isOk()) {
-        experiment = experimentResponse.getModel();
-      }
+    // // If the experiment is undefined, check on the server
+    // if (!experiment) {
+    //   const experimentResponse = await this.fTspClient.fetchExperiment(experimentUUID);
+    //   if (experimentResponse.isOk()) {
+    //     experiment = experimentResponse.getModel();
+    //   }
+    // }
+
+    if (this._experiment && this._experiment.UUID === experimentUUID) {
+      return this._experiment;
     }
-    return experiment;
+
+    return undefined;
   }
 
   /**
    * Get an array of OutputDescriptor for a given experiment
    * @param experimentUUID experiment UUID
    */
-  async getAvailableOutputs(experimentUUID: string): Promise<OutputDescriptor[] | undefined> {
-    const outputsResponse = await this.fTspClient.experimentOutputs(experimentUUID);
-    if (outputsResponse && outputsResponse.getStatusCode() === 200) {
-      return outputsResponse.getModel();
-    }
+  async getAvailableOutputs(experimentUUID: string): Promise<any[] | undefined> {
+    console.log('getAvailableOutputs', experimentUUID);
+
+    // const outputsResponse = await this.fTspClient.experimentOutputs(experimentUUID);
+    // if (outputsResponse && outputsResponse.getStatusCode() === 200) {
+    //   return outputsResponse.getModel();
+    // }
     return undefined;
   }
 
@@ -71,36 +89,44 @@ export class ExperimentManager {
    * @param experimentName Optional name for the experiment. If not specified the URI name is used
    * @returns The opened experiment
    */
-  async openExperiment(experimentName: string, traces: Array<Trace>): Promise<any | undefined> {
+  async openExperiment(experimentName: string): Promise<Experiment | undefined> {
     const name = experimentName;
 
-    const traceURIs = new Array<string>();
-    for (let i = 0; i < traces.length; i++) {
-      traceURIs.push(traces[i].UUID);
-    }
+    // const traceURIs = new Array<string>();
+    // for (let i = 0; i < traces.length; i++) {
+    //   traceURIs.push(traces[i].UUID);
+    // }
 
-    const tryCreate = async function (tspClient: TspClient, retry: number): Promise<TspClientResponse<any>> {
-      return tspClient.createExperiment(
-        new Query({
-          name: retry === 0 ? name : name + '(' + retry + ')',
-          traces: traceURIs,
-        })
-      );
+    // const tryCreate = async function (tspClient: TspClient, retry: number): Promise<TspClientResponse<any>> {
+    //   return tspClient.createExperiment(
+    //     new Query({
+    //       name: retry === 0 ? name : name + '(' + retry + ')',
+    //       traces: traceURIs,
+    //     })
+    //   );
+    // };
+    // let tryNb = 0;
+    // let experimentResponse: TspClientResponse<any> | undefined;
+    // while (experimentResponse === undefined || experimentResponse.getStatusCode() === 409) {
+    //   experimentResponse = await tryCreate(this.fTspClient, tryNb);
+    //   tryNb++;
+    // }
+    // const experiment = experimentResponse.getModel();
+    // if (experimentResponse.isOk() && experiment) {
+    //   this.addExperiment(experiment);
+    //   signalManager().fireExperimentOpenedSignal(experiment);
+    //   return experiment;
+    // }
+    // // TODO Handle any other experiment open errors
+    // return undefined;
+
+    this._experiment = {
+      name,
+      UUID: '1',
     };
-    let tryNb = 0;
-    let experimentResponse: TspClientResponse<any> | undefined;
-    while (experimentResponse === undefined || experimentResponse.getStatusCode() === 409) {
-      experimentResponse = await tryCreate(this.fTspClient, tryNb);
-      tryNb++;
-    }
-    const experiment = experimentResponse.getModel();
-    if (experimentResponse.isOk() && experiment) {
-      this.addExperiment(experiment);
-      signalManager().fireExperimentOpenedSignal(experiment);
-      return experiment;
-    }
-    // TODO Handle any other experiment open errors
-    return undefined;
+
+    signalManager().fireExperimentOpenedSignal(this._experiment);
+    return this._experiment;
   }
 
   /**
@@ -109,12 +135,14 @@ export class ExperimentManager {
    * @returns The updated experiment or undefined if the experiment failed to update
    */
   async updateExperiment(experimentUUID: string): Promise<any | undefined> {
-    const experimentResponse = await this.fTspClient.fetchExperiment(experimentUUID);
-    const experiment = experimentResponse.getModel();
-    if (experiment && experimentResponse.isOk) {
-      this.fOpenExperiments.set(experimentUUID, experiment);
-      return experiment;
-    }
+    // const experimentResponse = await this.fTspClient.fetchExperiment(experimentUUID);
+    // const experiment = experimentResponse.getModel();
+    // if (experiment && experimentResponse.isOk) {
+    //   this.fOpenExperiments.set(experimentUUID, experiment);
+    //   return experiment;
+    // }
+
+    console.log('updateExperiment', experimentUUID);
     return undefined;
   }
 
@@ -122,38 +150,50 @@ export class ExperimentManager {
    * Delete the given experiment from the server
    * @param experimentUUID experiment UUID
    */
-  async deleteExperiment(experimentUUID: string): Promise<void> {
-    const experimentToDelete = this.fOpenExperiments.get(experimentUUID);
-    if (experimentToDelete) {
-      await this.fTspClient.deleteExperiment(experimentUUID);
-      const deletedExperiment = this.removeExperiment(experimentUUID);
-      if (deletedExperiment) {
-        signalManager().fireExperimentDeletedSignal(deletedExperiment);
-      }
-    }
-  }
+  //   async deleteExperiment(experimentUUID: string): Promise<void> {
+  //     // const experimentToDelete = this.fOpenExperiments.get(experimentUUID);
+  //     // if (experimentToDelete) {
+  //     //   await this.fTspClient.deleteExperiment(experimentUUID);
+  //     //   const deletedExperiment = this.removeExperiment(experimentUUID);
+  //     //   if (deletedExperiment) {
+  //     //     signalManager().fireExperimentDeletedSignal(deletedExperiment);
+  //     //   }
+  //     // }
+  //   }
 
-  private onExperimentDeleted(experiment: any) {
+  private onExperimentDeleted(experiment: Experiment) {
     /*
      * TODO: Do not close traces used by another experiment
      */
     // Close each trace
-    const traces = experiment.traces;
-    for (let i = 0; i < traces.length; i++) {
-      this.fTraceManager.deleteTrace(traces[i].UUID);
+    // const traces = experiment.traces;
+    // for (let i = 0; i < traces.length; i++) {
+    //   this.fTraceManager.deleteTrace(traces[i].UUID);
+    // }
+
+    if (this._experiment?.UUID === experiment.UUID) {
+      this._experiment = undefined;
     }
   }
 
-  public addExperiment(experiment: any): void {
-    this.fOpenExperiments.set(experiment.UUID, experiment);
-    experiment.traces.forEach((trace) => {
-      this.fTraceManager.addTrace(trace);
-    });
+  public addExperiment(experiment: Experiment): void {
+    // this.fOpenExperiments.set(experiment.UUID, experiment);
+    // experiment.traces.forEach((trace) => {
+    //   this.fTraceManager.addTrace(trace);
+    // });
+
+    if (!this._experiment) {
+      this._experiment = experiment;
+    }
   }
 
-  private removeExperiment(experimentUUID: string): any | undefined {
-    const deletedExperiment = this.fOpenExperiments.get(experimentUUID);
-    this.fOpenExperiments.delete(experimentUUID);
-    return deletedExperiment;
+  private removeExperiment(): any | undefined {
+    // const deletedExperiment = this.fOpenExperiments.get(experimentUUID);
+    // this.fOpenExperiments.delete(experimentUUID);
+    // return deletedExperiment;
   }
 }
+
+const instance: ExperimentManager = new ExperimentManager();
+
+export const experimentManager = (): ExperimentManager => instance;

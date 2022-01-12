@@ -8,7 +8,6 @@ import { WorkspaceService } from '@theia/workspace/lib/browser/workspace-service
 import { OpenTraceCommand, StartServerCommand, StopServerCommand, TraceViewerCommand } from './viewer-commands';
 // import { PortBusy, TraceServerConfigService } from '../../common/trace-server-config';
 import { PreferenceService } from '@theia/core/lib/browser';
-import { timeout } from '@theia/core/lib/common/promise-util';
 // import { TRACE_PATH, TRACE_PORT } from '../trace-server-preference';
 // import { TspClient } from 'tsp-typescript-client/lib/protocol/tsp-client';
 // import { TspClientProvider } from '../tsp-client-provider-impl';
