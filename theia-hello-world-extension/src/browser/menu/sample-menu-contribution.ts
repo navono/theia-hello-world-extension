@@ -42,7 +42,7 @@ const SampleCommand: Command = {
 };
 const SampleCommand2: Command = {
   id: 'sample-command2',
-  label: 'Sample Command2',
+  label: 'Restore Setting',
 };
 const SampleQuickInputCommand: Command = {
   id: 'sample-quick-input-command',
@@ -79,13 +79,16 @@ export class SampleCommandContribution implements CommandContribution {
       execute: () => {
         this.shell.leftPanelHandler.removeBottomMenu('settings-menu');
         this.shell.leftPanelHandler.collapse();
+        this.shell.leftPanelHandler.toolBar.hide();
+        this.shell.leftPanelHandler.topMenu.hide();
         this.shell.bottomPanel.hide();
         this.preferenceService.updateValue('workbench.statusBar.visible', false);
       },
     });
     commands.registerCommand(SampleCommand2, {
       execute: () => {
-        alert('This is sample command2!');
+        this.shell.bottomPanel.show();
+        this.preferenceService.updateValue('workbench.statusBar.visible', true);
       },
     });
     commands.registerCommand(SampleQuickInputCommand, {
