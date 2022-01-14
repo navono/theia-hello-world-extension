@@ -12,11 +12,25 @@
       "internalConsoleOptions": "openOnSessionStart"
     },
     {
-        "name": "Python: 当前文件",
-        "type": "python",
-        "request": "launch",
-        "program": "${file}",
-        "console": "integratedTerminal"
-      }
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "test-cpp",
+      "request": "launch",
+      "type": "gdb",
+      "program": "${workspaceFolder}/build/a",
+      "verbose": true,
+      "logFile": "/tmp/a.out"
+    },
+    {
+        "name": "cpp local remote",
+        "type": "gdbtarget",
+        "program": "${workspaceFolder}/build/a",
+        "request": "launch"
+    }
   ]
 }

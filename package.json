@@ -7,6 +7,7 @@
     "rebuild:electron": "theia rebuild:electron",
     "start:browser": "yarn rebuild:browser && yarn --cwd browser-app start",
     "start:electron": "yarn rebuild:electron && yarn --cwd electron-app start",
+    "download:plugins": "theia download:plugins",
     "watch": "lerna run --parallel watch",
     "lint": "lerna run lint"
   },
@@ -28,5 +29,16 @@
     "theia-hello-world-extension",
     "browser-app",
     "electron-app"
-  ]
+  ],
+  "theiaPluginsDir": "plugins",
+  "theiaPlugins": {
+    "vscode-builtin-extensions-pack": "https://open-vsx.org/api/eclipse-theia/builtin-extension-pack/1.62.3/file/eclipse-theia.builtin-extension-pack-1.62.3.vsix",
+    "redhat.java": "https://open-vsx.org/api/redhat/java/1.1.0/file/redhat.java-1.1.0.vsix",
+    "vscjava.vscode-java-debug": "https://open-vsx.org/api/vscjava/vscode-java-debug/0.37.0/file/vscjava.vscode-java-debug-0.37.0.vsix",
+    "vscjava.vscode-java-test": "https://open-vsx.org/api/vscjava/vscode-java-test/0.33.0/file/vscjava.vscode-java-test-0.33.0.vsix",
+    "vscjava.vscode-maven": "https://open-vsx.org/api/vscjava/vscode-maven/0.34.2/file/vscjava.vscode-maven-0.34.2.vsix",
+    "vscjava.vscode-java-dependency": "https://open-vsx.org/api/vscjava/vscode-java-dependency/0.18.9/file/vscjava.vscode-java-dependency-0.18.9.vsix",
+    "vscode-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.13/file/llvm-vs-code-extensions.vscode-clangd-0.1.13.vsix",
+    "cdt-gdb-vscode": "https://open-vsx.org/api/eclipse-cdt/cdt-gdb-vscode/0.0.92/file/eclipse-cdt.cdt-gdb-vscode-0.0.92.vsix"
+  }
 }
