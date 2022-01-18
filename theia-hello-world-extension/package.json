@@ -31,7 +31,8 @@
     "lint": "eslint --fix --ext .tsx,.ts ./src",
     "clean": "rimraf lib",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "nls": "theia nls-extract -o=lang.json"
   },
   "theiaExtensions": [
     {

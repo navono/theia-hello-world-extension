@@ -32,9 +32,11 @@ import {
   MenuModelRegistry,
   MenuNode,
   MessageService,
+  nls,
   SubMenuOptions,
 } from '@theia/core/lib/common';
 import { inject, injectable, interfaces } from '@theia/core/shared/inversify';
+import { AsyncLocalizationProvider } from '@theia/core/lib/common/i18n/localization';
 
 const SampleCommand: Command = {
   id: 'sample-command',
@@ -56,6 +58,9 @@ const TheiaHelloWorldExtensionCommand: Command = {
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
+  @inject(AsyncLocalizationProvider)
+  protected readonly localizationProvider: AsyncLocalizationProvider;
+
   @inject(QuickInputService)
   protected readonly quickInputService: QuickInputService;
 
@@ -76,7 +81,10 @@ export class SampleCommandContribution implements CommandContribution {
 
   registerCommands(commands: CommandRegistry): void {
     commands.registerCommand(SampleCommand, {
-      execute: () => {
+      execute: async () => {
+        const l = await this.localizationProvider.getAvailableLanguages();
+        console.log('Language', l);
+
         this.shell.leftPanelHandler.removeBottomMenu('settings-menu');
         this.shell.leftPanelHandler.collapse();
         this.shell.leftPanelHandler.toolBar.hide();
@@ -130,9 +138,9 @@ export class SampleCommandContribution implements CommandContribution {
 
 @injectable()
 export class SampleMenuContribution implements MenuContribution {
-  registerMenus(menus: MenuModelRegistry): void {
+  async registerMenus(menus: MenuModelRegistry): Promise<void> {
     const subMenuPath = [...MAIN_MENU_BAR, 'sample-menu'];
-    menus.registerSubmenu(subMenuPath, 'Sample Menu', {
+    menus.registerSubmenu(subMenuPath, nls.localize('a-Menu', 'Sample Menu'), {
       order: '2', // that should put the menu right next to the File menu
     });
     menus.registerMenuAction(subMenuPath, {

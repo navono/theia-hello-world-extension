@@ -34,7 +34,8 @@
   "scripts": {
     "prepare": "theia build --mode development",
     "start": "theia start --log-level=debug --plugins=local-dir:../plugins",
-    "watch": "theia build --watch --mode development"
+    "watch": "theia build --watch --mode development",
+    "nls": "theia nls-extract -o lang.json"
   },
   "theia": {
     "target": "electron"

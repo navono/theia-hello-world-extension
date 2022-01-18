@@ -2,6 +2,7 @@ import { inject, injectable, postConstruct } from 'inversify';
 import { ReactWidget } from '@theia/core/lib/browser';
 import * as React from 'react';
 import { CommandService } from '@theia/core';
+import { nls } from '@theia/core/lib/common';
 import { OpenTraceCommand } from '../../viewer/viewer-commands';
 import { PreferenceService } from '@theia/core/lib/browser';
 // import { TRACE_PATH, TRACE_PORT } from '../../trace-server-preference';
@@ -61,7 +62,7 @@ export class ExplorerPlaceholderWidget extends ReactWidget {
           >
             {loading && <i className="fa fa-refresh fa-spin" style={{ marginRight: '5px' }} />}
             {loading && <span>Connecting to trace server</span>}
-            {!loading && <span>Open Trace</span>}
+            {!loading && <span>{nls.localize('b-trace', 'Open Trace')}</span>}
           </button>
         </div>
       </div>

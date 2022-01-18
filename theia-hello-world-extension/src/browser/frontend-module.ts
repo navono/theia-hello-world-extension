@@ -1,4 +1,5 @@
 import { ContainerModule } from '@theia/core/shared/inversify';
+
 import { bindDynamicLabelProvider } from './label/sample-dynamic-label-provider-command-contribution';
 import { bindSampleMenu } from './menu/sample-menu-contribution';
 import { bindSampleUnclosableView } from './view/sample-unclosable-view-contribution';
@@ -22,6 +23,8 @@ import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline
 
 /* eslint-disable */
 import '../../src/browser/style/branding.css';
+
+// creating your own localization contribution for German, Italian and simplified Chinese
 
 export default new ContainerModule((bind, unbind, isBound, rebind) => {
   console.log('ContainerModule');
