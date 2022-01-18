@@ -1,8 +1,8 @@
 import { WebSocketConnectionProvider } from '@theia/core/lib/browser';
 import { Command, CommandContribution, CommandRegistry } from '@theia/core/lib/common';
 import { inject, injectable, interfaces } from '@theia/core/shared/inversify';
-import { HelloBackendWithClientService, HelloBackendService } from '../../backend/common/protocol';
-import { BackendClient, HELLO_BACKEND_PATH, HELLO_BACKEND_WITH_CLIENT_PATH } from '../../backend/common/protocol';
+import { HelloBackendWithClientService, HelloBackendService } from '../../common/protocol';
+import { BackendClient, HELLO_BACKEND_PATH, HELLO_BACKEND_WITH_CLIENT_PATH } from '../../common/protocol';
 
 const SayHelloViaBackendCommandWithCallBack: Command = {
   id: 'sayHelloOnBackendWithCallBack.command',
@@ -26,7 +26,9 @@ class BackendExampleCommandContribution implements CommandContribution {
     commands.registerCommand(SayHelloViaBackendCommandWithCallBack, {
       execute: () => {
         console.info('command via backend with callback');
-        this.helloBackendWithClientService.greet().then((r) => console.info(r));
+        this.helloBackendWithClientService.greet().then((r) => {
+          console.error(r);
+        });
       },
     });
     commands.registerCommand(SayHelloViaBackendCommand, {

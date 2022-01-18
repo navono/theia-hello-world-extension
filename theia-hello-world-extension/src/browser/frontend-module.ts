@@ -13,6 +13,7 @@ import { bindTreeEditor } from './tree-editor/tree-example-frontend-module';
 // import { bindHideTopMenu } from './top-menu/custom-application-shell';
 import { bindSampleOutputChannelWithSeverity } from './output/sample-output-channel-with-severity';
 import { bindExplorerAndView } from './explorer-view/frontend-module';
+import { bindTestServerWidget } from './test-server-widget/serverevent-frontend-module';
 
 import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
 
@@ -51,6 +52,8 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   } as any);
 
   bindExplorerAndView(bind);
+
+  bindTestServerWidget(bind);
 
   // rebind(MenuContribution).toConstantValue({
   //   registerCommands: () => { },

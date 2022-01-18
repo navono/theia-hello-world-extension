@@ -10,17 +10,22 @@ import {
   HelloBackendService,
   HELLO_BACKEND_PATH,
   HELLO_BACKEND_WITH_CLIENT_PATH,
-} from '../common/protocol';
+} from '../../common/protocol';
 import { HelloBackendWithClientServiceImpl } from './hello-backend-with-client-service';
 import { HelloBackendServiceImpl } from './hello-backend-service';
+
+import { TestServer, testPath, TestClient } from '../../common/test-protocol';
+import { TestServerImpl } from './test-server';
 
 export class CustomLocalizationContribution implements LocalizationContribution {
   async registerLocalizations(registry: LocalizationRegistry): Promise<void> {
     console.error('registerLocalizations');
 
     // Theia uses language codes, e.g. "de" for German
-    registry.registerLocalizationFromRequire('en', require('../data/i18n/nls.en.json'));
+    // registry.registerLocalizationFromRequire('en', require('../data/i18n/nls.en.json'));
     registry.registerLocalizationFromRequire('zh-cn', require('../data/i18n/nls.zh-cn.json'));
+
+    registry.registerLocalizationFromFile('../data/i18n/nls.zh-cn.json', 'zh-cn');
   }
 }
 
@@ -39,12 +44,27 @@ export default new ContainerModule((bind) => {
     )
     .inSingletonScope();
 
+  bind(HelloBackendWithClientServiceImpl).toSelf().inSingletonScope();
   bind(HelloBackendWithClientService).to(HelloBackendWithClientServiceImpl).inSingletonScope();
   bind(ConnectionHandler)
     .toDynamicValue(
       (ctx) =>
         new JsonRpcConnectionHandler<BackendClient>(HELLO_BACKEND_WITH_CLIENT_PATH, (client) => {
           const server = ctx.container.get<HelloBackendWithClientServiceImpl>(HelloBackendWithClientService);
+          server.setClient(client);
+          client.onDidCloseConnection(() => server.dispose());
+          return server;
+        })
+    )
+    .inSingletonScope();
+
+  bind(TestServerImpl).toSelf().inSingletonScope();
+  bind(TestServer).toService(TestServerImpl);
+  bind(ConnectionHandler)
+    .toDynamicValue(
+      (ctx) =>
+        new JsonRpcConnectionHandler<TestClient>(testPath, (client) => {
+          const server = ctx.container.get<TestServer>(TestServerImpl);
           server.setClient(client);
           client.onDidCloseConnection(() => server.dispose());
           return server;
