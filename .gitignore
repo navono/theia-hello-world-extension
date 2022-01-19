@@ -4,5 +4,8 @@ lib
 *.log
 *-app/*
 !*-app/package.json
+!electron-app/electron-builder.yml
+!electron-app/resources
+!electron-app/scripts
 plugins
 *.exe
