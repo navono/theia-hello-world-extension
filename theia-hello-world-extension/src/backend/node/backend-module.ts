@@ -20,8 +20,8 @@ export class CustomLocalizationContribution implements LocalizationContribution 
     console.error('registerLocalizations');
 
     // Theia uses language codes, e.g. "de" for German
-    registry.registerLocalizationFromRequire('en', require('../data/i18n/nls.en.json'));
-    registry.registerLocalizationFromRequire('zh-cn', require('../data/i18n/nls.zh-cn.json'));
+    registry.registerLocalizationFromRequire('en', require('../../../src/backend/data/i18n/nls.en.json'));
+    registry.registerLocalizationFromRequire('zh-cn', require('../../../src/backend/data/i18n/nls.zh-cn.json'));
   }
 }
 
