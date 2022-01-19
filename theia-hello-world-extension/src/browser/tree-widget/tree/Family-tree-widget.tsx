@@ -33,6 +33,7 @@ export class FamilyTreeWidget extends TreeWidget {
 
     this.title.label = FamilyTreeWidget.LABEL;
     this.title.caption = FamilyTreeWidget.LABEL;
+    this.title.closable = true;
     this.title.iconClass = codicon('person');
     this.id = FamilyTreeWidget.ID;
 

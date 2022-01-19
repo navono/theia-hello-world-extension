@@ -72,6 +72,7 @@ export class ExplorerWidget extends BaseWidget {
     this.viewsContainer.addWidget(this.availableWidget);
     this.viewsContainer.addWidget(this.itemPropertyWidget);
     this.toDispose.push(this.viewsContainer);
+
     const layout = (this.layout = new PanelLayout());
     layout.addWidget(this.placeholderWidget);
     layout.addWidget(this.viewsContainer);

@@ -35,8 +35,12 @@ import {
   nls,
   SubMenuOptions,
 } from '@theia/core/lib/common';
+import { CommandService } from '@theia/core';
 import { inject, injectable, interfaces } from '@theia/core/shared/inversify';
 import { AsyncLocalizationProvider } from '@theia/core/lib/common/i18n/localization';
+
+import { FamilyTreeWidgetCommand } from '../tree-widget/tree/family-tree-contribution';
+import { FamilyTreeWidget } from '../tree-widget/tree/Family-tree-widget';
 
 const SampleCommand: Command = {
   id: 'sample-command',
@@ -70,14 +74,14 @@ export class SampleCommandContribution implements CommandContribution {
   @inject(ApplicationShell)
   protected readonly shell: ApplicationShell;
 
+  @inject(CommandService)
+  protected readonly commandService: CommandService;
+
   @inject(StatusBar)
   protected readonly statusBar: StatusBar;
 
   @inject(PreferenceService)
   protected readonly preferenceService: PreferenceService;
-
-  // @inject(CorePreferences)
-  // protected readonly preferences: CorePreferences;
 
   registerCommands(commands: CommandRegistry): void {
     commands.registerCommand(SampleCommand, {
@@ -85,18 +89,38 @@ export class SampleCommandContribution implements CommandContribution {
         const l = await this.localizationProvider.getAvailableLanguages();
         console.log('Language', l);
 
-        this.shell.leftPanelHandler.removeBottomMenu('settings-menu');
-        this.shell.leftPanelHandler.collapse();
-        this.shell.leftPanelHandler.toolBar.hide();
-        this.shell.leftPanelHandler.topMenu.hide();
-        this.shell.bottomPanel.hide();
+        // this.shell.leftPanelHandler.removeBottomMenu('settings-menu');
+        // this.shell.leftPanelHandler.collapse();
+        // this.shell.leftPanelHandler.toolBar.hide();
+        // this.shell.leftPanelHandler.topMenu.hide();
+        // this.shell.bottomPanel.hide();
+
+        // this.shell.collapsePanel('left');
+        // this.shell.collapsePanel('right');
+        // this.shell.collapsePanel('bottom');
+
+        // this.shell.leftPanelHandler.tabBar.dispose();
+        // this.shell.leftPanelHandler.bottomMenu.dispose();
+
+        // await this.commandService.executeCommand(CommonCommands.COLLAPSE_ALL_PANELS.id);
+        // // await this.commandService.executeCommand(CommonCommands.CLOSE_MAIN_TAB.id);
+        // this.shell.closeTabs('main', (title) => {
+        //   return title.closable;
+        // });
+
         this.preferenceService.updateValue('workbench.statusBar.visible', false);
+
+        await this.shell.activateWidget(FamilyTreeWidget.ID);
+        await this.commandService.executeCommand(CommonCommands.CLOSE_ALL_TABS.id);
+
+        await this.shell.activateWidget(this.shell.bottomPanel.id);
+        await this.commandService.executeCommand(CommonCommands.CLOSE_ALL_TABS.id);
       },
     });
     commands.registerCommand(SampleCommand2, {
-      execute: () => {
-        this.shell.bottomPanel.show();
+      execute: async () => {
         this.preferenceService.updateValue('workbench.statusBar.visible', true);
+        await this.commandService.executeCommand(FamilyTreeWidgetCommand.id);
       },
     });
     commands.registerCommand(SampleQuickInputCommand, {
