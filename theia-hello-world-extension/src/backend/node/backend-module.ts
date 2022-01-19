@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { ConnectionHandler, JsonRpcConnectionHandler } from '@theia/core';
-import { ContainerModule } from 'inversify';
+import { ContainerModule, injectable } from '@theia/core/shared/inversify';
 
 import { LocalizationRegistry, LocalizationContribution } from '@theia/core/lib/node/i18n/localization-contribution';
 
@@ -14,6 +14,7 @@ import {
 import { HelloBackendWithClientServiceImpl } from './hello-backend-with-client-service';
 import { HelloBackendServiceImpl } from './hello-backend-service';
 
+@injectable()
 export class CustomLocalizationContribution implements LocalizationContribution {
   async registerLocalizations(registry: LocalizationRegistry): Promise<void> {
     console.error('registerLocalizations');
