@@ -109,6 +109,7 @@ export class SampleCommandContribution implements CommandContribution {
         // });
 
         this.preferenceService.updateValue('workbench.statusBar.visible', false);
+        this.preferenceService.updateValue('window.menuBarVisibility', 'compact');
 
         await this.shell.activateWidget(FamilyTreeWidget.ID);
         await this.commandService.executeCommand(CommonCommands.CLOSE_ALL_TABS.id);
@@ -119,6 +120,7 @@ export class SampleCommandContribution implements CommandContribution {
     });
     commands.registerCommand(SampleCommand2, {
       execute: async () => {
+        this.preferenceService.updateValue('window.menuBarVisibility', 'classic');
         this.preferenceService.updateValue('workbench.statusBar.visible', true);
         await this.commandService.executeCommand(FamilyTreeWidgetCommand.id);
       },

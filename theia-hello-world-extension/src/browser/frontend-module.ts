@@ -13,6 +13,8 @@ import { bindTreeEditor } from './tree-editor/tree-example-frontend-module';
 // import { bindHideTopMenu } from './top-menu/custom-application-shell';
 import { bindSampleOutputChannelWithSeverity } from './output/sample-output-channel-with-severity';
 import { bindExplorerAndView } from './explorer-view/frontend-module';
+import { bindSampleToolBar } from './toolbar/toolbar-frontend-module';
+import { bindTestToolBar } from './toolbar/test-toolbar';
 
 import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
 
@@ -29,6 +31,8 @@ import '../../src/browser/style/branding.css';
 export default new ContainerModule((bind, unbind, isBound, rebind) => {
   console.log('ContainerModule');
   
+  bindSampleToolBar(bind);
+
   bindDynamicLabelProvider(bind);
   bindSampleUnclosableView(bind);
   bindSampleMenu(bind);
@@ -51,6 +55,7 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   } as any);
 
   bindExplorerAndView(bind);
+  bindTestToolBar(bind);
 
   // rebind(MenuContribution).toConstantValue({
   //   registerCommands: () => { },
