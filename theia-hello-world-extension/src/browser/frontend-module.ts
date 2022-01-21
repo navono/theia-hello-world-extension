@@ -1,5 +1,9 @@
 import { ContainerModule } from '@theia/core/shared/inversify';
+import { MenuContribution } from '@theia/core/lib/common';
+import { TabBarToolbarContribution } from '@theia/core/lib/browser/shell/tab-bar-toolbar';
+import { FrontendApplicationContribution } from '@theia/core/lib/browser/frontend-application';
 
+import { HelloWorldFrontendContribution } from './frontend-contribution';
 import { bindDynamicLabelProvider } from './label/sample-dynamic-label-provider-command-contribution';
 import { bindSampleMenu } from './menu/sample-menu-contribution';
 import { bindSampleUnclosableView } from './view/sample-unclosable-view-contribution';
@@ -7,7 +11,7 @@ import { bindTreeWidget } from './tree-widget/frontend-module';
 import { bindMarkdownResource } from './markdown/markdonw-contribution';
 import { bindCommandWithBackendMenu } from './with-backend/command-menu-contribution';
 import { bindEditorWidget } from './editor-for-custom-suffix-file/editor-example-frontend-module';
-import { bindTerminal } from './terminal/terminal-contribution';
+// import { bindTerminal } from './terminal/terminal-contribution';
 import { bindJsonSchema } from './jsonschema-form/jsonschema-form-contribution';
 import { bindTreeEditor } from './tree-editor/tree-example-frontend-module';
 // import { bindHideTopMenu } from './top-menu/custom-application-shell';
@@ -17,8 +21,6 @@ import { bindSampleToolBar } from './toolbar/toolbar-frontend-module';
 import { bindTestToolBar } from './toolbar/test-toolbar';
 
 import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
-
-// import { MenuContribution } from '@theia/core/lib/common';
 
 // import { WorkspacePreferenceContribution } from '@theia/workspace/lib/browser';
 // import { PreferenceSchema } from '@theia/core/lib/browser/preferences';
@@ -30,7 +32,14 @@ import '../../src/browser/style/branding.css';
 
 export default new ContainerModule((bind, unbind, isBound, rebind) => {
   console.log('ContainerModule');
+
+  bind(HelloWorldFrontendContribution).toSelf().inSingletonScope();
   
+  // bind(CommandContribution).toService(HelloWorldFrontendContribution);
+  bind(MenuContribution).toService(HelloWorldFrontendContribution);
+  bind(TabBarToolbarContribution).toService(HelloWorldFrontendContribution);
+  bind(FrontendApplicationContribution).toService(HelloWorldFrontendContribution);
+  // bind(ColorContribution).toService(HelloWorldFrontendContribution);
   bindSampleToolBar(bind);
 
   bindDynamicLabelProvider(bind);
@@ -40,7 +49,7 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   bindMarkdownResource(bind);
   bindCommandWithBackendMenu(bind);
   bindEditorWidget(bind);
-  bindTerminal(bind);
+  // bindTerminal(bind);
   bindJsonSchema(bind);
   bindTreeEditor(bind);
   // bindHideTopMenu(bind, rebind);
