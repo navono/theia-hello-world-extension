@@ -17,7 +17,7 @@ import { bindTreeEditor } from './tree-editor/tree-example-frontend-module';
 // import { bindHideTopMenu } from './top-menu/custom-application-shell';
 import { bindSampleOutputChannelWithSeverity } from './output/sample-output-channel-with-severity';
 import { bindExplorerAndView } from './explorer-view/frontend-module';
-import { bindSampleToolBar } from './toolbar/toolbar-frontend-module';
+import { bindToolBarContainer } from './toolbar/toolbar-frontend-module';
 import { bindTestToolBar } from './toolbar/test-toolbar';
 
 import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
@@ -40,7 +40,7 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   bind(TabBarToolbarContribution).toService(HelloWorldFrontendContribution);
   bind(FrontendApplicationContribution).toService(HelloWorldFrontendContribution);
   // bind(ColorContribution).toService(HelloWorldFrontendContribution);
-  bindSampleToolBar(bind);
+  
 
   bindDynamicLabelProvider(bind);
   bindSampleUnclosableView(bind);
@@ -64,6 +64,8 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   } as any);
 
   bindExplorerAndView(bind);
+
+  bindToolBarContainer(bind);
   bindTestToolBar(bind);
 
   // rebind(MenuContribution).toConstantValue({

@@ -3,7 +3,7 @@ import { FrontendApplication, FrontendApplicationContribution } from '@theia/cor
 import { TabBarToolbarContribution, TabBarToolbarRegistry } from '@theia/core/lib/browser/shell/tab-bar-toolbar';
 import { injectable } from '@theia/core/shared/inversify';
 import { MAIN_MENU_BAR } from '@theia/core';
-import { MonacoMenus } from '@theia/monaco/lib/browser/monaco-menu';
+// import { MonacoMenus } from '@theia/monaco/lib/browser/monaco-menu';
 import { EditorMainMenu } from '@theia/editor/lib/browser';
 import { TerminalMenus } from '@theia/terminal/lib/browser/terminal-frontend-contribution';
 import { CommonMenus } from '@theia/core/lib/browser/common-frontend-contribution';
