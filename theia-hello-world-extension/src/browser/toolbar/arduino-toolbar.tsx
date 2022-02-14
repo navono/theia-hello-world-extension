@@ -37,7 +37,7 @@ export class ArduinoToolbarComponent extends React.Component<
 
   protected renderItem = (item: TabBarToolbarItem) => {
     let innerText = '';
-    let className = `arduino-tool-icon ${item.id}-icon`;
+    let className = `arduino-tool-icon ${item.id}-icon fa fa-home fa-lg`;
     if (item.text) {
       for (const labelPart of this.props.labelParser.parse(item.text)) {
         if (typeof labelPart !== 'string' && LabelIcon.is(labelPart)) {
@@ -47,45 +47,45 @@ export class ArduinoToolbarComponent extends React.Component<
         }
       }
     }
+
     const command = this.props.commands.getCommand(item.command);
     const cls = `${ARDUINO_TOOLBAR_ITEM_CLASS} ${TabBarToolbar.Styles.TAB_BAR_TOOLBAR_ITEM} ${
       command && this.props.commandIsEnabled(command.id) ? 'enabled' : ''
     } ${command && this.props.commandIsToggled(command.id) ? 'toggled' : ''}`;
     return (
       <div key={item.id} className={cls}>
-        <div className={item.id}>
-          <div
-            key={item.id + '-icon'}
-            id={item.id}
-            className={className}
-            onClick={this.props.executeCommand}
-            onMouseOver={() => this.setState({ tooltip: item.tooltip || '' })}
-            onMouseOut={() => this.setState({ tooltip: '' })}
-            title={item.tooltip}
-          >
-            {innerText}
-          </div>
+        <div
+          key={item.id + '-icon'}
+          id={item.id}
+          className={className}
+          onClick={this.props.executeCommand}
+          onMouseOver={() => this.setState({ tooltip: item.tooltip || '' })}
+          onMouseOut={() => this.setState({ tooltip: '' })}
+          title={item.tooltip}
+        >
+          {innerText}
         </div>
       </div>
     );
   };
 
   render(): React.ReactNode {
-    const tooltip = (
-      <div key="arduino-toolbar-tooltip" className={'arduino-toolbar-tooltip'}>
-        {this.state.tooltip}
-      </div>
-    );
+    // const tooltip = (
+    //   <div key="arduino-toolbar-tooltip" className={'arduino-toolbar-tooltip'}>
+    //     {this.state.tooltip}
+    //   </div>
+    // );
     const items = [
       <React.Fragment key={this.props.side + '-arduino-toolbar-tooltip'}>
         {[...this.props.items].map((item) => (TabBarToolbarItem.is(item) ? this.renderItem(item) : item.render()))}
       </React.Fragment>,
     ];
-    if (this.props.side === 'left') {
-      items.unshift(tooltip);
-    } else {
-      items.push(tooltip);
-    }
+    // if (this.props.side === 'left') {
+    //   items.unshift(tooltip);
+    // } else {
+    //   items.push(tooltip);
+    // }
+
     return items;
   }
 }

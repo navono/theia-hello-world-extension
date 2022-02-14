@@ -5,6 +5,9 @@ import { TabBarToolbarRegistry } from '@theia/core/lib/browser/shell/tab-bar-too
 import { CommandRegistry } from '@theia/core';
 import { LabelParser } from '@theia/core/lib/browser/label-parser';
 
+/* eslint-disable */
+import '../../../src/browser/toolbar/style/index.css';
+
 export class ArduinoToolbarContainer extends Widget {
   protected toolbars: ArduinoToolbar[];
 
@@ -32,13 +35,20 @@ export class ArduinoToolbarContribution implements FrontendApplicationContributi
     @inject(LabelParser) protected labelParser: LabelParser
   ) {
     const leftToolbarWidget = new ArduinoToolbar(tabBarToolBarRegistry, commandRegistry, labelParser, 'left');
-    const rightToolbarWidget = new ArduinoToolbar(tabBarToolBarRegistry, commandRegistry, labelParser, 'right');
-    this.arduinoToolbarContainer = new ArduinoToolbarContainer(leftToolbarWidget, rightToolbarWidget);
+    this.arduinoToolbarContainer = new ArduinoToolbarContainer(leftToolbarWidget);
+
+    // const rightToolbarWidget = new ArduinoToolbar(tabBarToolBarRegistry, commandRegistry, labelParser, 'right');
+    // this.arduinoToolbarContainer = new ArduinoToolbarContainer(leftToolbarWidget, rightToolbarWidget);
   }
 
-  onStart(app: FrontendApplication) {
-    app.shell.addWidget(this.arduinoToolbarContainer, {
-      area: 'top',
-    });
+  onDidInitializeLayout(app: FrontendApplication) {
+    app.shell.topPanel.addWidget(this.arduinoToolbarContainer);
   }
+
+  // onStart(app: FrontendApplication) {
+  //   app.shell.topPanel.addWidget(this.arduinoToolbarContainer);
+  //   // app.shell.addWidget(this.arduinoToolbarContainer, {
+  //   //   area: 'top',
+  //   // });
+  // }
 }

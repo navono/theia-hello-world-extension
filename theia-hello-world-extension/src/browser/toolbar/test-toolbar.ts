@@ -7,14 +7,15 @@ import { ArduinoToolbar } from './arduino-toolbar';
 
 @injectable()
 export class TestToolBarContribution implements TabBarToolbarContribution, CommandContribution {
-  @inject(MessageService) protected readonly messageService: MessageService;
+  @inject(MessageService)
+  protected readonly messageService: MessageService;
 
   registerCommands(commands: CommandRegistry): void {
     commands.registerCommand(TestToolBarContribution.Commands.TEST_TOOLBAR, {
       isVisible: (widget) => ArduinoToolbar.is(widget) && widget.side === 'left',
       isEnabled: () => true,
       isToggled: () => true,
-      execute: () => this.messageService.info('test tool bar'),
+      execute: () => this.messageService.info('Hello toobar!'),
     });
   }
 
