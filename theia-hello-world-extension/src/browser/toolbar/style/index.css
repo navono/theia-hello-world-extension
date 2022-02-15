@@ -15,10 +15,10 @@
   display: inline-block;
 }
 
-.theia-arduino-toolbar {
-  flex-direction: row;
+#arduino-toolbar-container {
+  width: 200px;
 }
 
-#theia-left-right-split-panel {
-  /* top: 64px !important; */
+.theia-arduino-toolbar {
+  flex-direction: row;
 }
