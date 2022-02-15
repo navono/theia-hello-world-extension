@@ -1,5 +1,22 @@
 #theia-top-panel {
-  height: 64px;
+  min-height: 64px;
+  display: block;
+}
+
+#window-controls {
+  height: 32px;
+}
+
+.p-Widget .theia-icon {
+  display: inline-block;
+}
+
+.p-Widget .p-MenuBar {
+  display: inline-block;
+}
+
+.theia-arduino-toolbar {
+  flex-direction: row;
 }
 
 #theia-left-right-split-panel {

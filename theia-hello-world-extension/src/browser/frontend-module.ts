@@ -49,7 +49,6 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   bind(TabBarToolbarContribution).toService(HelloWorldFrontendContribution);
   bind(FrontendApplicationContribution).toService(HelloWorldFrontendContribution);
   // bind(ColorContribution).toService(HelloWorldFrontendContribution);
-  
 
   bindDynamicLabelProvider(bind);
   bindSampleUnclosableView(bind);
