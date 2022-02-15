@@ -17,6 +17,12 @@ export class TestToolBarContribution implements TabBarToolbarContribution, Comma
       isToggled: () => true,
       execute: () => this.messageService.info('Hello toobar!'),
     });
+    commands.registerCommand(TestToolBarContribution.Commands.TEST_TOOLBAR2, {
+      isVisible: (widget) => ArduinoToolbar.is(widget) && widget.side === 'left',
+      isEnabled: () => true,
+      isToggled: () => true,
+      execute: () => this.messageService.info('Hello toobar2!'),
+    });
   }
 
   registerToolbarItems(registry: TabBarToolbarRegistry): void {
@@ -25,6 +31,11 @@ export class TestToolBarContribution implements TabBarToolbarContribution, Comma
       command: TestToolBarContribution.Commands.TEST_TOOLBAR.id,
       priority: 0,
     });
+    registry.registerItem({
+      id: TestToolBarContribution.Commands.TEST_TOOLBAR2.id,
+      command: TestToolBarContribution.Commands.TEST_TOOLBAR2.id,
+      priority: 1,
+    });
   }
 }
 
@@ -32,6 +43,9 @@ export namespace TestToolBarContribution {
   export namespace Commands {
     export const TEST_TOOLBAR: Command = {
       id: 'arduino-verify-sketch--toolbar',
+    };
+    export const TEST_TOOLBAR2: Command = {
+      id: 'arduino-verify-sketch--toolbar2',
     };
   }
 }
