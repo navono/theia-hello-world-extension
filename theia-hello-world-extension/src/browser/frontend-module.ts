@@ -2,6 +2,12 @@ import { ContainerModule } from '@theia/core/shared/inversify';
 import { MenuContribution } from '@theia/core/lib/common';
 import { TabBarToolbarContribution } from '@theia/core/lib/browser/shell/tab-bar-toolbar';
 import { FrontendApplicationContribution } from '@theia/core/lib/browser/frontend-application';
+import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
+// import {
+//   WorkspaceFrontendContribution as TheiaWorkspaceFrontendContribution,
+//   FileMenuContribution as TheiaFileMenuContribution,
+//   // WorkspaceCommandContribution as TheiaWorkspaceCommandContribution,
+// } from '@theia/workspace/lib/browser';
 
 import { HelloWorldFrontendContribution } from './frontend-contribution';
 import { bindDynamicLabelProvider } from './label/sample-dynamic-label-provider-command-contribution';
@@ -20,7 +26,10 @@ import { bindExplorerAndView } from './explorer-view/frontend-module';
 import { bindToolBarContainer } from './toolbar/toolbar-frontend-module';
 import { bindTestToolBar } from './toolbar/test-toolbar';
 
-import { OutlineViewContribution } from '@theia/outline-view/lib/browser/outline-view-contribution';
+// import {
+//   WorkspaceFrontendContribution,
+//   ArduinoFileMenuContribution,
+// } from './theia/workspace/workspace-frontend-contribution';
 
 // import { WorkspacePreferenceContribution } from '@theia/workspace/lib/browser';
 // import { PreferenceSchema } from '@theia/core/lib/browser/preferences';
@@ -81,5 +90,12 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   //       properties: {}
   //   }
   // });
+
+  // rebind(TheiaWorkspaceFrontendContribution)
+  // .to(WorkspaceFrontendContribution)
+  // .inSingletonScope();
+  // rebind(TheiaFileMenuContribution)
+  //   .to(ArduinoFileMenuContribution)
+  //   .inSingletonScope();
 
 });
