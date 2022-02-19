@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { ConnectionHandler, JsonRpcConnectionHandler } from '@theia/core';
 import { ContainerModule, injectable } from '@theia/core/shared/inversify';
-
+import { BackendApplicationContribution } from '@theia/core/lib/node';
 import { LocalizationRegistry, LocalizationContribution } from '@theia/core/lib/node/i18n/localization-contribution';
 
 import {
@@ -13,6 +13,7 @@ import {
 } from '../common/protocol';
 import { HelloBackendWithClientServiceImpl } from './hello-backend-with-client-service';
 import { HelloBackendServiceImpl } from './hello-backend-service';
+import { Theia3dViewFileServer } from './theia-3d-view-file-server';
 
 @injectable()
 export class CustomLocalizationContribution implements LocalizationContribution {
@@ -52,4 +53,6 @@ export default new ContainerModule((bind) => {
         })
     )
     .inSingletonScope();
+
+  bind(BackendApplicationContribution).to(Theia3dViewFileServer).inSingletonScope();
 });

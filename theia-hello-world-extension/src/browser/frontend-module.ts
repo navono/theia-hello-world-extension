@@ -25,6 +25,7 @@ import { bindSampleOutputChannelWithSeverity } from './output/sample-output-chan
 import { bindExplorerAndView } from './explorer-view/frontend-module';
 import { bindToolBarContainer } from './toolbar/toolbar-frontend-module';
 import { bindTestToolBar } from './toolbar/test-toolbar';
+import { bind3dViewerContainer } from './3d-viewer/theia-3d-view-frontend-module';
 
 // import {
 //   WorkspaceFrontendContribution,
@@ -97,4 +98,5 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   //   .to(ArduinoFileMenuContribution)
   //   .inSingletonScope();
 
+  bind3dViewerContainer(bind);
 });

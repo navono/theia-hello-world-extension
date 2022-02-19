@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-redeclare */
 export const MainMenuManager = Symbol('MainMenuManager');
 export interface MainMenuManager {
   /**
