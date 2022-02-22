@@ -2,7 +2,6 @@
 import * as three from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { injectable, postConstruct, inject } from '@theia/core/shared/inversify';
-import { MouseEvent, WheelEvent } from '@theia/core/shared/react';
 import URI from '@theia/core/lib/common/uri';
 import { Disposable } from '@theia/core';
 import { BaseWidget, Widget, Message } from '@theia/core/lib/browser';
@@ -59,7 +58,7 @@ export class Theia3dViewWidget extends BaseWidget {
     this._uri = new URI(options.uri);
     try {
       this._renderer = this._register(new three.WebGLRenderer({ alpha: true }));
-      this._scene = this._register(new three.Scene());
+      this._scene = this._register(new three.Scene() as any);
       this._renderer.domElement.tabIndex = 1;
 
       const light = new three.PointLight(0xffffff, 1, 100);
@@ -87,7 +86,7 @@ export class Theia3dViewWidget extends BaseWidget {
         Theia3dViewWidget.OBJLOADER.load(
           // `${encodeURIComponent(this._uri.path.toString())}`,
           `${objFile}`,
-          (object: unknown) => {
+          (object: any) => {
             if (!this.toDispose.disposed) {
               this._scene.add(object);
             }
@@ -164,14 +163,14 @@ export class Theia3dViewWidget extends BaseWidget {
         document.removeEventListener('mousemove', orbitalView, false);
       }
     });
-    this._renderer.domElement.addEventListener('mousedown', (event: MouseEvent<HTMLButtonElement>) => {
+    this._renderer.domElement.addEventListener('mousedown', (event: MouseEvent) => {
       if (event.buttons & 0b00101 /* left + middle button */) {
         this._renderer.domElement.requestPointerLock();
       }
     });
 
     // Zoom level control
-    this._renderer.domElement.addEventListener('wheel', (event: WheelEvent<HTMLDivElement>) => {
+    this._renderer.domElement.addEventListener('wheel', (event: WheelEvent) => {
       this._camera.position.z *= 1 + event.deltaY * 0.1;
     });
   }

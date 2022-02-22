@@ -3,6 +3,7 @@ import { ConnectionHandler, JsonRpcConnectionHandler } from '@theia/core';
 import { ContainerModule, injectable } from '@theia/core/shared/inversify';
 import { BackendApplicationContribution } from '@theia/core/lib/node';
 import { LocalizationRegistry, LocalizationContribution } from '@theia/core/lib/node/i18n/localization-contribution';
+import { interfaces } from '@theia/core/shared/inversify';
 
 import {
   BackendClient,
@@ -26,7 +27,7 @@ export class CustomLocalizationContribution implements LocalizationContribution 
   }
 }
 
-export default new ContainerModule((bind) => {
+export default new ContainerModule((bind: interfaces.Bind) => {
   console.error('backend ContainerModule');
   bind(CustomLocalizationContribution).toSelf().inSingletonScope();
   bind(LocalizationContribution).toService(CustomLocalizationContribution);
