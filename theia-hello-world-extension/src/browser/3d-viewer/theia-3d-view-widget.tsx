@@ -82,7 +82,7 @@ export class Theia3dViewWidget extends BaseWidget {
 
       this._object = new Promise((resolve, reject) => {
         const objFile = this._uri.path.toString();
-        console.error(objFile);
+        console.error(`obj file ${objFile}`);
         Theia3dViewWidget.OBJLOADER.load(
           // `${encodeURIComponent(this._uri.path.toString())}`,
           `${objFile}`,
