@@ -1,4 +1,4 @@
-#theia-top-panel {
+/* #theia-top-panel {
   min-height: 64px;
   display: block;
 }
@@ -13,7 +13,7 @@
 
 .p-Widget .p-MenuBar {
   display: inline-block;
-}
+} */
 
 #arduino-toolbar-container {
   width: 200px;
