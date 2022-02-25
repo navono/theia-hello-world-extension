@@ -2,7 +2,9 @@ node_modules
 .browser_modules
 lib
 *.log
-*-app/*
-!*-app/package.json
-plugins
+*examples/*
+!/examples/*-app/package.json
+!/examples/workspace/*
+!/examples/preload.html
+examples/plugins
 *.exe
