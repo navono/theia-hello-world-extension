@@ -8,7 +8,7 @@ export class ScmContribution extends TheiaScmContribution {
     // NOOP
   }
 
-  protected setStatusBarEntry(id: string, entry: StatusBarEntry): void {
+  protected setStatusBarEntry(_id: string, _entry: StatusBarEntry): void {
     // NOOP
   }
 }

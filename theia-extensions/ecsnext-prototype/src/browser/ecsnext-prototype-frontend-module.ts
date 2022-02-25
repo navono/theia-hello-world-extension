@@ -2,9 +2,13 @@ import { ContainerModule } from '@theia/core/shared/inversify';
 import { bindViewContribution, FrontendApplicationContribution, WidgetFactory } from '@theia/core/lib/browser';
 import { FileNavigatorContribution as TheiaFileNavigatorContribution } from '@theia/navigator/lib/browser/navigator-contribution';
 import { ScmContribution as TheiaScmContribution } from '@theia/scm/lib/browser/scm-contribution';
+import {
+    DebugFrontendApplicationContribution as TheiaDebugFrontendApplicationContribution,
+} from '@theia/debug/lib/browser/debug-frontend-application-contribution';
 
 import { FileNavigatorContribution } from './theia/navigator/navigator-contribution';
 import { ScmContribution } from './theia/scm/scm-contribution';
+import { DebugFrontendApplicationContribution } from './theia/debug/debug-frontend-application-contribution';
 
 import { EcsnextPrototypeWidget } from './ecsnext-prototype-widget';
 import { EcsnextPrototypeContribution } from './ecsnext-prototype-contribution';
@@ -22,4 +26,5 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
 
     rebind(TheiaFileNavigatorContribution).to(FileNavigatorContribution).inSingletonScope();
     rebind(TheiaScmContribution).to(ScmContribution).inSingletonScope();
+    rebind(TheiaDebugFrontendApplicationContribution).to(DebugFrontendApplicationContribution).inSingletonScope();
 });

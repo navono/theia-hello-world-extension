@@ -8,7 +8,7 @@ import { MessageService } from '@theia/core';
 export class EcsnextPrototypeWidget extends ReactWidget {
 
     static readonly ID = 'ecsnext-prototype:widget';
-    static readonly LABEL = 'EcsnextPrototype Widget';
+    static readonly LABEL = 'ECSNext';
 
     @inject(MessageService)
     protected readonly messageService!: MessageService;
@@ -29,7 +29,7 @@ export class EcsnextPrototypeWidget extends ReactWidget {
         return <div id='widget-container'>
             <AlertMessage type='INFO' header={header} />
             <button className='theia-button secondary' title='Display Message' onClick={_a => this.displayMessage()}>Display Message</button>
-        </div>
+        </div>;
     }
 
     protected displayMessage(): void {

@@ -8,6 +8,14 @@
     "lib",
     "src"
   ],
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "lint": "eslint --fix --ext .tsx,.ts ./src",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "nls": "theia nls-extract -o=lang.json"
+  },
   "dependencies": {
     "@eclipse-emfcloud/theia-tree-editor": "next",
     "@theia/core": "latest",
@@ -28,14 +36,6 @@
     "@types/three": "^0.137.0",
     "rimraf": "latest",
     "typescript": "^4.5.5"
-  },
-  "scripts": {
-    "prepare": "yarn run clean && yarn run build",
-    "lint": "eslint --fix --ext .tsx,.ts ./src",
-    "clean": "rimraf lib",
-    "build": "tsc",
-    "watch": "tsc -w",
-    "nls": "theia nls-extract -o=lang.json"
   },
   "theiaExtensions": [
     {
