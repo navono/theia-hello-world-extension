@@ -1,0 +1,24 @@
+/* #theia-top-panel {
+  min-height: 64px;
+  display: block;
+}
+
+#window-controls {
+  height: 32px;
+}
+
+.p-Widget .theia-icon {
+  display: inline-block;
+}
+
+.p-Widget .p-MenuBar {
+  display: inline-block;
+} */
+
+#arduino-toolbar-container {
+  width: 200px;
+}
+
+.theia-arduino-toolbar {
+  flex-direction: row;
+}

@@ -1,0 +1,15 @@
+.my-tab {
+  margin-top: 5px;
+}
+.my-openhandler {
+  background-position: center;
+}
+
+.my-file-icon.file-icon {
+  min-width: var(--theia-icon-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  padding-right: 4px;
+}

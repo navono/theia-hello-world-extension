@@ -1,0 +1,139 @@
+import { EventEmitter } from 'events';
+// import { any } from 'tsp-typescript-client/lib/models/experiment';
+// import { any } from 'tsp-typescript-client/lib/models/trace';
+// import { OpenedTracesUpdatedSignalPayload } from './opened-traces-updated-signal-payload';
+// import { OutputAddedSignalPayload } from './output-added-signal-payload';
+export declare interface SignalManager {
+  //   fireTraceOpenedSignal(trace: any): void;
+  fireTraceOpenedSignal(trace: any): void;
+  //   fireTraceDeletedSignal(trace: any): void;
+  fireTraceDeletedSignal(trace: any): void;
+  //   fireExperimentExperimentSignal(experiment: any): void;
+  //   fireExperimentClosedSignal(experiment: any): void;
+  //   fireExperimentDeletedSignal(experiment: any): void;
+  //   fireExperimentSelectedSignal(experiment: any | undefined): void;
+  //   fireOpenedTracesChangedSignal(payload: OpenedTracesUpdatedSignalPayload): void;
+  //   fireOutputAddedSignal(payload: OutputAddedSignalPayload): void;
+
+  fireExperimentExperimentSignal(experiment: any): void;
+  fireExperimentClosedSignal(experiment: any): void;
+  fireExperimentDeletedSignal(experiment: any): void;
+  fireExperimentSelectedSignal(experiment: any | undefined): void;
+  fireOpenedTracesChangedSignal(payload: any): void;
+  fireOutputAddedSignal(payload: any): void;
+
+  fireTooltipSignal(tooltip?: { [key: string]: string }): void;
+  fireThemeChangedSignal(theme: string): void;
+  fireSelectionChangedSignal(payload: { [key: string]: string }): void;
+  fireCloseTraceViewerTabSignal(traceUUID: string): void;
+  fireTraceViewerTabActivatedSignal(experiment: any): void;
+  fireUpdateZoomSignal(hasZoomedIn: boolean): void;
+  fireResetZoomSignal(): void;
+  fireMarkerCategoriesFetchedSignal(): void;
+  fireMarkerSetsFetchedSignal(): void;
+  fireMarkerCategoryClosedSignal(payload: { traceViewerId: string; markerCategory: string }): void;
+}
+
+export const Signals = {
+  TRACE_OPENED: 'trace opened',
+  TRACE_DELETED: 'trace deleted',
+  EXPERIMENT_OPENED: 'experiment opened',
+  EXPERIMENT_CLOSED: 'experiment closed',
+  EXPERIMENT_DELETED: 'experiment deleted',
+  EXPERIMENT_SELECTED: 'experiment selected',
+  OPENED_TRACES_UPDATED: 'opened traces updated',
+  AVAILABLE_OUTPUTS_CHANGED: 'available outputs changed',
+  OUTPUT_ADDED: 'output added',
+  TOOLTIP_UPDATED: 'tooltip updated',
+  THEME_CHANGED: 'theme changed',
+  SELECTION_CHANGED: 'selection changed',
+  CLOSE_TRACEVIEWERTAB: 'tab closed',
+  TRACEVIEWERTAB_ACTIVATED: 'widget activated',
+  UPDATE_ZOOM: 'update zoom',
+  RESET_ZOOM: 'reset zoom',
+  MARKER_CATEGORIES_FETCHED: 'marker categories fetched',
+  MARKERSETS_FETCHED: 'markersets fetched',
+  MARKER_CATEGORY_CLOSED: 'marker category closed',
+};
+
+export class SignalManager extends EventEmitter implements SignalManager {
+  fireTraceOpenedSignal(trace: any): void {
+    this.emit(Signals.TRACE_OPENED, trace);
+  }
+
+  fireTraceDeletedSignal(trace: any): void {
+    this.emit(Signals.TRACE_DELETED, { trace });
+  }
+
+  fireExperimentOpenedSignal(experiment: any): void {
+    this.emit(Signals.EXPERIMENT_OPENED, experiment);
+  }
+
+  fireExperimentClosedSignal(experiment: any): void {
+    this.emit(Signals.EXPERIMENT_CLOSED, experiment);
+  }
+
+  fireExperimentDeletedSignal(experiment: any): void {
+    this.emit(Signals.EXPERIMENT_DELETED, experiment);
+  }
+
+  fireExperimentSelectedSignal(experiment: any | undefined): void {
+    this.emit(Signals.EXPERIMENT_SELECTED, experiment);
+  }
+
+  fireOpenedTracesChangedSignal(payload: any): void {
+    this.emit(Signals.OPENED_TRACES_UPDATED, payload);
+  }
+
+  fireOutputAddedSignal(payload: any): void {
+    this.emit(Signals.OUTPUT_ADDED, payload);
+  }
+
+  fireTooltipSignal(tooltip?: { [key: string]: string }): void {
+    this.emit(Signals.TOOLTIP_UPDATED, tooltip);
+  }
+
+  fireThemeChangedSignal(theme: string): void {
+    this.emit(Signals.THEME_CHANGED, theme);
+  }
+
+  fireSelectionChangedSignal(payload: { [key: string]: string }): void {
+    this.emit(Signals.SELECTION_CHANGED, payload);
+  }
+
+  fireCloseTraceViewerTabSignal(traceUUID: string): void {
+    this.emit(Signals.CLOSE_TRACEVIEWERTAB, traceUUID);
+  }
+
+  fireTraceViewerTabActivatedSignal(experiment: any): void {
+    this.emit(Signals.TRACEVIEWERTAB_ACTIVATED, experiment);
+  }
+
+  fireUpdateZoomSignal(hasZoomedIn: boolean): void {
+    this.emit(Signals.UPDATE_ZOOM, hasZoomedIn);
+  }
+
+  fireResetZoomSignal(): void {
+    this.emit(Signals.RESET_ZOOM);
+  }
+
+  fireMarkerCategoriesFetchedSignal(): void {
+    this.emit(Signals.MARKER_CATEGORIES_FETCHED);
+  }
+
+  fireMarkerSetsFetchedSignal(): void {
+    this.emit(Signals.MARKERSETS_FETCHED);
+  }
+
+  fireMarkerCategoryClosedSignal(payload: { traceViewerId: string; markerCategory: string }): void {
+    this.emit(Signals.MARKER_CATEGORY_CLOSED, payload);
+  }
+}
+
+let instance: SignalManager = new SignalManager();
+
+export const setSignalManagerInstance = (sm: SignalManager): void => {
+  instance = sm;
+};
+
+export const signalManager = (): SignalManager => instance;
