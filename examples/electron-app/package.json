@@ -6,7 +6,6 @@
   "dependencies": {
     "@theia/console": "^1.21.0",
     "@theia/core": "latest",
-    "@theia/debug": "^1.21.0",
     "@theia/editor": "latest",
     "@theia/electron": "latest",
     "@theia/file-search": "^1.21.0",
@@ -24,9 +23,7 @@
     "@theia/search-in-workspace": "^1.21.0",
     "@theia/task": "^1.21.0",
     "@theia/terminal": "latest",
-    "@theia/vsx-registry": "^1.21.0",
     "@theia/workspace": "latest",
-    "theia-hello-world-extension": "0.1.0",
     "ecsnext-prototype": "0.0.1"
   },
   "devDependencies": {
