@@ -14,6 +14,7 @@
     "@theia/editor": "^1.21.0",
     "@theia/monaco": "^1.21.0",
     "@theia/outline-view": "^1.21.0",
+    "@theia/output": "^1.23.0",
     "@theia/property-view": "^1.21.0",
     "@theia/task": "^1.21.0",
     "@theia/terminal": "^1.21.0",
@@ -26,7 +27,7 @@
     "@types/markdown-it": "^12.2.3",
     "@types/three": "^0.137.0",
     "rimraf": "latest",
-    "typescript": "latest"
+    "typescript": "^4.5.5"
   },
   "scripts": {
     "prepare": "yarn run clean && yarn run build",

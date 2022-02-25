@@ -1,6 +1,7 @@
 // @ts-check
 
 require('reflect-metadata');
+require('@theia/electron/shared/@electron/remote/main').initialize();
 
 // Useful for Electron/NW.js apps as GUI apps on macOS doesn't inherit the `$PATH` define
 // in your dotfiles (.bashrc/.bash_profile/.zshrc/etc).

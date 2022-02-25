@@ -26,5 +26,15 @@
     },
     "include": [
         "src"
+    ],
+    "exclude": [
+        "**/__tests__",
+        "**/*.spec.ts",
+        "**/*.test.ts"
+    ],
+    "references": [
+        {
+            "path": "../../packages/base"
+        }
     ]
 }

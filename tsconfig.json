@@ -1,27 +1,17 @@
 {
-    "$schema": "https://json.schemastore.org/tsconfig",
+    "include": [],
     "compilerOptions": {
-        "skipLibCheck": true,
-        "declaration": true,
-        "declarationMap": true,
-        "noImplicitAny": true,
-        "noEmitOnError": false,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
-        "strictNullChecks": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "downlevelIteration": true,
-        "resolveJsonModule": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "target": "ES2017",
-        "jsx": "react",
-        "lib": [
-            "ES2017",
-            "dom"
-        ],
-        "sourceMap": true,
-        "esModuleInterop": true
-    }
+        "composite": true
+    },
+    "references": [
+        {
+            "path": "theia-extensions/hello-world"
+        },
+        {
+            "path": "theia-extensions/ecsnext-prototype"
+        },
+        {
+            "path": "packages/base"
+        }
+    ]
 }
