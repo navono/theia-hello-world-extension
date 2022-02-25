@@ -26,7 +26,8 @@
     "@theia/terminal": "latest",
     "@theia/vsx-registry": "^1.21.0",
     "@theia/workspace": "latest",
-    "theia-hello-world-extension": "0.1.0"
+    "theia-hello-world-extension": "0.1.0",
+    "ecsnext-prototype": "0.0.1"
   },
   "devDependencies": {
     "@theia/cli": "latest",
