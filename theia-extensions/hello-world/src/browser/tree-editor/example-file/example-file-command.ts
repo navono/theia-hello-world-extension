@@ -35,13 +35,13 @@ export class NewTreeExampleFileCommandHandler implements SingleUriCommandHandler
   async execute(uri: URI) {
     const stat = await this.fileService.resolve(uri);
     if (!stat) {
-      this.logger.error(`[NewTreeExampleFileCommandHandler] Could not create file stat for uri`, uri);
+      this.logger.error('[NewTreeExampleFileCommandHandler] Could not create file stat for uri', uri);
       return;
     }
 
     const dir = stat.isDirectory ? stat : await this.fileService.resolve(uri.parent);
     if (!dir) {
-      this.logger.error(`[NewTreeExampleFileCommandHandler] Could not create file stat for uri`, uri.parent);
+      this.logger.error('[NewTreeExampleFileCommandHandler] Could not create file stat for uri', uri.parent);
       return;
     }
 

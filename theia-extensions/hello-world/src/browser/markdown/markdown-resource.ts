@@ -106,6 +106,7 @@ export class MarkdownResourceResolver implements ResourceResolver {
               // eslint-disable-next-line no-empty
             } catch {}
           }
+
           return `<pre class="hljs"><code>${this.engine!.utils.escapeHtml(str)}</code></pre>`;
         },
       });

@@ -25,8 +25,8 @@ export class WorkspaceFrontendContribution extends TheiaWorkspaceFrontendContrib
       .forEach(registry.unregisterCommand.bind(registry));
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  registerMenus(registry: MenuModelRegistry): void {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  registerMenus(_registry: MenuModelRegistry): void {}
 
   registerKeybindings(registry: KeybindingRegistry): void {
     super.registerKeybindings(registry);

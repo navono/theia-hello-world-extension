@@ -1,33 +1,34 @@
 import { injectable } from '@theia/core/shared/inversify';
 import { MenuModelRegistry } from '@theia/core';
-import { AbstractViewContribution, FrontendApplicationContribution  } from '@theia/core/lib/browser';
+import { AbstractViewContribution, FrontendApplicationContribution } from '@theia/core/lib/browser';
 import { Command, CommandRegistry } from '@theia/core/lib/common/command';
 
-import { EcsnextPrototypeWidget } from './ecsnext-prototype-widget'
-;
+import { EcsnextPrototypeWidget } from './ecsnext-prototype-widget';
 export const EcsnextPrototypeCommand: Command = { id: 'ecsnext-prototype:command' };
 
 @injectable()
-export class EcsnextPrototypeContribution extends AbstractViewContribution<EcsnextPrototypeWidget>
-implements FrontendApplicationContribution {
-    /**
-     * `AbstractViewContribution` handles the creation and registering
-     *  of the widget including commands, menus, and keybindings.
-     *
-     * We can pass `defaultWidgetOptions` which define widget properties such as
-     * its location `area` (`main`, `left`, `right`, `bottom`), `mode`, and `ref`.
-     *
-     */
-    constructor() {
-        super({
-            widgetId: EcsnextPrototypeWidget.ID,
-            widgetName: EcsnextPrototypeWidget.LABEL,
-            defaultWidgetOptions: { area: 'left' },
-            toggleCommandId: EcsnextPrototypeCommand.id
-        });
-    }
+export class EcsnextPrototypeContribution
+  extends AbstractViewContribution<EcsnextPrototypeWidget>
+  implements FrontendApplicationContribution
+{
+  /**
+   * `AbstractViewContribution` handles the creation and registering
+   *  of the widget including commands, menus, and keybindings.
+   *
+   * We can pass `defaultWidgetOptions` which define widget properties such as
+   * its location `area` (`main`, `left`, `right`, `bottom`), `mode`, and `ref`.
+   *
+   */
+  constructor() {
+    super({
+      widgetId: EcsnextPrototypeWidget.ID,
+      widgetName: EcsnextPrototypeWidget.LABEL,
+      defaultWidgetOptions: { area: 'left' },
+      toggleCommandId: EcsnextPrototypeCommand.id,
+    });
+  }
 
-    /**
+  /**
      * Example command registration to open the widget from the menu, and quick-open.
      * For a simpler use case, it is possible to simply call:
      ```ts
@@ -45,13 +46,13 @@ implements FrontendApplicationContribution {
      *
      * @param commands
      */
-    registerCommands(commands: CommandRegistry): void {
-        commands.registerCommand(EcsnextPrototypeCommand, {
-            execute: () => super.openView({ activate: false, reveal: true })
-        });
-    }
+  registerCommands(commands: CommandRegistry): void {
+    commands.registerCommand(EcsnextPrototypeCommand, {
+      execute: () => super.openView({ activate: false, reveal: true }),
+    });
+  }
 
-    /**
+  /**
      * Example menu registration to contribute a menu item used to open the widget.
      * Default location when extending the `AbstractViewContribution` is the `View` main-menu item.
      *
@@ -65,11 +66,11 @@ implements FrontendApplicationContribution {
      *
      * @param menus
      */
-    registerMenus(menus: MenuModelRegistry): void {
-        super.registerMenus(menus);
-    }
+  registerMenus(menus: MenuModelRegistry): void {
+    super.registerMenus(menus);
+  }
 
-    async initializeLayout(): Promise<void> {
-        await this.openView({ activate: false });
-    }
+  async initializeLayout(): Promise<void> {
+    await this.openView({ activate: false });
+  }
 }

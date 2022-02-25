@@ -31,7 +31,7 @@ export class MyTerminalCommandsContribution implements CommandContribution {
               this.terminalService.getByTerminalId(number)?.activate();
 
               console.info(`terminal number ${number} ${terminalWidget}`);
-              terminalWidget.sendText(`echo -e 'Hello\\vWorld'\n`);
+              terminalWidget.sendText("echo -e 'Hello\\vWorld'\n");
             });
           }),
     });

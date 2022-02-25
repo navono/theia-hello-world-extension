@@ -37,6 +37,7 @@ export class SampleDynamicLabelProviderCommandContribution
   @inject(SampleDynamicLabelProviderContribution)
   protected readonly labelProviderContribution: SampleDynamicLabelProviderContribution;
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   initialize(): void {}
 
   registerCommands(commands: CommandRegistry): void {

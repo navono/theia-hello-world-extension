@@ -2,7 +2,10 @@ import { inject, injectable } from '@theia/core/shared/inversify';
 import { WorkspaceCommands } from '@theia/workspace/lib/browser/workspace-commands';
 import { KeybindingRegistry } from '@theia/core/lib/browser/keybinding';
 import { FrontendApplication } from '@theia/core/lib/browser/frontend-application';
-import { FileNavigatorContribution as TheiaFileNavigatorContribution, FileNavigatorCommands } from '@theia/navigator/lib/browser/navigator-contribution';
+import {
+  FileNavigatorContribution as TheiaFileNavigatorContribution,
+  FileNavigatorCommands,
+} from '@theia/navigator/lib/browser/navigator-contribution';
 import { FileNavigatorPreferences } from '@theia/navigator/lib/browser/navigator-preferences';
 import { OpenerService } from '@theia/core/lib/browser/opener-service';
 import { WorkspaceService } from '@theia/workspace/lib/browser/workspace-service';
@@ -23,13 +26,7 @@ export class FileNavigatorContribution extends TheiaFileNavigatorContribution {
     @inject(WorkspacePreferences)
     protected readonly workspacePreferences: WorkspacePreferences
   ) {
-    super(
-      fileNavigatorPreferences,
-      openerService,
-      fileNavigatorFilter,
-      workspaceService,
-      workspacePreferences
-    );
+    super(fileNavigatorPreferences, openerService, fileNavigatorFilter, workspaceService, workspacePreferences);
     this.options.defaultWidgetOptions.rank = 1;
   }
 

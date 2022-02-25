@@ -106,9 +106,13 @@ export class FamilyTreeWidget extends TreeWidget {
   }
 
   protected isExpandable(node: TreeNode): node is ExpandableTreeNode {
-    if (FamilyRootNode.is(node)) return true;
+    if (FamilyRootNode.is(node)) {
+      return true;
+    }
 
-    if (MemberNode.is(node) && node.member.children) return node.member.children.length > 0;
+    if (MemberNode.is(node) && node.member.children) {
+      return node.member.children.length > 0;
+    }
 
     return false;
   }

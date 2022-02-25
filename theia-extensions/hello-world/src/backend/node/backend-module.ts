@@ -36,9 +36,9 @@ export default new ContainerModule((bind: interfaces.Bind) => {
   bind(ConnectionHandler)
     .toDynamicValue(
       (ctx) =>
-        new JsonRpcConnectionHandler(HELLO_BACKEND_PATH, () => {
-          return ctx.container.get<HelloBackendService>(HelloBackendService);
-        })
+        new JsonRpcConnectionHandler(HELLO_BACKEND_PATH, () =>
+          ctx.container.get<HelloBackendService>(HelloBackendService)
+        )
     )
     .inSingletonScope();
 

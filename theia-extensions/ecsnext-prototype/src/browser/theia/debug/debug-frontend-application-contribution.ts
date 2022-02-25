@@ -6,9 +6,7 @@ import { TerminalMenus } from '@theia/terminal/lib/browser/terminal-frontend-con
 import { DebugMenus } from '@theia/debug/lib/browser/debug-frontend-application-contribution';
 // import { CommonMenus } from '@theia/core/lib/browser/common-frontend-contribution';
 import { MenuModelRegistry } from '@theia/core/lib/common/menu';
-import {
-  DebugFrontendApplicationContribution as TheiaDebugFrontendApplicationContribution,
-} from '@theia/debug/lib/browser/debug-frontend-application-contribution';
+import { DebugFrontendApplicationContribution as TheiaDebugFrontendApplicationContribution } from '@theia/debug/lib/browser/debug-frontend-application-contribution';
 
 @injectable()
 export class DebugFrontendApplicationContribution extends TheiaDebugFrontendApplicationContribution {
@@ -29,6 +27,5 @@ export class DebugFrontendApplicationContribution extends TheiaDebugFrontendAppl
     registry.getMenu(MAIN_MENU_BAR).removeNode(menuId(EditorMainMenu.GO));
     registry.getMenu(MAIN_MENU_BAR).removeNode(menuId(DebugMenus.DEBUG));
     registry.getMenu(MAIN_MENU_BAR).removeNode(menuId(TerminalMenus.TERMINAL));
-
   }
 }

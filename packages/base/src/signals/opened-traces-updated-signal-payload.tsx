@@ -1,11 +1,11 @@
 export class OpenedTracesUpdatedSignalPayload {
-    private _numberOfOpenedTraces: number;
+  private _numberOfOpenedTraces: number;
 
-    constructor(numberOfOpenedTraces: number) {
-        this._numberOfOpenedTraces = numberOfOpenedTraces;
-    }
+  constructor(numberOfOpenedTraces: number) {
+    this._numberOfOpenedTraces = numberOfOpenedTraces;
+  }
 
-    public getNumberOfOpenedTraces(): number {
-        return this._numberOfOpenedTraces;
-    }
+  public getNumberOfOpenedTraces(): number {
+    return this._numberOfOpenedTraces;
+  }
 }
