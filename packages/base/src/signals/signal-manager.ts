@@ -22,6 +22,8 @@ export declare interface SignalManager {
   fireMarkerCategoriesFetchedSignal(): void;
   fireMarkerSetsFetchedSignal(): void;
   fireMarkerCategoryClosedSignal(payload: { traceViewerId: string; markerCategory: string }): void;
+
+  fireProjectsLoadedSignel(projects: any): void;
 }
 
 export const Signals = {
@@ -44,6 +46,8 @@ export const Signals = {
   MARKER_CATEGORIES_FETCHED: 'marker categories fetched',
   MARKERSETS_FETCHED: 'markersets fetched',
   MARKER_CATEGORY_CLOSED: 'marker category closed',
+
+  PROJECTS_LOADED: 'projects loaded',
 };
 
 export class SignalManager extends EventEmitter implements SignalManager {
@@ -100,6 +104,9 @@ export class SignalManager extends EventEmitter implements SignalManager {
   }
   fireMarkerCategoryClosedSignal(payload: { traceViewerId: string; markerCategory: string }): void {
     this.emit(Signals.MARKER_CATEGORY_CLOSED, payload);
+  }
+  fireProjectsLoadedSignel(projects: any): void {
+    this.emit(Signals.PROJECTS_LOADED, projects);
   }
 }
 

@@ -1,21 +1,24 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
 import { AbstractViewContribution } from '@theia/core/lib/browser/shell/view-contribution';
 import { FrontendApplicationContribution, FrontendApplication } from '@theia/core/lib/browser';
-import { DisposableCollection, SelectionService } from '@theia/core';
+import { SelectionService } from '@theia/core';
 
-import { ECSNextExplorerWidget } from './ecsnext-explorer-widget';
+import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
+
 import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../server/ecsnext-server-preference';
+import { ECSNextExplorerWidget } from './ecsnext-explorer-widget';
 
 @injectable()
 export class ECSNextExplorerContribution
   extends AbstractViewContribution<ECSNextExplorerWidget>
   implements FrontendApplicationContribution
 {
-  @inject(ECSNextPreferences)
-  protected serverPreferences: ECSNextPreferences;
-  private readonly toDisposeOnClose = new DisposableCollection();
-
+  @inject(ECSNextPreferences) protected serverPreferences: ECSNextPreferences;
   @inject(SelectionService) selectionService: SelectionService;
+
+  // private readonly toDisposeOnClose = new DisposableCollection();
+
+  // protected readonly onProjectsLoadedEmitter = new Emitter<void>();
 
   constructor() {
     super({
@@ -26,6 +29,8 @@ export class ECSNextExplorerContribution
       },
       toggleCommandId: 'ecs-next:toggle',
     });
+
+    // this.toDisposeOnClose.push(this.onProjectsLoadedEmitter);
   }
 
   onStart(_app: FrontendApplication): void {
@@ -45,15 +50,16 @@ export class ECSNextExplorerContribution
       .then((res) => res.json())
       .then((projects) => {
         console.log(projects);
+        signalManager().fireProjectsLoadedSignel(projects);
       });
-    // console.log(p.json());
   }
 
   onStop(_app: FrontendApplication): void {
-    this.toDisposeOnClose.dispose();
+    // this.toDisposeOnClose.dispose();
   }
+
   async initializeLayout(_app: FrontendApplication): Promise<void> {
-    await this.openView({ activate: false });
+    await this.openView({ activate: true });
   }
 
   protected get baseUrl(): string | undefined {
