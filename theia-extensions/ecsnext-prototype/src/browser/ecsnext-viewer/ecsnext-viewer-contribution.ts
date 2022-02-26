@@ -8,7 +8,6 @@ import {
 } from '@theia/core/lib/browser';
 import URI from '@theia/core/lib/common/uri';
 
-import { ECSNextPreferences, SERVER_PATH, SERVER_ARGS } from '../server/ecsnext-server-preference';
 import { ECSNextViewerWidget, ECSNextViewerWidgetOptions } from './ecsnext-viewer-widget';
 import { OpenProjectCommand } from './ecsnext-viewer-command';
 
@@ -23,16 +22,6 @@ export class ECSNextProjectViewerContribution
 {
   readonly id = ECSNextViewerWidget.ID;
   readonly label = 'ECS Viewer';
-
-  @inject(ECSNextPreferences) protected serverPreferences: ECSNextPreferences;
-
-  protected get path(): string | undefined {
-    return this.serverPreferences[SERVER_PATH];
-  }
-
-  protected get args(): string | undefined {
-    return this.serverPreferences[SERVER_ARGS];
-  }
 
   protected createWidgetOptions(uri: URI, options?: ECSNextViewerWidgetOpenerOptions): ECSNextViewerWidgetOptions {
     return {

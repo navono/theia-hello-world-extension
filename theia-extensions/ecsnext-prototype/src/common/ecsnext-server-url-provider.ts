@@ -1,5 +1,5 @@
-export const ECSNEXT_SERVER_DEFAULT_URL = 'http://localhost:{}/tsp/api';
-export const ECSNEXT_VIEWER_DEFAULT_PORT = 8080;
+export const ECSNEXT_SERVER_DEFAULT_URL = 'http://localhost';
+export const ECSNEXT_VIEWER_DEFAULT_PORT = 4000;
 
 export const ECSNextServerUrlProvider = Symbol('ECSNextServerUrlProvider');
 export interface EcsNextServerUrlProvider {

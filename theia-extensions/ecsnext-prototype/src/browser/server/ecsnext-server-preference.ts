@@ -1,7 +1,7 @@
 import { PreferenceSchema, PreferenceProxy, PreferenceScope } from '@theia/core/lib/browser';
-import { ECSNEXT_VIEWER_DEFAULT_PORT } from '../../common/ecsnext-server-url-provider';
+import { ECSNEXT_VIEWER_DEFAULT_PORT, ECSNEXT_SERVER_DEFAULT_URL } from '../../common/ecsnext-server-url-provider';
 
-export const SERVER_PATH = 'ECS Next.Server.path';
+export const SERVER_IP = 'ECS Next.Server.ip';
 export const SERVER_PORT = 'ECS Next.Server.port';
 export const SERVER_ARGS = 'ECS Next.Server.arguments';
 
@@ -9,8 +9,9 @@ export const ServerSchema: PreferenceSchema = {
   scope: PreferenceScope.Folder,
   type: 'object',
   properties: {
-    [SERVER_PATH]: {
+    [SERVER_IP]: {
       type: 'string',
+      default: ECSNEXT_SERVER_DEFAULT_URL,
       description: 'The path to ecsnext-server executable, e.g.: /usr/bin/tracecompass-server',
     },
     [SERVER_PORT]: {
@@ -30,7 +31,7 @@ export const ServerSchema: PreferenceSchema = {
 };
 
 interface ECSNextPreferenceContribution {
-  [SERVER_PATH]?: string;
+  [SERVER_IP]?: string;
   [SERVER_PORT]: number;
   [SERVER_ARGS]: string;
 }
