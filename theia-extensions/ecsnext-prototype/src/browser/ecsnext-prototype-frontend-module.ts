@@ -11,6 +11,7 @@ import {
 import { FileNavigatorContribution as TheiaFileNavigatorContribution } from '@theia/navigator/lib/browser/navigator-contribution';
 import { ScmContribution as TheiaScmContribution } from '@theia/scm/lib/browser/scm-contribution';
 import { DebugFrontendApplicationContribution as TheiaDebugFrontendApplicationContribution } from '@theia/debug/lib/browser/debug-frontend-application-contribution';
+import { TabBarToolbarContribution } from '@theia/core/lib/browser/shell/tab-bar-toolbar';
 
 import { FileNavigatorContribution } from './theia/navigator/navigator-contribution';
 import { ScmContribution } from './theia/scm/scm-contribution';
@@ -22,6 +23,7 @@ import { ECSNextExplorerWidget } from './ecsnext-explorer/ecsnext-explorer-widge
 import { ECSNextExplorerContribution } from './ecsnext-explorer/ecsnext-explorer-contribution';
 import { ECSNextProjectViewerContribution } from './ecsnext-viewer/ecsnext-viewer-contribution';
 import { ECSNextViewerWidget, ECSNextViewerWidgetOptions } from './ecsnext-viewer/ecsnext-viewer-widget';
+import { ECSNextToolbarContribution } from './ecsnext-explorer/ecsnext-explorer-toolbar-contribution';
 
 import '../../src/browser/style/index.css';
 
@@ -32,6 +34,11 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   rebind(TheiaFileNavigatorContribution).to(FileNavigatorContribution).inSingletonScope();
   rebind(TheiaScmContribution).to(ScmContribution).inSingletonScope();
   rebind(TheiaDebugFrontendApplicationContribution).to(DebugFrontendApplicationContribution).inSingletonScope();
+
+  bind(ECSNextToolbarContribution).toSelf().inSingletonScope();
+  // bind(FrontendApplicationContribution).toService(ECSNextToolbarContribution);
+  bind(TabBarToolbarContribution).toService(ECSNextToolbarContribution);
+  bind(CommandContribution).toService(ECSNextToolbarContribution);
 
   // 视图
   bind(ECSNextViewerWidget).toSelf();
