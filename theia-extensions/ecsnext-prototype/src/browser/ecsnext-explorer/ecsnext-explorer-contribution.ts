@@ -1,17 +1,18 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
 import { AbstractViewContribution } from '@theia/core/lib/browser/shell/view-contribution';
 import { FrontendApplicationContribution, FrontendApplication } from '@theia/core/lib/browser';
-import { SelectionService } from '@theia/core';
+import { SelectionService, CommandRegistry, CommandContribution, MenuModelRegistry } from '@theia/core';
 
 import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
 
 import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../server/ecsnext-server-preference';
 import { ECSNextExplorerWidget } from './ecsnext-explorer-widget';
+import { ECSNextProjectCommands, ECSNextProjectMenus } from './ecsnext-explorer-command';
 
 @injectable()
 export class ECSNextExplorerContribution
   extends AbstractViewContribution<ECSNextExplorerWidget>
-  implements FrontendApplicationContribution
+  implements FrontendApplicationContribution, CommandContribution
 {
   @inject(ECSNextPreferences) protected serverPreferences: ECSNextPreferences;
   @inject(SelectionService) selectionService: SelectionService;
@@ -60,6 +61,31 @@ export class ECSNextExplorerContribution
 
   async initializeLayout(_app: FrontendApplication): Promise<void> {
     await this.openView({ activate: true });
+  }
+
+  registerMenus(menus: MenuModelRegistry): void {
+    super.registerMenus(menus);
+
+    menus.registerMenuAction(ECSNextProjectMenus.PREFERENCE_EDITOR_CONTEXT_MENU, {
+      commandId: ECSNextProjectCommands.DELETE_PROJECT.id,
+      label: ECSNextProjectCommands.DELETE_PROJECT.label,
+      order: 'a',
+    });
+  }
+
+  registerCommands(registry: CommandRegistry): void {
+    super.registerCommands(registry);
+
+    registry.registerCommand(ECSNextProjectCommands.CREATE_PROJECT, {
+      execute: () => {
+        console.log('执行创建工程');
+      },
+    });
+    registry.registerCommand(ECSNextProjectCommands.DELETE_PROJECT, {
+      execute: (id: string) => {
+        console.log('执行删除工程', id);
+      },
+    });
   }
 
   protected get baseUrl(): string | undefined {

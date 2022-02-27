@@ -1,10 +1,11 @@
 import { Command, MenuPath } from '@theia/core';
+import { codicon } from '@theia/core/lib/browser';
 
 export namespace ECSNextToolbarCommands {
-  export const OPEN_TRACE: Command = {
-    id: 'ecsnext.viewer.openTrace',
+  export const CREAT_PROJECT: Command = {
+    id: 'ecsnext.viewer.createProject',
     label: 'Create Project',
-    iconClass: 'fa fa-folder-open-o fa-lg',
+    iconClass: codicon('add'),
   };
 }
 
