@@ -4,7 +4,7 @@ import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
 import { ThemeService } from '@theia/core/lib/browser/theming';
 
 import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
-import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../server/ecsnext-server-preference';
+import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../ecsnext-server-preference';
 
 export const ECSNextViewerWidgetOptions = Symbol('ECSNextViewerWidgetOptions');
 export interface ECSNextViewerWidgetOptions {

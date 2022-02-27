@@ -18,7 +18,7 @@ import { ScmContribution } from './theia/scm/scm-contribution';
 import { DebugFrontendApplicationContribution } from './theia/debug/debug-frontend-application-contribution';
 
 import { ECSNextServerConfigService, ecsnextServerPath } from '../common/ecsnext-server-config';
-import { bindECSNextServerPreferences } from './server/ecsnext-server-bindings';
+import { bindECSNextServerPreferences } from './ecsnext-server-bindings';
 import { ECSNextExplorerWidget } from './ecsnext-explorer/ecsnext-explorer-widget';
 import { ECSNextExplorerContribution } from './ecsnext-explorer/ecsnext-explorer-contribution';
 import { ECSNextProjectViewerContribution } from './ecsnext-viewer/ecsnext-viewer-contribution';

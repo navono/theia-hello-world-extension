@@ -1,5 +1,5 @@
 import { PreferenceSchema, PreferenceProxy, PreferenceScope } from '@theia/core/lib/browser';
-import { ECSNEXT_VIEWER_DEFAULT_PORT, ECSNEXT_SERVER_DEFAULT_URL } from '../../common/ecsnext-server-url-provider';
+import { ECSNEXT_VIEWER_DEFAULT_PORT, ECSNEXT_SERVER_DEFAULT_URL } from '../common/ecsnext-server-url-provider';
 
 export const SERVER_IP = 'ECS Next.Server.ip';
 export const SERVER_PORT = 'ECS Next.Server.port';
