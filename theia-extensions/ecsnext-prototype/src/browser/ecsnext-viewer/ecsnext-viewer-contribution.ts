@@ -1,5 +1,5 @@
 import { CommandRegistry, CommandContribution } from '@theia/core';
-import { injectable, inject } from '@theia/core/shared/inversify';
+import { injectable } from '@theia/core/shared/inversify';
 import {
   WidgetOpenerOptions,
   WidgetOpenHandler,
