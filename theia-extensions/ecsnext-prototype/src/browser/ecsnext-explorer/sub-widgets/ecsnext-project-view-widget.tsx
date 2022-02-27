@@ -1,10 +1,13 @@
 import { List } from 'antd';
 import * as React from '@theia/core/shared/react';
+import { CommandService } from '@theia/core';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
 import { ReactWidget, Widget, Message, WidgetManager, ContextMenuRenderer } from '@theia/core/lib/browser';
 
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
+import { ECSNextViewerWidget } from '../../ecsnext-viewer/ecsnext-viewer-widget';
+import { ProjectViewerCommand } from '../../ecsnext-viewer/ecsnext-viewer-command';
 
 @injectable()
 export class ECSNextProjectViewsWidget extends ReactWidget {
@@ -14,6 +17,7 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
   private projects: any;
   @inject(WidgetManager) protected readonly widgetManager!: WidgetManager;
   @inject(ContextMenuRenderer) protected readonly contextMenuRenderer!: ContextMenuRenderer;
+  @inject(CommandService) protected readonly commandService!: CommandService;
 
   @postConstruct()
   init(): void {
@@ -46,6 +50,12 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
 
   protected doHandleItemClickEvent(item: any): void {
     console.log('doHandleItemClickEvent', item.name);
+    const widgets = this.widgetManager.getWidgets(ECSNextViewerWidget.ID);
+    const widget = widgets.find((w) => w.id === item._id);
+    // Don't execute command if widget is already open.
+    if (!widget) {
+      this.commandService.executeCommand(ProjectViewerCommand.id, { projectUUID: item._id });
+    }
   }
 
   protected doHandleContextMenuEvent(event: React.MouseEvent<HTMLDivElement>, item: any): void {

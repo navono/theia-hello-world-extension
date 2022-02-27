@@ -1,6 +1,6 @@
 import { Command } from '@theia/core';
 
-export const OpenProjectCommand: Command = {
-  id: 'open-project',
-  label: 'Open Project',
+export const ProjectViewerCommand: Command = {
+  id: 'project-viewer',
+  label: 'Project Viewer',
 };

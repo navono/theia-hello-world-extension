@@ -1,9 +1,10 @@
-import { injectable, postConstruct } from '@theia/core/shared/inversify';
+import { injectable, postConstruct, inject } from '@theia/core/shared/inversify';
 import * as React from '@theia/core/shared/react';
 import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
 import { ThemeService } from '@theia/core/lib/browser/theming';
 
 import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
+import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../server/ecsnext-server-preference';
 
 export const ECSNextViewerWidgetOptions = Symbol('ECSNextViewerWidgetOptions');
 export interface ECSNextViewerWidgetOptions {
@@ -19,11 +20,14 @@ export class ECSNextViewerWidget extends ReactWidget {
   protected openedExperiment: boolean | undefined;
   protected backgroundTheme: string;
 
+  @inject(ECSNextViewerWidgetOptions) protected readonly options: ECSNextViewerWidgetOptions;
+  @inject(ECSNextPreferences) protected serverPreferences: ECSNextPreferences;
+
   @postConstruct()
   async init(): Promise<void> {
     // this.uri = new Path(this.options.traceURI);
     this.id = 'theia-ecsnext';
-    this.title.label = 'ECS: ';
+    this.title.label = '工程: ';
     this.title.closable = true;
     this.addClass('theia-ecsnext-');
 
@@ -31,6 +35,16 @@ export class ECSNextViewerWidget extends ReactWidget {
 
     this.backgroundTheme = ThemeService.get().getCurrentTheme().type;
     ThemeService.get().onDidColorThemeChange(() => this.updateBackgroundTheme());
+
+    console.log(this.options);
+
+    if (this.options.projectUUID) {
+      const project = await fetch(`${this.baseUrl}/api/projects/${this.options.projectUUID}`).then((res) => res.json());
+      if (project) {
+        this.title.label = '工程: ' + project.name;
+        this.id = project._id;
+      }
+    }
 
     // if (!this.options.traceUUID) {
     //   this.initialize();
@@ -62,6 +76,8 @@ export class ECSNextViewerWidget extends ReactWidget {
     // this.toDispose.push(this.toDisposeOnNewExplorer);
     // // Make node focusable so it can achieve focus on activate (avoid warning);
     // this.node.tabIndex = 0;
+
+    this.update();
   }
 
   protected render(): React.ReactNode {
@@ -74,5 +90,13 @@ export class ECSNextViewerWidget extends ReactWidget {
   protected updateBackgroundTheme(): void {
     const currentThemeType = ThemeService.get().getCurrentTheme().type;
     signalManager().fireThemeChangedSignal(currentThemeType);
+  }
+
+  protected get baseUrl(): string | undefined {
+    return `${this.serverPreferences[SERVER_IP]}:${this.serverPreferences[SERVER_PORT]}`;
+  }
+
+  protected get args(): string | undefined {
+    return this.serverPreferences[SERVER_ARGS];
   }
 }

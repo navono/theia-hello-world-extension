@@ -9,7 +9,7 @@ import {
 import URI from '@theia/core/lib/common/uri';
 
 import { ECSNextViewerWidget, ECSNextViewerWidgetOptions } from './ecsnext-viewer-widget';
-import { OpenProjectCommand } from './ecsnext-viewer-command';
+import { ProjectViewerCommand } from './ecsnext-viewer-command';
 
 interface ECSNextViewerWidgetOpenerOptions extends WidgetOpenerOptions {
   projectUUID: string;
@@ -38,13 +38,18 @@ export class ECSNextProjectViewerContribution
   }
 
   registerCommands(registry: CommandRegistry): void {
-    registry.registerCommand(OpenProjectCommand, {
-      execute: () => this.launchServer(),
+    registry.registerCommand(ProjectViewerCommand, {
+      execute: (options: ECSNextViewerWidgetOpenerOptions) => this.openProjectView(options),
     });
   }
 
-  protected async launchServer(): Promise<void> {
-    Promise.resolve();
+  async open(traceURI: URI, options?: ECSNextViewerWidgetOpenerOptions): Promise<ECSNextViewerWidget> {
+    return super.open(traceURI, options);
+  }
+
+  protected openProjectView(options: ECSNextViewerWidgetOpenerOptions): void {
+    console.log('打开项目', options);
+    this.open(new URI(''), options);
   }
 
   canHandle(_uri: URI): number {
