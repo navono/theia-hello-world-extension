@@ -48,6 +48,8 @@ export const Signals = {
   MARKER_CATEGORY_CLOSED: 'marker category closed',
 
   PROJECTS_LOADED: 'projects loaded',
+  PROJECT_SELECTED: 'project selected',
+  PROJECTVIEWERTAB_ACTIVATED: 'widget activated',
 };
 
 export class SignalManager extends EventEmitter implements SignalManager {
@@ -105,8 +107,15 @@ export class SignalManager extends EventEmitter implements SignalManager {
   fireMarkerCategoryClosedSignal(payload: { traceViewerId: string; markerCategory: string }): void {
     this.emit(Signals.MARKER_CATEGORY_CLOSED, payload);
   }
+
   fireProjectsLoadedSignel(projects: any): void {
     this.emit(Signals.PROJECTS_LOADED, projects);
+  }
+  fireProjectSelectedSignal(projects: any | undefined): void {
+    this.emit(Signals.PROJECT_SELECTED, projects);
+  }
+  fireProjectViewerTabActivatedSignal(projects: any): void {
+    this.emit(Signals.PROJECTVIEWERTAB_ACTIVATED, projects);
   }
 }
 

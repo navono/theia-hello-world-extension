@@ -49,12 +49,13 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
   }
 
   protected doHandleItemClickEvent(item: any): void {
-    console.log('doHandleItemClickEvent', item.name);
     const widgets = this.widgetManager.getWidgets(ECSNextViewerWidget.ID);
     const widget = widgets.find((w) => w.id === item._id);
     // Don't execute command if widget is already open.
     if (!widget) {
       this.commandService.executeCommand(ProjectViewerCommand.id, { projectUUID: item._id });
+    } else {
+      signalManager().fireProjectSelectedSignal(item);
     }
   }
 
