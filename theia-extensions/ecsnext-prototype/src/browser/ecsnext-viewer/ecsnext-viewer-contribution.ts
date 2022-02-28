@@ -48,7 +48,6 @@ export class ECSNextProjectViewerContribution
   }
 
   protected openProjectView(options: ECSNextViewerWidgetOpenerOptions): void {
-    console.log('打开项目', options);
     this.open(new URI(''), options);
   }
 

@@ -25,6 +25,7 @@ import { ECSNextProjectViewerContribution } from './ecsnext-viewer/ecsnext-viewe
 import { ECSNextViewerWidget, ECSNextViewerWidgetOptions } from './ecsnext-viewer/ecsnext-viewer-widget';
 import { ECSNextToolbarContribution } from './ecsnext-explorer/ecsnext-explorer-toolbar-contribution';
 
+import 'antd/dist/antd.css';
 import '../../src/browser/style/index.css';
 
 export default new ContainerModule((bind, unbind, isBound, rebind) => {

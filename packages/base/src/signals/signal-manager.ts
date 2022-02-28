@@ -49,6 +49,7 @@ export const Signals = {
 
   PROJECTS_LOADED: 'projects loaded',
   PROJECT_SELECTED: 'project selected',
+  PROJECT_LOGIN: 'project login',
   PROJECTVIEWERTAB_ACTIVATED: 'widget activated',
 };
 
@@ -116,6 +117,9 @@ export class SignalManager extends EventEmitter implements SignalManager {
   }
   fireProjectViewerTabActivatedSignal(projects: any): void {
     this.emit(Signals.PROJECTVIEWERTAB_ACTIVATED, projects);
+  }
+  fireProjectLoginSignal(projectId: string, user: any): void {
+    this.emit(Signals.PROJECT_LOGIN, projectId, user);
   }
 }
 

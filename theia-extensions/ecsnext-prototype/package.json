@@ -17,6 +17,7 @@
     "lint": "eslint --fix --ext .tsx,.ts ./src"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@theia/core": "latest",
     "antd": "^4.18.8",
     "ecsnext-base": "^0.1.0",
