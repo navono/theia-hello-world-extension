@@ -23,6 +23,8 @@ import { ECSNextExplorerWidget } from './ecsnext-explorer/ecsnext-explorer-widge
 import { ECSNextExplorerContribution } from './ecsnext-explorer/ecsnext-explorer-contribution';
 import { ECSNextProjectViewerContribution } from './ecsnext-viewer/ecsnext-viewer-contribution';
 import { ECSNextViewerWidget, ECSNextViewerWidgetOptions } from './ecsnext-viewer/ecsnext-viewer-widget';
+import { LoginWidget } from './ecsnext-viewer/login/login-widget';
+import { ProjectDetailWidget } from './ecsnext-viewer/project/project-detail-widget';
 import { ECSNextToolbarContribution } from './ecsnext-explorer/ecsnext-explorer-toolbar-contribution';
 
 import 'antd/dist/antd.css';
@@ -42,6 +44,8 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   bind(CommandContribution).toService(ECSNextToolbarContribution);
 
   // 视图
+  bind(LoginWidget).toSelf();
+  bind(ProjectDetailWidget).toSelf();
   bind(ECSNextViewerWidget).toSelf();
   bind<WidgetFactory>(WidgetFactory)
     .toDynamicValue((context) => ({
