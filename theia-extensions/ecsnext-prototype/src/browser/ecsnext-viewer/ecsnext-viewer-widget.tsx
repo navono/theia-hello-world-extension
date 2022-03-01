@@ -57,21 +57,21 @@ export class ECSNextViewerWidget extends BaseWidget {
     // this.backgroundTheme = ThemeService.get().getCurrentTheme().type;
     // ThemeService.get().onDidColorThemeChange(() => this.updateBackgroundTheme());
 
-    // if (this.options.projectUUID && !this.openedProject) {
-    //   const project = await fetch(`${this.baseUrl}/api/projects/${this.options.projectUUID}`).then((res) => res.json());
-    //   if (project) {
-    //     this.title.label = '工程: ' + project.name;
-    //     this.id = project._id;
+    if (this.options.projectUUID && !this.openedProject) {
+      const project = await fetch(`${this.baseUrl}/api/projects/${this.options.projectUUID}`).then((res) => res.json());
+      if (project) {
+        this.title.label = '工程: ' + project.name;
+        this.id = project._id;
 
-    //     this.openedProject = project;
-    //   }
-    // }
+        this.openedProject = project;
+      }
+    }
 
-    // const token = localStorage[`${this.openedProject._id}-jwt`];
-    // console.log('token', token);
-    // if (token) {
-    //   this.bLogin = true;
-    // }
+    const token = localStorage[`${this.openedProject._id}-jwt`];
+    console.log('token', token);
+    if (token) {
+      this.bLogin = true;
+    }
 
     this.update();
     this.subscribeToEvents();
@@ -125,25 +125,17 @@ export class ECSNextViewerWidget extends BaseWidget {
   onUpdateRequest = (msg: Message): void => {
     super.onUpdateRequest(msg);
 
-    if (this.options) {
-      this.projectLoginWidget.hide();
-      this.viewsContainer.show();
-    } else {
-      this.projectLoginWidget.show();
-      this.viewsContainer.hide();
+    if (this.openedProject) {
+      const token = localStorage[`${this.openedProject._id}-jwt`];
+      if (token) {
+        this.bLogin = true;
+        this.projectLoginWidget.hide();
+        this.viewsContainer.show();
+      } else {
+        this.projectLoginWidget.show();
+        this.viewsContainer.hide();
+      }
     }
-
-    // if (this.openedProject) {
-    //   const token = localStorage[`${this.openedProject._id}-jwt`];
-    //   if (token) {
-    //     this.bLogin = true;
-    //     this.projectLoginWidget.hide();
-    //     this.viewsContainer.show();
-    //   } else {
-    //     this.projectLoginWidget.show();
-    //     this.viewsContainer.hide();
-    //   }
-    // }
   };
 
   dispose(): void {
