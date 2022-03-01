@@ -22,9 +22,10 @@
         ],
         "sourceMap": true,
         "rootDir": "src",
+        "baseUrl": "./",
         "outDir": "lib",
         "paths": {
-            "@rjsf/antd'":["../types/antd.d.ts"]
+            "@rjsf/antd'":["./types/antd.d.ts"]
         }
     },
     "include": [
