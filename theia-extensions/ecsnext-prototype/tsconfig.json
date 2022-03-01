@@ -3,7 +3,7 @@
         "skipLibCheck": true,
         "declaration": true,
         "declarationMap": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "noEmitOnError": false,
         "noImplicitThis": true,
         "noUnusedLocals": true,
@@ -22,7 +22,10 @@
         ],
         "sourceMap": true,
         "rootDir": "src",
-        "outDir": "lib"
+        "outDir": "lib",
+        "paths": {
+            "@rjsf/antd'":["../types/antd.d.ts"]
+        }
     },
     "include": [
         "src"

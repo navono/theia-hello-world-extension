@@ -36,6 +36,7 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
 
   protected onProjectsLoaded = (projects: any) => {
     this.projects = projects;
+    this.update();
   };
 
   protected onResize(msg: Widget.ResizeMessage): void {

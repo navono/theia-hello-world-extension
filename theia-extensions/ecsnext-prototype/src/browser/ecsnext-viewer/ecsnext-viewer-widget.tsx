@@ -7,7 +7,7 @@ import 'antd/dist/antd.css';
 
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../ecsnext-server-preference';
-import { Login } from './login/login';
+import { LoginForm } from './login/login';
 // import { ProjectInfoWidget } from './project-info/project-info-widget';
 
 export const ECSNextViewerWidgetOptions = Symbol('ECSNextViewerWidgetOptions');
@@ -67,7 +67,7 @@ export class ECSNextViewerWidget extends ReactWidget {
     // this.onOutputRemoved = this.onOutputRemoved.bind(this);
     return (
       <div className="trace-viewer-container">
-        {this.bLogin ? <p>Viewer</p> : <Login projectId={this.openedProject._id} />}
+        {this.bLogin ? <p>Viewer</p> : <LoginForm projectId={this.openedProject._id} />}
       </div>
     );
   }

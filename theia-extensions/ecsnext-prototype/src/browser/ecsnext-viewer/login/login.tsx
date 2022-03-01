@@ -1,60 +1,77 @@
 import * as React from '@theia/core/shared/react';
-import { Form, Input, Button, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import { withTheme, ISubmitEvent, IChangeEvent } from '@rjsf/core';
+import { Theme as AntDTheme } from '@rjsf/antd';
 
 import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
+import SCHEMA from './schema';
 
 import 'antd/dist/antd.css';
 import '../../../../src/browser/ecsnext-viewer/login/index.css';
 
-export interface NormalLoginFormProps {
+const Form = withTheme(AntDTheme);
+
+export interface LoginFormProps {
   projectId: string;
 }
+export class LoginForm extends React.Component<LoginFormProps, any> {
+  constructor(props: LoginFormProps) {
+    super(props);
 
-export const Login = (props: NormalLoginFormProps) => {
-  const onFinish = (values: any) => {
-    fetch(`http://localhost:4000/api/projects/${props.projectId}/login`, {
+    // initialize state with Simple data sample
+    const { schema, uiSchema, formData } = SCHEMA;
+
+    this.state = {
+      schema,
+      uiSchema,
+      formData,
+    };
+  }
+
+  onSubmit = (e: ISubmitEvent<any>) => {
+    const { projectId } = this.props;
+    const { formData } = e;
+
+    fetch(`http://localhost:4000/api/projects/${projectId}/login`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: JSON.stringify({ user: { username: values.username, password: values.password } }),
+      body: JSON.stringify({ user: { username: formData.username, password: formData.password } }),
     })
       .then((res) => res.json())
       .then((rsp) => {
-        localStorage.setItem(`${props.projectId}-jwt`, rsp.user.token);
-        signalManager().fireProjectLoginSignal(props.projectId, rsp.user);
+        localStorage.setItem(`${projectId}-jwt`, rsp.user.token);
+        signalManager().fireProjectLoginSignal(projectId, rsp.user);
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  return (
-    <Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish}>
-      <Form.Item name="username" rules={[{ required: true, message: 'Please input your Username!' }]}>
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
-      </Form.Item>
-      <Form.Item name="password" rules={[{ required: true, message: 'Please input your Password!' }]}>
-        <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="Password" />
-      </Form.Item>
-      <Form.Item>
-        <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
+  onFormDataChange = (e: IChangeEvent<any>) => {
+    this.setState({ formData: e.formData });
+  };
 
-        <a className="login-form-forgot" href="">
-          Forgot password
-        </a>
-      </Form.Item>
+  render() {
+    const { formData } = this.state;
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Log in
-        </Button>
-        Or <a href="">register now!</a>
-      </Form.Item>
-    </Form>
-  );
-};
+    return (
+      <div className="fr-wrapper" style={{ padding: '0px 12px' }}>
+        <Form
+          schema={SCHEMA.schema}
+          uiSchema={SCHEMA.uiSchema}
+          formData={formData}
+          onChange={this.onFormDataChange}
+          onSubmit={this.onSubmit}
+        >
+          <React.Fragment />
+          <Button type="primary" htmlType="submit" className="login-form-button">
+            登录
+          </Button>
+        </Form>
+      </div>
+    );
+  }
+}
