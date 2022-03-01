@@ -1,13 +1,14 @@
-import * as React from '@theia/core/shared/react';
 import { DisposableCollection } from '@theia/core';
-import { injectable, postConstruct, inject } from '@theia/core/shared/inversify';
-import { ViewContainer, ApplicationShell, Message, ReactWidget } from '@theia/core/lib/browser';
+import { injectable, postConstruct, inject, interfaces, Container } from '@theia/core/shared/inversify';
+import { ViewContainer, ApplicationShell, Message, BaseWidget, PanelLayout } from '@theia/core/lib/browser';
 import { ThemeService } from '@theia/core/lib/browser/theming';
 import 'antd/dist/antd.css';
 
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../ecsnext-server-preference';
-import { LoginForm } from './login';
+// import { LoginForm } from './login';
+import { LoginWidget } from './login/login-widget';
+import { ProjectDetailWidget } from './project/project-detail-widget';
 
 export const ECSNextViewerWidgetOptions = Symbol('ECSNextViewerWidgetOptions');
 export interface ECSNextViewerWidgetOptions {
@@ -16,15 +17,18 @@ export interface ECSNextViewerWidgetOptions {
 }
 
 @injectable()
-export class ECSNextViewerWidget extends ReactWidget {
+export class ECSNextViewerWidget extends BaseWidget {
   static ID = 'ecsnext-viewer';
   static LABEL = 'ECS Viewer';
 
-  protected traceViewsContainer!: ViewContainer;
+  protected viewsContainer!: ViewContainer;
   protected openedProject: any | undefined;
   protected backgroundTheme: string;
   protected readonly toDisposeOnNewExplorer = new DisposableCollection();
   protected bLogin = false;
+
+  @inject(LoginWidget) protected readonly projectLoginWidget!: LoginWidget;
+  @inject(ProjectDetailWidget) protected readonly projectDetailWidget!: ProjectDetailWidget;
 
   @inject(ECSNextViewerWidgetOptions) protected readonly options: ECSNextViewerWidgetOptions;
   @inject(ECSNextPreferences) protected serverPreferences: ECSNextPreferences;
@@ -40,35 +44,52 @@ export class ECSNextViewerWidget extends ReactWidget {
     this.title.label = '工程: ';
     this.title.closable = true;
 
-    this.backgroundTheme = ThemeService.get().getCurrentTheme().type;
-    ThemeService.get().onDidColorThemeChange(() => this.updateBackgroundTheme());
+    this.viewsContainer = this.viewContainerFactory({
+      id: this.id,
+    });
+    this.viewsContainer.addWidget(this.projectDetailWidget);
+    this.toDispose.push(this.viewsContainer);
 
-    if (this.options.projectUUID && !this.openedProject) {
-      const project = await fetch(`${this.baseUrl}/api/projects/${this.options.projectUUID}`).then((res) => res.json());
-      if (project) {
-        this.title.label = '工程: ' + project.name;
-        this.id = project._id;
+    const layout = (this.layout = new PanelLayout());
+    layout.addWidget(this.projectLoginWidget);
+    layout.addWidget(this.viewsContainer);
 
-        this.openedProject = project;
-      }
-    }
+    // this.backgroundTheme = ThemeService.get().getCurrentTheme().type;
+    // ThemeService.get().onDidColorThemeChange(() => this.updateBackgroundTheme());
 
-    const token = localStorage[`${this.openedProject._id}-jwt`];
-    console.log('token', token);
-    if (token) {
-      this.bLogin = true;
-    }
+    // if (this.options.projectUUID && !this.openedProject) {
+    //   const project = await fetch(`${this.baseUrl}/api/projects/${this.options.projectUUID}`).then((res) => res.json());
+    //   if (project) {
+    //     this.title.label = '工程: ' + project.name;
+    //     this.id = project._id;
+
+    //     this.openedProject = project;
+    //   }
+    // }
+
+    // const token = localStorage[`${this.openedProject._id}-jwt`];
+    // console.log('token', token);
+    // if (token) {
+    //   this.bLogin = true;
+    // }
 
     this.update();
     this.subscribeToEvents();
   }
-  protected render(): React.ReactNode {
-    // this.onOutputRemoved = this.onOutputRemoved.bind(this);
-    return (
-      <div className="trace-viewer-container">
-        {this.bLogin ? <p>Viewer</p> : <LoginForm projectId={this.openedProject._id} />}
-      </div>
-    );
+
+  static createWidget(parent: interfaces.Container, opt: ECSNextViewerWidgetOptions): ECSNextViewerWidget {
+    return ECSNextViewerWidget.createContainer(parent, opt).get(ECSNextViewerWidget);
+  }
+
+  static createContainer(parent: interfaces.Container, opt: ECSNextViewerWidgetOptions): Container {
+    const child = new Container({ defaultScope: 'Singleton' });
+    child.parent = parent;
+
+    child.bind(LoginWidget).toSelf();
+    child.bind(ProjectDetailWidget).toSelf();
+    child.bind(ECSNextViewerWidgetOptions).toConstantValue(opt);
+    child.bind(ECSNextViewerWidget).toSelf().inSingletonScope();
+    return child;
   }
 
   protected subscribeToEvents(): void {
@@ -101,16 +122,29 @@ export class ECSNextViewerWidget extends ReactWidget {
     this.node.focus();
   };
 
-  // onUpdateRequest = (msg: Message): void => {
-  //   super.onUpdateRequest(msg);
-  //   if (this.openedProject) {
-  //     const token = localStorage[`${this.openedProject._id}-jwt`];
-  //     if (token) {
-  //       this.bLogin = true;
-  //     }
-  //   }
-  //   this.node.focus();
-  // };
+  onUpdateRequest = (msg: Message): void => {
+    super.onUpdateRequest(msg);
+
+    if (this.options) {
+      this.projectLoginWidget.hide();
+      this.viewsContainer.show();
+    } else {
+      this.projectLoginWidget.show();
+      this.viewsContainer.hide();
+    }
+
+    // if (this.openedProject) {
+    //   const token = localStorage[`${this.openedProject._id}-jwt`];
+    //   if (token) {
+    //     this.bLogin = true;
+    //     this.projectLoginWidget.hide();
+    //     this.viewsContainer.show();
+    //   } else {
+    //     this.projectLoginWidget.show();
+    //     this.viewsContainer.hide();
+    //   }
+    // }
+  };
 
   dispose(): void {
     super.dispose();
