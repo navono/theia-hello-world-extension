@@ -6,7 +6,6 @@ import 'antd/dist/antd.css';
 
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../ecsnext-server-preference';
-// import { LoginForm } from './login';
 import { LoginWidget } from './login/login-widget';
 import { ProjectDetailWidget } from './project/project-detail-widget';
 
@@ -132,6 +131,7 @@ export class ECSNextViewerWidget extends BaseWidget {
         this.projectLoginWidget.hide();
         this.viewsContainer.show();
       } else {
+        this.projectLoginWidget.projectId = this.openedProject._id;
         this.projectLoginWidget.show();
         this.viewsContainer.hide();
       }
