@@ -10,7 +10,7 @@
  ********************************************************************************/
 import { Title } from '@phosphor/widgets';
 import { BaseWidget, Message, Saveable, SplitPanel, Widget } from '@theia/core/lib/browser';
-import { Emitter, Event, ILogger } from '@theia/core/lib/common';
+import { Emitter, Event } from '@theia/core/lib/common';
 import { WorkspaceService } from '@theia/workspace/lib/browser/workspace-service';
 import { injectable, postConstruct } from '@theia/core/shared/inversify';
 import * as React from '@theia/core/shared/react';
@@ -39,7 +39,6 @@ export abstract class BaseTreeEditorWidget extends BaseWidget implements Saveabl
     protected readonly treeWidget: MasterTreeWidget,
     protected readonly formWidget: DetailFormWidget,
     protected readonly workspaceService: WorkspaceService,
-    protected readonly logger: ILogger,
     readonly widgetId: string
   ) {
     super();

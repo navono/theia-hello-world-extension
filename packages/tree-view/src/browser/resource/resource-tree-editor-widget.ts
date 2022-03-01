@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR MIT
  ********************************************************************************/
-import { DefaultResourceProvider, ILogger, Resource } from '@theia/core/lib/common';
+import { DefaultResourceProvider, Resource } from '@theia/core/lib/common';
 import { EditorPreferences } from '@theia/editor/lib/browser';
 import { WorkspaceService } from '@theia/workspace/lib/browser/workspace-service';
 import { postConstruct } from '@theia/core/shared/inversify';
@@ -26,14 +26,13 @@ export abstract class ResourceTreeEditorWidget extends NavigatableTreeEditorWidg
     protected readonly treeWidget: MasterTreeWidget,
     protected readonly formWidget: DetailFormWidget,
     protected readonly workspaceService: WorkspaceService,
-    protected readonly logger: ILogger,
     readonly widget_id: string,
     protected readonly options: NavigatableTreeEditorOptions,
     protected readonly provider: DefaultResourceProvider,
     protected readonly nodeFactory: TreeEditor.NodeFactory,
     protected readonly editorPreferences: EditorPreferences
   ) {
-    super(treeWidget, formWidget, workspaceService, logger, widget_id, options);
+    super(treeWidget, formWidget, workspaceService, widget_id, options);
   }
 
   @postConstruct()
@@ -106,7 +105,7 @@ export abstract class ResourceTreeEditorWidget extends NavigatableTreeEditorWidg
       } else if (propertyData !== null && typeof propertyData === 'object') {
         propertyData[node.jsonforms.index || ''] = undefined;
       } else {
-        this.logger.error(
+        console.error(
           `Could not delete node's data from its parent's property ${node.jsonforms.property}. Property data:`,
           propertyData
         );

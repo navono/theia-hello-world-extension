@@ -8,7 +8,6 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR MIT
  ********************************************************************************/
-import { ILogger } from '@theia/core';
 import { Navigatable, Title, Widget } from '@theia/core/lib/browser';
 import URI from '@theia/core/lib/common/uri';
 import { WorkspaceService } from '@theia/workspace/lib/browser';
@@ -27,11 +26,10 @@ export abstract class NavigatableTreeEditorWidget extends BaseTreeEditorWidget i
     protected readonly treeWidget: MasterTreeWidget,
     protected readonly formWidget: DetailFormWidget,
     protected readonly workspaceService: WorkspaceService,
-    protected readonly logger: ILogger,
     readonly widget_id: string,
     protected readonly options: NavigatableTreeEditorOptions
   ) {
-    super(treeWidget, formWidget, workspaceService, logger, widget_id);
+    super(treeWidget, formWidget, workspaceService, widget_id);
   }
 
   /** The uri of the editor's resource. */

@@ -1,13 +1,24 @@
 import { DisposableCollection } from '@theia/core';
 import { injectable, postConstruct, inject, interfaces, Container } from '@theia/core/shared/inversify';
-import { ViewContainer, ApplicationShell, Message, BaseWidget, PanelLayout } from '@theia/core/lib/browser';
+import {
+  ViewContainer,
+  ApplicationShell,
+  Message,
+  BaseWidget,
+  PanelLayout,
+  WidgetFactory,
+  // NavigatableWidgetOptions,
+} from '@theia/core/lib/browser';
 import { ThemeService } from '@theia/core/lib/browser/theming';
-import 'antd/dist/antd.css';
+// import URI from '@theia/core/lib/common/uri';
 
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
+// import { createBasicTreeContainer, NavigatableTreeEditorOptions } from 'tree-view';
+
 import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../ecsnext-server-preference';
 import { LoginWidget } from './login/login-widget';
 import { ProjectDetailWidget } from './project/project-detail-widget';
+// import { TreeModelService, TreeNodeFactory } from './project/tree';
 
 export const ECSNextViewerWidgetOptions = Symbol('ECSNextViewerWidgetOptions');
 export interface ECSNextViewerWidgetOptions {
@@ -85,7 +96,48 @@ export class ECSNextViewerWidget extends BaseWidget {
     child.parent = parent;
 
     child.bind(LoginWidget).toSelf();
+    // child.bind(ProjectDetailWidget).toSelf();
+    // ProjectDetailWidget.createWidget(child);
+
     child.bind(ProjectDetailWidget).toSelf();
+    child
+      .bind<WidgetFactory>(WidgetFactory)
+      .toDynamicValue((context) => ({
+        id: ProjectDetailWidget.WIDGET_ID,
+        async createWidget(options: ECSNextViewerWidgetOptions): Promise<ProjectDetailWidget> {
+          // const child = new Container({ defaultScope: 'Singleton' });
+          // child.parent = context.container;
+          // child.bind(ECSNextViewerWidgetOptions).toConstantValue(options);
+          // return child.get(ECSNextViewerWidget);
+
+          return ProjectDetailWidget.createWidget(context.container);
+          // return ECSNextViewerWidget.createWidget(context.container, options);
+        },
+      }))
+      .inSingletonScope();
+
+    // child.bind<WidgetFactory>(WidgetFactory).toDynamicValue((context) => ({
+    //   id: ProjectDetailWidget.WIDGET_ID,
+    //   createWidget: (options: NavigatableWidgetOptions) => {
+    //     const treeContainer = createBasicTreeContainer(
+    //       context.container,
+    //       ProjectDetailWidget,
+    //       TreeModelService,
+    //       TreeNodeFactory
+    //     );
+    //     // Bind options
+    //     const uri = new URI(options.uri);
+    //     treeContainer.bind(NavigatableTreeEditorOptions).toConstantValue({ uri });
+    //     return treeContainer.get(ProjectDetailWidget);
+    //   },
+    // }));
+
+    // const treeContainer = createBasicTreeContainer(parent, ProjectDetailWidget, TreeModelService, TreeNodeFactory);
+    // // Bind options
+    // const uri = new URI(options.uri);
+    // treeContainer.bind(NavigatableTreeEditorOptions).toConstantValue({ uri });
+    // return treeContainer.get(ProjectDetailWidget);
+
     child.bind(ECSNextViewerWidgetOptions).toConstantValue(opt);
     child.bind(ECSNextViewerWidget).toSelf().inSingletonScope();
     return child;

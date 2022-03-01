@@ -45,7 +45,6 @@ export class ECSNextExplorerWidget extends BaseWidget {
 
     const layout = (this.layout = new PanelLayout());
     layout.addWidget(this.viewContainer);
-    // layout.addWidget(this.traceViewsContainer);
     this.node.tabIndex = 0;
     // signalManager().on(Signals.OPENED_TRACES_UPDATED, this.onUpdateSignal);
     this.update();
