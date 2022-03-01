@@ -1,36 +1,23 @@
 import * as React from '@theia/core/shared/react';
-import { Button } from 'antd';
-import { withTheme, ISubmitEvent, IChangeEvent } from '@rjsf/core';
-import { Theme as AntDTheme } from '@rjsf/antd';
-
+import { JsonForms } from '@jsonforms/react';
+import { materialCells, materialRenderers } from '@jsonforms/material-renderers';
+import Button from '@mui/material/Button';
 import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
-import SCHEMA from './schema';
 
-import 'antd/dist/antd.css';
-import '../../../../src/browser/ecsnext-viewer/login/index.css';
-
-const Form = withTheme(AntDTheme);
+// import 'antd/dist/antd.css';
+// import '../../../../src/browser/ecsnext-viewer/login/index.css';
+import schema from './schema.json';
+import uiSchema from './uischema.json';
 
 export interface LoginFormProps {
   projectId: string;
 }
-export class LoginForm extends React.Component<LoginFormProps, any> {
-  constructor(props: LoginFormProps) {
-    super(props);
 
-    // initialize state with Simple data sample
-    const { schema, uiSchema, formData } = SCHEMA;
+export const LoginForm = (props: LoginFormProps) => {
+  const [data, setData] = React.useState<any>({});
 
-    this.state = {
-      schema,
-      uiSchema,
-      formData,
-    };
-  }
-
-  onSubmit = (e: ISubmitEvent<any>) => {
-    const { projectId } = this.props;
-    const { formData } = e;
+  const onSubmit = () => {
+    const { projectId } = props;
 
     fetch(`http://localhost:4000/api/projects/${projectId}/login`, {
       headers: {
@@ -38,7 +25,7 @@ export class LoginForm extends React.Component<LoginFormProps, any> {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: JSON.stringify({ user: { username: formData.username, password: formData.password } }),
+      body: JSON.stringify({ user: { username: data.username, password: data.password } }),
     })
       .then((res) => res.json())
       .then((rsp) => {
@@ -50,28 +37,23 @@ export class LoginForm extends React.Component<LoginFormProps, any> {
       });
   };
 
-  onFormDataChange = (e: IChangeEvent<any>) => {
-    this.setState({ formData: e.formData });
-  };
+  // const onFormDataChange = (e: IChangeEvent<any>) => {
+  //   this.setState({ formData: e.formData });
+  // };
 
-  render() {
-    const { formData } = this.state;
-
-    return (
-      <div className="fr-wrapper" style={{ padding: '0px 12px' }}>
-        <Form
-          schema={SCHEMA.schema}
-          uiSchema={SCHEMA.uiSchema}
-          formData={formData}
-          onChange={this.onFormDataChange}
-          onSubmit={this.onSubmit}
-        >
-          <React.Fragment />
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            登录
-          </Button>
-        </Form>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="fr-wrapper" style={{ padding: '0px 12px' }}>
+      <JsonForms
+        schema={schema}
+        uischema={uiSchema}
+        data={data}
+        renderers={materialRenderers}
+        cells={materialCells}
+        onChange={({ errors, data: newData }) => setData(newData)}
+      ></JsonForms>
+      <Button color="primary" onClick={onSubmit}>
+        登录
+      </Button>
+    </div>
+  );
+};
