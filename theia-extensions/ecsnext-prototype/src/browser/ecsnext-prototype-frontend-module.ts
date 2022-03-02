@@ -1,5 +1,4 @@
 import { CommandContribution } from '@theia/core';
-// import { ContainerModule, Container } from '@theia/core/shared/inversify';
 import { ContainerModule } from '@theia/core/shared/inversify';
 import {
   bindViewContribution,
@@ -13,8 +12,6 @@ import { FileNavigatorContribution as TheiaFileNavigatorContribution } from '@th
 import { ScmContribution as TheiaScmContribution } from '@theia/scm/lib/browser/scm-contribution';
 import { DebugFrontendApplicationContribution as TheiaDebugFrontendApplicationContribution } from '@theia/debug/lib/browser/debug-frontend-application-contribution';
 import { TabBarToolbarContribution } from '@theia/core/lib/browser/shell/tab-bar-toolbar';
-// import URI from '@theia/core/lib/common/uri';
-// import { createBasicTreeContainer, NavigatableTreeEditorOptions } from 'tree-view';
 
 import { FileNavigatorContribution } from './theia/navigator/navigator-contribution';
 import { ScmContribution } from './theia/scm/scm-contribution';
@@ -22,18 +19,12 @@ import { DebugFrontendApplicationContribution } from './theia/debug/debug-fronte
 
 import { ECSNextServerConfigService, ecsnextServerPath } from '../common/ecsnext-server-config';
 import { bindECSNextServerPreferences } from './ecsnext-server-bindings';
-import { ECSNextExplorerWidget } from './ecsnext-explorer/ecsnext-explorer-widget';
+import { ECSNextExplorerWidget, ECSNextExplorerWidgetOptions } from './ecsnext-explorer/ecsnext-explorer-widget';
 import { ECSNextExplorerContribution } from './ecsnext-explorer/ecsnext-explorer-contribution';
 import { ECSNextProjectViewerContribution } from './ecsnext-viewer/ecsnext-viewer-contribution';
 import { ECSNextViewerWidget, ECSNextViewerWidgetOptions } from './ecsnext-viewer/ecsnext-viewer-widget';
-// import { LoginWidget } from './ecsnext-viewer/login/login-widget';
-// import { ProjectDetailWidget } from './ecsnext-viewer/project/project-detail-widget';
-import { ProjectDetailContribution } from './ecsnext-viewer/project/project-detail-contribution';
-import { TreeModelService, TreeLabelProvider } from './ecsnext-viewer/project/tree';
-
 import { ECSNextToolbarContribution } from './ecsnext-explorer/ecsnext-explorer-toolbar-contribution';
 
-import 'antd/dist/antd.css';
 import '../../src/browser/style/index.css';
 
 export default new ContainerModule((bind, unbind, isBound, rebind) => {
@@ -50,38 +41,11 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   bind(CommandContribution).toService(ECSNextToolbarContribution);
 
   // 视图
-  // bind(LoginWidget).toSelf();
-
-  bind(TreeModelService).toSelf().inSingletonScope();
-  bind(TreeLabelProvider).toSelf().inSingletonScope();
-  bind(OpenHandler).to(ProjectDetailContribution);
-  // bind(ProjectDetailWidget).toSelf();
-  // bind<WidgetFactory>(WidgetFactory).toDynamicValue((context) => ({
-  //   id: ProjectDetailWidget.WIDGET_ID,
-  //   createWidget: (options: NavigatableWidgetOptions) => {
-  //     const treeContainer = createBasicTreeContainer(
-  //       context.container,
-  //       ProjectDetailWidget,
-  //       TreeModelService,
-  //       TreeNodeFactory
-  //     );
-  //     // Bind options
-  //     const uri = new URI(options.uri);
-  //     treeContainer.bind(NavigatableTreeEditorOptions).toConstantValue({ uri });
-  //     return treeContainer.get(ProjectDetailWidget);
-  //   },
-  // }));
-
   bind(ECSNextViewerWidget).toSelf();
   bind<WidgetFactory>(WidgetFactory)
     .toDynamicValue((context) => ({
       id: ECSNextViewerWidget.ID,
       async createWidget(options: ECSNextViewerWidgetOptions): Promise<ECSNextViewerWidget> {
-        // const child = new Container({ defaultScope: 'Singleton' });
-        // child.parent = context.container;
-        // child.bind(ECSNextViewerWidgetOptions).toConstantValue(options);
-        // return child.get(ECSNextViewerWidget);
-
         return ECSNextViewerWidget.createWidget(context.container, options);
       },
     }))
@@ -93,12 +57,15 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   );
 
   // 左侧面板
+
+  bind(ECSNextExplorerWidget).toSelf();
   bindViewContribution(bind, ECSNextExplorerContribution);
   bind(FrontendApplicationContribution).toService(ECSNextExplorerContribution);
   bind(WidgetFactory)
     .toDynamicValue((context) => ({
       id: ECSNextExplorerWidget.ID,
-      createWidget: () => ECSNextExplorerWidget.createWidget(context.container),
+      createWidget: (options: ECSNextExplorerWidgetOptions) =>
+        ECSNextExplorerWidget.createWidget(context.container, options),
     }))
     .inSingletonScope();
 

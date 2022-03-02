@@ -2,7 +2,13 @@ import { injectable, inject, postConstruct, interfaces, Container } from '@theia
 import { codicon, ViewContainer, BaseWidget, PanelLayout } from '@theia/core/lib/browser';
 
 import { ECSNextProjectViewsWidget } from './sub-widgets/ecsnext-project-view-widget';
+import { ECSNextProjectUserWidget } from './sub-widgets/ecsnext-project-user-widget';
 import { ECSNextProjectModelsWidget } from './sub-widgets/ecsnext-project-model-widget';
+
+export const ECSNextExplorerWidgetOptions = Symbol('ECSNextExplorerWidgetOptions');
+export interface ECSNextExplorerWidgetOptions {
+  baseUrl?: string;
+}
 
 @injectable()
 export class ECSNextExplorerWidget extends BaseWidget {
@@ -11,21 +17,26 @@ export class ECSNextExplorerWidget extends BaseWidget {
 
   protected viewContainer!: ViewContainer;
 
+  @inject(ViewContainer.Factory) protected readonly viewContainerFactory!: ViewContainer.Factory;
+  @inject(ECSNextExplorerWidgetOptions) protected readonly options: ECSNextExplorerWidgetOptions;
   @inject(ECSNextProjectViewsWidget) protected readonly projectViewsWidget!: ECSNextProjectViewsWidget;
+  @inject(ECSNextProjectUserWidget) protected readonly projectUserWidget!: ECSNextProjectUserWidget;
   @inject(ECSNextProjectModelsWidget) protected readonly projectModelsWidget!: ECSNextProjectModelsWidget;
 
-  @inject(ViewContainer.Factory) protected readonly viewContainerFactory!: ViewContainer.Factory;
-
-  static createWidget(parent: interfaces.Container): ECSNextExplorerWidget {
-    return ECSNextExplorerWidget.createContainer(parent).get(ECSNextExplorerWidget);
+  static createWidget(parent: interfaces.Container, opt: ECSNextExplorerWidgetOptions): ECSNextExplorerWidget {
+    return ECSNextExplorerWidget.createContainer(parent, opt).get(ECSNextExplorerWidget);
   }
 
-  static createContainer(parent: interfaces.Container): Container {
+  static createContainer(parent: interfaces.Container, opt: ECSNextExplorerWidgetOptions): Container {
     const child = new Container({ defaultScope: 'Singleton' });
     child.parent = parent;
+
     child.bind(ECSNextProjectViewsWidget).toSelf();
+    child.bind(ECSNextProjectUserWidget).toSelf();
     child.bind(ECSNextProjectModelsWidget).toSelf();
+    child.bind(ECSNextExplorerWidgetOptions).toConstantValue(opt);
     child.bind(ECSNextExplorerWidget).toSelf().inSingletonScope();
+
     return child;
   }
 
@@ -40,12 +51,14 @@ export class ECSNextExplorerWidget extends BaseWidget {
       id: this.id,
     });
     this.viewContainer.addWidget(this.projectViewsWidget);
+    this.viewContainer.addWidget(this.projectUserWidget);
     this.viewContainer.addWidget(this.projectModelsWidget);
     this.toDispose.push(this.viewContainer);
 
     const layout = (this.layout = new PanelLayout());
     layout.addWidget(this.viewContainer);
     this.node.tabIndex = 0;
+
     // signalManager().on(Signals.OPENED_TRACES_UPDATED, this.onUpdateSignal);
     this.update();
   }

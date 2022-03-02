@@ -10,33 +10,37 @@ import { ECSNextViewerWidget } from '../../ecsnext-viewer/ecsnext-viewer-widget'
 import { ProjectViewerCommand } from '../../ecsnext-viewer/ecsnext-viewer-command';
 
 @injectable()
-export class ECSNextProjectViewsWidget extends ReactWidget {
-  static ID = 'ecsnext-project-views-widget';
-  static LABEL = 'Projects';
+export class ECSNextProjectUserWidget extends ReactWidget {
+  static ID = 'ecsnext-project-user-widget';
+  static LABEL = 'Users';
 
   @inject(WidgetManager) protected readonly widgetManager!: WidgetManager;
   @inject(ContextMenuRenderer) protected readonly contextMenuRenderer!: ContextMenuRenderer;
   @inject(CommandService) protected readonly commandService!: CommandService;
 
-  private projects: any;
+  private users: any;
+  private currentLoginProjectId: string;
 
   @postConstruct()
   init(): void {
-    this.id = ECSNextProjectViewsWidget.ID;
-    this.title.label = ECSNextProjectViewsWidget.LABEL;
+    this.id = ECSNextProjectUserWidget.ID;
+    this.title.label = ECSNextProjectUserWidget.LABEL;
 
-    signalManager().on(Signals.PROJECTS_LOADED, this.onProjectsLoaded);
+    signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
 
     this.update();
   }
 
   dispose(): void {
     super.dispose();
-    signalManager().off(Signals.PROJECTS_LOADED, this.onProjectsLoaded);
+    signalManager().off(Signals.PROJECT_LOGIN, this.onProjectLogin);
   }
 
-  protected onProjectsLoaded = (projects: any) => {
-    this.projects = projects;
+  protected onProjectLogin = (projectId: string, user: any) => {
+    // this.projects = projects;
+
+    if (this.currentLoginProjectId && projectId === this.currentLoginProjectId) {
+    }
     this.update();
   };
 
@@ -74,7 +78,7 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
       <List
         itemLayout="vertical"
         bordered={true}
-        dataSource={this.projects}
+        dataSource={this.users}
         split={true}
         renderItem={(item: any) => (
           <List.Item
