@@ -1,5 +1,5 @@
 import { CommandContribution } from '@theia/core';
-import { ContainerModule } from '@theia/core/shared/inversify';
+import { ContainerModule, Container } from '@theia/core/shared/inversify';
 import {
   bindViewContribution,
   FrontendApplicationContribution,
@@ -46,7 +46,11 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
     .toDynamicValue((context) => ({
       id: ECSNextViewerWidget.ID,
       async createWidget(options: ECSNextViewerWidgetOptions): Promise<ECSNextViewerWidget> {
-        return ECSNextViewerWidget.createWidget(context.container, options);
+        const child = new Container({ defaultScope: 'Singleton' });
+        child.parent = context.container;
+        child.bind(ECSNextViewerWidgetOptions).toConstantValue(options);
+        return child.get(ECSNextViewerWidget);
+        // return ECSNextViewerWidget.createWidget(context.container, options);
       },
     }))
     .inSingletonScope();

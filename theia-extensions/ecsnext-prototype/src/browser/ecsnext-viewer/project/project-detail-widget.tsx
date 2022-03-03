@@ -6,12 +6,12 @@ import { ReactWidget } from '@theia/core/lib/browser';
 export class ProjectDetailWidget extends ReactWidget {
   static ID = 'ecsnext-project-detial-widget';
 
-  static LABEL = 'Project Detail';
+  // static LABEL = 'Project Detail';
 
   @postConstruct()
   async init(): Promise<void> {
     this.id = ProjectDetailWidget.ID;
-    this.title.label = ProjectDetailWidget.LABEL;
+    // this.title.label = ProjectDetailWidget.LABEL;
     this.update();
   }
 

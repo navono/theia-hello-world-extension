@@ -1,12 +1,13 @@
+import * as React from '@theia/core/shared/react';
 import { DisposableCollection } from '@theia/core';
-import { injectable, postConstruct, inject, interfaces, Container } from '@theia/core/shared/inversify';
-import { ViewContainer, ApplicationShell, Message, BaseWidget, PanelLayout } from '@theia/core/lib/browser';
+import { injectable, postConstruct, inject } from '@theia/core/shared/inversify';
+import { ViewContainer, ApplicationShell, Message, ReactWidget } from '@theia/core/lib/browser';
 import { ThemeService } from '@theia/core/lib/browser/theming';
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 
 import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../ecsnext-server-preference';
-import { LoginWidget } from './login/login-widget';
-import { ProjectDetailWidget } from './project/project-detail-widget';
+import { Login } from './login/login-widget';
+// import { ProjectDetailWidget } from './project/project-detail-widget';
 
 export const ECSNextViewerWidgetOptions = Symbol('ECSNextViewerWidgetOptions');
 export interface ECSNextViewerWidgetOptions {
@@ -15,7 +16,7 @@ export interface ECSNextViewerWidgetOptions {
 }
 
 @injectable()
-export class ECSNextViewerWidget extends BaseWidget {
+export class ECSNextViewerWidget extends ReactWidget {
   static ID = 'ecsnext-viewer';
   static LABEL = 'ECS Viewer';
 
@@ -25,8 +26,8 @@ export class ECSNextViewerWidget extends BaseWidget {
   protected readonly toDisposeOnNewExplorer = new DisposableCollection();
   private currentWidget!: any;
 
-  @inject(LoginWidget) protected readonly projectLoginWidget!: LoginWidget;
-  @inject(ProjectDetailWidget) protected readonly projectDetailWidget!: ProjectDetailWidget;
+  // @inject(LoginWidget) protected readonly projectLoginWidget!: LoginWidget;
+  // @inject(ProjectDetailWidget) protected readonly projectDetailWidget!: ProjectDetailWidget;
   @inject(ECSNextViewerWidgetOptions) protected readonly options: ECSNextViewerWidgetOptions;
   @inject(ECSNextPreferences) protected serverPreferences: ECSNextPreferences;
   @inject(ApplicationShell) protected readonly shell: ApplicationShell;
@@ -44,15 +45,19 @@ export class ECSNextViewerWidget extends BaseWidget {
     // this.viewsContainer = this.viewContainerFactory({
     //   id: this.id,
     // });
-    // this.viewsContainer.addWidget(this.projectDetailWidget);
     // this.toDispose.push(this.viewsContainer);
 
-    // const layout = (this.layout = new PanelLayout());
+    // this.viewsContainer.addWidget(this.projectLoginWidget);
+    // this.viewsContainer.addWidget(this.projectDetailWidget);
+
+    // const layout = new Panel();
+    // // PanelLayout;
     // layout.addWidget(this.projectLoginWidget);
     // layout.addWidget(this.viewsContainer);
 
-    this.shell.addWidget(this.projectLoginWidget);
-    this.shell.addWidget(this.projectDetailWidget);
+    // this.shell.addWidget(this.projectLoginWidget, { area: 'main' });
+    // this.shell.addWidget(this.projectDetailWidget, { area: 'main' });
+
     // this.projectDetailWidget.hide();
     // this.projectLoginWidget.hide();
 
@@ -73,21 +78,21 @@ export class ECSNextViewerWidget extends BaseWidget {
     this.update();
   }
 
-  static createWidget(parent: interfaces.Container, opt: ECSNextViewerWidgetOptions): ECSNextViewerWidget {
-    return ECSNextViewerWidget.createContainer(parent, opt).get(ECSNextViewerWidget);
-  }
+  // static createWidget(parent: interfaces.Container, opt: ECSNextViewerWidgetOptions): ECSNextViewerWidget {
+  //   return ECSNextViewerWidget.createContainer(parent, opt).get(ECSNextViewerWidget);
+  // }
 
-  static createContainer(parent: interfaces.Container, opt: ECSNextViewerWidgetOptions): Container {
-    const child = new Container({ defaultScope: 'Singleton' });
-    child.parent = parent;
+  // static createContainer(parent: interfaces.Container, opt: ECSNextViewerWidgetOptions): Container {
+  //   const child = new Container({ defaultScope: 'Singleton' });
+  //   child.parent = parent;
 
-    child.bind(LoginWidget).toSelf();
-    child.bind(ProjectDetailWidget).toSelf();
+  //   child.bind(LoginWidget).toSelf();
+  //   child.bind(ProjectDetailWidget).toSelf();
 
-    child.bind(ECSNextViewerWidgetOptions).toConstantValue(opt);
-    child.bind(ECSNextViewerWidget).toSelf().inSingletonScope();
-    return child;
-  }
+  //   child.bind(ECSNextViewerWidgetOptions).toConstantValue(opt);
+  //   child.bind(ECSNextViewerWidget).toSelf().inSingletonScope();
+  //   return child;
+  // }
 
   protected subscribeToEvents(): void {
     this.toDisposeOnNewExplorer.dispose();
@@ -143,20 +148,25 @@ export class ECSNextViewerWidget extends BaseWidget {
   onUpdateRequest = (msg: Message): void => {
     super.onUpdateRequest(msg);
 
-    if (this.currentProject) {
-      const token = localStorage[`${this.currentProject._id}-jwt`];
-      if (token) {
-        this.projectLoginWidget.hide();
-        this.projectDetailWidget.show();
-        this.currentWidget = this.projectDetailWidget;
-      } else {
-        this.projectLoginWidget.projectId = this.currentProject._id;
-        this.projectLoginWidget.show();
-        this.projectDetailWidget.hide();
-        this.currentWidget = this.projectLoginWidget;
-      }
-    }
+    // if (this.currentProject) {
+    //   const token = localStorage[`${this.currentProject._id}-jwt`];
+    //   if (token) {
+    //     this.projectLoginWidget.hide();
+    //     this.viewsContainer.show();
+    //     this.currentWidget = this.viewsContainer;
+    //   } else {
+    //     this.projectLoginWidget.projectId = this.currentProject._id;
+    //     this.projectLoginWidget.show();
+    //     this.viewsContainer.hide();
+    //     this.currentWidget = this.viewsContainer;
+    //   }
+    // }
   };
+
+  render(): React.ReactNode {
+    return <Login projectId={this.currentProject._id}></Login>;
+  }
+
   protected doHandleProjectSelectedSignal(project: any): void {
     // if (this.openedProject && this.openedProject._id === project._id) {
     //   const token = localStorage[`${this.openedProject._id}-jwt`];
