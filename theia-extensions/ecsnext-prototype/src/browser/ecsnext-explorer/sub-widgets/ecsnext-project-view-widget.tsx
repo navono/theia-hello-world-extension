@@ -26,7 +26,6 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
     this.title.label = ECSNextProjectViewsWidget.LABEL;
 
     signalManager().on(Signals.PROJECTS_LOADED, this.onProjectsLoaded);
-
     this.update();
   }
 

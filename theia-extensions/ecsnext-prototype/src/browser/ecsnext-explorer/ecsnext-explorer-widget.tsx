@@ -2,8 +2,11 @@ import { injectable, inject, postConstruct, interfaces, Container } from '@theia
 import { codicon, ViewContainer, BaseWidget, PanelLayout } from '@theia/core/lib/browser';
 
 import { ECSNextProjectViewsWidget } from './sub-widgets/ecsnext-project-view-widget';
-import { ECSNextProjectUserWidget } from './sub-widgets/ecsnext-project-user-widget';
-import { ECSNextProjectModelsWidget } from './sub-widgets/ecsnext-project-model-widget';
+import { ECSNextProjectUserWidget, ECSNextProjectUserWidgetOptions } from './sub-widgets/ecsnext-project-user-widget';
+import {
+  ECSNextProjectModelsWidget,
+  ECSNextProjectModelsWidgetOptions,
+} from './sub-widgets/ecsnext-project-model-widget';
 
 export const ECSNextExplorerWidgetOptions = Symbol('ECSNextExplorerWidgetOptions');
 export interface ECSNextExplorerWidgetOptions {
@@ -32,7 +35,11 @@ export class ECSNextExplorerWidget extends BaseWidget {
     child.parent = parent;
 
     child.bind(ECSNextProjectViewsWidget).toSelf();
+    child.bind(ECSNextProjectModelsWidgetOptions).toConstantValue(opt);
+
     child.bind(ECSNextProjectUserWidget).toSelf();
+    child.bind(ECSNextProjectUserWidgetOptions).toConstantValue(opt);
+
     child.bind(ECSNextProjectModelsWidget).toSelf();
     child.bind(ECSNextExplorerWidgetOptions).toConstantValue(opt);
     child.bind(ECSNextExplorerWidget).toSelf().inSingletonScope();

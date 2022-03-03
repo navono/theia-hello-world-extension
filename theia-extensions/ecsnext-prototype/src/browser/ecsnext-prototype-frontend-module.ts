@@ -57,7 +57,6 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   );
 
   // 左侧面板
-
   bind(ECSNextExplorerWidget).toSelf();
   bindViewContribution(bind, ECSNextExplorerContribution);
   bind(FrontendApplicationContribution).toService(ECSNextExplorerContribution);

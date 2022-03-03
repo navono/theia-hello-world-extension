@@ -9,38 +9,45 @@ import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
 import { ECSNextViewerWidget } from '../../ecsnext-viewer/ecsnext-viewer-widget';
 import { ProjectViewerCommand } from '../../ecsnext-viewer/ecsnext-viewer-command';
 
+export const ECSNextProjectUserWidgetOptions = Symbol('ECSNextProjectUserWidgetOptions');
+export interface ECSNextProjectUserWidgetOptions {
+  baseUrl?: string;
+}
+
 @injectable()
 export class ECSNextProjectUserWidget extends ReactWidget {
   static ID = 'ecsnext-project-user-widget';
   static LABEL = 'Users';
 
+  @inject(ECSNextProjectUserWidgetOptions) protected readonly options: ECSNextProjectUserWidgetOptions;
   @inject(WidgetManager) protected readonly widgetManager!: WidgetManager;
   @inject(ContextMenuRenderer) protected readonly contextMenuRenderer!: ContextMenuRenderer;
   @inject(CommandService) protected readonly commandService!: CommandService;
 
   private users: any;
-  private currentLoginProjectId: string;
+  // private currentLoginProjectId: string;
 
   @postConstruct()
   init(): void {
     this.id = ECSNextProjectUserWidget.ID;
     this.title.label = ECSNextProjectUserWidget.LABEL;
 
-    signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
+    signalManager().on(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
 
     this.update();
   }
 
   dispose(): void {
     super.dispose();
-    signalManager().off(Signals.PROJECT_LOGIN, this.onProjectLogin);
+
+    signalManager().off(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
   }
 
-  protected onProjectLogin = (projectId: string, user: any) => {
-    // this.projects = projects;
+  protected onProjectUserChanged = (project: any, users: any) => {
+    // this.currentLoginProjectId = projectId;
+    this.title.label = `${ECSNextProjectUserWidget.LABEL}: ${project.name}`;
+    this.users = users;
 
-    if (this.currentLoginProjectId && projectId === this.currentLoginProjectId) {
-    }
     this.update();
   };
 
@@ -85,7 +92,7 @@ export class ECSNextProjectUserWidget extends ReactWidget {
             onClick={() => this.doHandleItemClickEvent(item)}
             onContextMenu={(event) => this.doHandleContextMenuEvent(event, item)}
           >
-            <List.Item.Meta title={item.name} description={item.desc} />
+            <List.Item.Meta title={item.username} description={item.email} />
           </List.Item>
         )}
       />

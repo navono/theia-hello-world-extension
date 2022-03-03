@@ -2,7 +2,8 @@ import { injectable, inject } from '@theia/core/shared/inversify';
 import { AbstractViewContribution } from '@theia/core/lib/browser/shell/view-contribution';
 import { FrontendApplicationContribution, FrontendApplication, ViewContributionOptions } from '@theia/core/lib/browser';
 import { SelectionService, CommandRegistry, MenuModelRegistry } from '@theia/core';
-import URI from '@theia/core/lib/common/uri';
+// import URI from '@theia/core/lib/common/uri';
+import { OpenViewArguments } from '@theia/core/lib/browser/shell/view-contribution';
 
 import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
 
@@ -11,7 +12,7 @@ import { ECSNextExplorerWidget, ECSNextExplorerWidgetOptions } from './ecsnext-e
 import { ECSNextProjectCommands, ECSNextProjectMenus } from './ecsnext-explorer-command';
 
 interface ECSNextExplorerContributionOptions extends ViewContributionOptions {
-  baseUrl: string;
+  baseUrl?: string;
 }
 
 @injectable()
@@ -42,6 +43,56 @@ export class ECSNextExplorerContribution
     await this.openView({ activate: true });
   }
 
+  async openView(args: Partial<OpenViewArguments> = {}): Promise<ECSNextExplorerWidget> {
+    const shell = this.shell;
+
+    const widgetOptions: ECSNextExplorerContributionOptions = {
+      baseUrl: this.baseUrl,
+      widgetId: ECSNextExplorerWidget.ID,
+      widgetName: ECSNextExplorerWidget.LABEL,
+      defaultWidgetOptions: this.options.defaultWidgetOptions,
+    };
+
+    const widget = await this.widgetManager.getOrCreateWidget(
+      this.options.viewContainerId || this.viewId,
+      widgetOptions
+    );
+    const tabBar = shell.getTabBarFor(widget);
+    const area = shell.getAreaFor(widget);
+    if (!tabBar) {
+      // The widget is not attached yet, so add it to the shell
+      const widgetArgs: OpenViewArguments = {
+        ...this.defaultViewOptions,
+        ...args,
+      };
+      await shell.addWidget(widget, widgetArgs);
+    } else if (args.toggle && area && shell.isExpanded(area) && tabBar.currentTitle === widget.title) {
+      // The widget is attached and visible, so collapse the containing panel (toggle)
+      switch (area) {
+        case 'left':
+        case 'right':
+          await shell.collapsePanel(area);
+          break;
+        case 'bottom':
+          // Don't collapse the bottom panel if it's currently split
+          if (shell.bottomAreaTabBars.length === 1) {
+            await shell.collapsePanel('bottom');
+          }
+          break;
+        default:
+          // The main area cannot be collapsed, so close the widget
+          await this.closeView();
+      }
+      return this.widget;
+    }
+    if (widget.isAttached && args.activate) {
+      await shell.activateWidget(this.viewId);
+    } else if (widget.isAttached && args.reveal) {
+      await shell.revealWidget(this.viewId);
+    }
+    return this.widget;
+  }
+
   onStart(_app: FrontendApplication): void {
     fetch(`${this.baseUrl}/api/projects`)
       .then((res) => res.json())
@@ -54,6 +105,7 @@ export class ECSNextExplorerContribution
   onStop(_app: FrontendApplication): void {
     // this.toDisposeOnClose.dispose();
   }
+
   registerMenus(menus: MenuModelRegistry): void {
     super.registerMenus(menus);
 

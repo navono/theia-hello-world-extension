@@ -3,11 +3,17 @@ import { ReactWidget, Widget, Message, WidgetManager } from '@theia/core/lib/bro
 import * as React from '@theia/core/shared/react';
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 
+export const ECSNextProjectModelsWidgetOptions = Symbol('ECSNextProjectModelsWidgetOptions');
+export interface ECSNextProjectModelsWidgetOptions {
+  baseUrl?: string;
+}
+
 @injectable()
 export class ECSNextProjectModelsWidget extends ReactWidget {
   static ID = 'ecsnext-project-models-widget';
   static LABEL = 'Models';
 
+  @inject(ECSNextProjectModelsWidgetOptions) protected readonly options: ECSNextProjectModelsWidgetOptions;
   @inject(WidgetManager) protected readonly widgetManager!: WidgetManager;
 
   private models: any;
@@ -35,16 +41,20 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
 
   protected onProjectLogin = (projectId: string, _user: any): void => {
     if (this.currentLoginProjectId && projectId === this.currentLoginProjectId) {
-      // const token = localStorage[`${this.currentLoginProjectId}-jwt`];
-      // if (token) {
-      //   fetch(`${this.baseUrl}/api/projects`)
-      //     .then((res) => res.json())
-      //     .then((projects) => {
-      //       console.log(projects);
-      //       signalManager().fireProjectsLoadedSignel(projects);
-      //     });
-      // }
+      return;
     }
+
+    this.currentLoginProjectId = projectId;
+
+    const token = localStorage[`${this.currentLoginProjectId}-jwt`];
+    if (token) {
+      fetch(`${this.options.baseUrl}/api/projects/${projectId}/models`)
+        .then((res) => res.json())
+        .then((models) => {
+          console.log(models);
+        });
+    }
+
     this.update();
   };
 

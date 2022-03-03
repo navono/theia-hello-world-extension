@@ -43,8 +43,8 @@ export class ECSNextProjectViewerContribution
     });
   }
 
-  async open(traceURI: URI, options?: ECSNextViewerWidgetOpenerOptions): Promise<ECSNextViewerWidget> {
-    return super.open(traceURI, options);
+  async open(uri: URI, options?: ECSNextViewerWidgetOpenerOptions): Promise<ECSNextViewerWidget> {
+    return super.open(uri, options);
   }
 
   protected openProjectView(options: ECSNextViewerWidgetOpenerOptions): void {

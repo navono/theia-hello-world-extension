@@ -50,6 +50,8 @@ export const Signals = {
   PROJECTS_LOADED: 'projects loaded',
   PROJECT_SELECTED: 'project selected',
   PROJECT_LOGIN: 'project login',
+  PROJECT_USER_LOADED: 'project user loaded',
+  PROJECT_MODEL_LOADED: 'project model loaded',
   PROJECTVIEWERTAB_ACTIVATED: 'widget activated',
 };
 
@@ -120,6 +122,12 @@ export class SignalManager extends EventEmitter implements SignalManager {
   }
   fireProjectLoginSignal(projectId: string, user: any): void {
     this.emit(Signals.PROJECT_LOGIN, projectId, user);
+  }
+  fireProjectUserLoadedSignal(project: any, users: any): void {
+    this.emit(Signals.PROJECT_USER_LOADED, project, users);
+  }
+  fireProjectModelLoadedSignal(project: any, models: any): void {
+    this.emit(Signals.PROJECT_MODEL_LOADED, project, models);
   }
 }
 
