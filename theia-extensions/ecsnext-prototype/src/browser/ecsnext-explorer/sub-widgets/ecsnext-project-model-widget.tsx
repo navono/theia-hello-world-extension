@@ -31,34 +31,43 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
   protected subscribeToEvents(): void {
     signalManager().on(Signals.PROJECT_SELECTED, this.onProjectSelected);
     signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
+
+    signalManager().on(Signals.PROJECTVIEWERTAB_ACTIVATED, this.onProjectChanged);
   }
 
   dispose(): void {
     super.dispose();
     signalManager().off(Signals.PROJECT_SELECTED, this.onProjectSelected);
     signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
+    signalManager().off(Signals.PROJECTVIEWERTAB_ACTIVATED, this.onProjectChanged);
   }
 
   protected onProjectLogin = (projectId: string, _user: any): void => {
     if (this.currentLoginProjectId && projectId === this.currentLoginProjectId) {
       return;
     }
-
     this.currentLoginProjectId = projectId;
-
-    const token = localStorage[`${this.currentLoginProjectId}-jwt`];
-    if (token) {
-      fetch(`${this.options.baseUrl}/api/projects/${projectId}/models`)
-        .then((res) => res.json())
-        .then((models) => {
-          console.log(models);
-        });
-    }
 
     this.update();
   };
 
   protected onProjectSelected = (): void => {};
+
+  protected onProjectChanged = (project: any): void => {
+    this.title.label = `${ECSNextProjectModelsWidget.LABEL}: ${project.name}`;
+    this.getModels(project._id);
+  };
+
+  private getModels = (projectId: string): void => {
+    const token = localStorage[`${projectId}-jwt`];
+    if (token) {
+      fetch(`${this.options.baseUrl}/api/projects/${projectId}/models`)
+        .then((res) => res.json())
+        .then((models) => {
+          this.models = models;
+        });
+    }
+  };
 
   protected onResize(msg: Widget.ResizeMessage): void {
     super.onResize(msg);

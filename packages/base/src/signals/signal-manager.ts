@@ -120,8 +120,8 @@ export class SignalManager extends EventEmitter implements SignalManager {
   fireProjectViewerTabActivatedSignal(project: any): void {
     this.emit(Signals.PROJECTVIEWERTAB_ACTIVATED, project);
   }
-  fireProjectLoginSignal(projectId: string, user: any): void {
-    this.emit(Signals.PROJECT_LOGIN, projectId, user);
+  fireProjectLoginSignal(project: string, user: any): void {
+    this.emit(Signals.PROJECT_LOGIN, project, user);
   }
   fireProjectUserLoadedSignal(project: any, users: any): void {
     this.emit(Signals.PROJECT_USER_LOADED, project, users);

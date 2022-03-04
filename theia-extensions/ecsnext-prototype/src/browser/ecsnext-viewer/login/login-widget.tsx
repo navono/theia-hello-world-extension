@@ -8,14 +8,14 @@ import schema from './schema.json';
 import uiSchema from './uischema.json';
 
 export interface LoginProps {
-  projectId: string;
+  project: any;
 }
 
 export const Login = (props: LoginProps) => {
   const [data, setData] = React.useState({} as any);
 
   const onSubmit = () => {
-    fetch(`http://localhost:4000/api/projects/${props.projectId}/login`, {
+    fetch(`http://localhost:4000/api/projects/${props.project._id}/login`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -25,8 +25,8 @@ export const Login = (props: LoginProps) => {
     })
       .then((res) => res.json())
       .then((rsp) => {
-        localStorage.setItem(`${props.projectId}-jwt`, rsp.user.token);
-        signalManager().fireProjectLoginSignal(props.projectId, rsp.user);
+        localStorage.setItem(`${props.project._id}-jwt`, rsp.user.token);
+        signalManager().fireProjectLoginSignal(props.project, rsp.user);
       })
       .catch((err) => {
         console.error(err);

@@ -33,6 +33,7 @@ export class ECSNextProjectUserWidget extends ReactWidget {
     this.title.label = ECSNextProjectUserWidget.LABEL;
 
     signalManager().on(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
+    signalManager().on(Signals.PROJECTVIEWERTAB_ACTIVATED, this.onProjectChanged);
 
     this.update();
   }
@@ -41,6 +42,7 @@ export class ECSNextProjectUserWidget extends ReactWidget {
     super.dispose();
 
     signalManager().off(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
+    signalManager().off(Signals.PROJECTVIEWERTAB_ACTIVATED, this.onProjectChanged);
   }
 
   protected onProjectUserChanged = (project: any, users: any) => {
@@ -51,25 +53,31 @@ export class ECSNextProjectUserWidget extends ReactWidget {
     this.update();
   };
 
+  protected onProjectChanged = (project: any) => {
+    this.title.label = `${ECSNextProjectUserWidget.LABEL}: ${project.name}`;
+    this.users = [];
+    this.update();
+  };
+
   protected onResize(msg: Widget.ResizeMessage): void {
     super.onResize(msg);
     this.update();
   }
 
-  protected onAfterShow(msg: Message): void {
-    super.onAfterShow(msg);
-    this.update();
-  }
+  // protected onAfterShow(msg: Message): void {
+  //   super.onAfterShow(msg);
+  //   this.update();
+  // }
 
   protected doHandleItemClickEvent(item: any): void {
-    const widgets = this.widgetManager.getWidgets(ECSNextViewerWidget.ID);
-    const widget = widgets.find((w) => w.id === item._id);
-    // Don't execute command if widget is already open.
-    if (!widget) {
-      this.commandService.executeCommand(ProjectViewerCommand.id, { projectUUID: item._id });
-    } else {
-      signalManager().fireProjectSelectedSignal(item);
-    }
+    // const widgets = this.widgetManager.getWidgets(ECSNextViewerWidget.ID);
+    // const widget = widgets.find((w) => w.id === item._id);
+    // // Don't execute command if widget is already open.
+    // if (!widget) {
+    //   this.commandService.executeCommand(ProjectViewerCommand.id, { projectUUID: item._id });
+    // } else {
+    //   signalManager().fireProjectSelectedSignal(item);
+    // }
   }
 
   protected doHandleContextMenuEvent(event: React.MouseEvent<HTMLDivElement>, item: any): void {
