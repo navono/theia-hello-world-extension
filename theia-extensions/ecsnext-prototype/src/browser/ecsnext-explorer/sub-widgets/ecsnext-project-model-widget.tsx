@@ -1,7 +1,10 @@
-import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
-import { ReactWidget, Widget, Message, WidgetManager } from '@theia/core/lib/browser';
+import { List } from 'antd';
 import * as React from '@theia/core/shared/react';
+import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
+import { ReactWidget, Widget, Message, WidgetManager, ContextMenuRenderer } from '@theia/core/lib/browser';
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
+
+import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
 
 export const ECSNextProjectModelsWidgetOptions = Symbol('ECSNextProjectModelsWidgetOptions');
 export interface ECSNextProjectModelsWidgetOptions {
@@ -15,9 +18,9 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
 
   @inject(ECSNextProjectModelsWidgetOptions) protected readonly options: ECSNextProjectModelsWidgetOptions;
   @inject(WidgetManager) protected readonly widgetManager!: WidgetManager;
+  @inject(ContextMenuRenderer) protected readonly contextMenuRenderer!: ContextMenuRenderer;
 
   private models: any;
-  private currentLoginProjectId: string;
 
   @postConstruct()
   init(): void {
@@ -29,44 +32,26 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
   }
 
   protected subscribeToEvents(): void {
-    signalManager().on(Signals.PROJECT_SELECTED, this.onProjectSelected);
-    signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
-
-    signalManager().on(Signals.PROJECTVIEWERTAB_ACTIVATED, this.onProjectChanged);
+    signalManager().on(Signals.PROJECT_MODEL_LOADED, this.onProjectModelChanged);
+    signalManager().on(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
   }
 
   dispose(): void {
     super.dispose();
-    signalManager().off(Signals.PROJECT_SELECTED, this.onProjectSelected);
-    signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
-    signalManager().off(Signals.PROJECTVIEWERTAB_ACTIVATED, this.onProjectChanged);
+    signalManager().on(Signals.PROJECT_MODEL_LOADED, this.onProjectModelChanged);
+    signalManager().off(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
   }
 
-  protected onProjectLogin = (projectId: string, _user: any): void => {
-    if (this.currentLoginProjectId && projectId === this.currentLoginProjectId) {
-      return;
-    }
-    this.currentLoginProjectId = projectId;
-
+  protected onProjectModelChanged = (project: any, models: any): void => {
+    this.title.label = `${ECSNextProjectModelsWidget.LABEL}: ${project.name}`;
+    this.models = models;
     this.update();
   };
 
-  protected onProjectSelected = (): void => {};
-
   protected onProjectChanged = (project: any): void => {
     this.title.label = `${ECSNextProjectModelsWidget.LABEL}: ${project.name}`;
-    this.getModels(project._id);
-  };
-
-  private getModels = (projectId: string): void => {
-    const token = localStorage[`${projectId}-jwt`];
-    if (token) {
-      fetch(`${this.options.baseUrl}/api/projects/${projectId}/models`)
-        .then((res) => res.json())
-        .then((models) => {
-          this.models = models;
-        });
-    }
+    this.models = [];
+    this.update();
   };
 
   protected onResize(msg: Widget.ResizeMessage): void {
@@ -79,11 +64,41 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
     this.update();
   }
 
+  protected doHandleItemClickEvent(item: any): void {
+    // const widgets = this.widgetManager.getWidgets(ECSNextViewerWidget.ID);
+    // const widget = widgets.find((w) => w.id === item._id);
+    // // Don't execute command if widget is already open.
+    // if (!widget) {
+    //   this.commandService.executeCommand(ProjectViewerCommand.id, { projectUUID: item._id });
+    // } else {
+    //   signalManager().fireProjectSelectedSignal(item);
+    // }
+  }
+
+  protected doHandleContextMenuEvent(event: React.MouseEvent<HTMLDivElement>, item: any): void {
+    this.contextMenuRenderer.render({
+      menuPath: ECSNextProjectMenus.PREFERENCE_EDITOR_CONTEXT_MENU,
+      anchor: { x: event.clientX, y: event.clientY },
+      args: [item._id],
+    });
+  }
+
   render(): React.ReactNode {
     return (
-      <div>
-        <p>模型列表</p>
-      </div>
+      <List
+        itemLayout="vertical"
+        bordered={true}
+        dataSource={this.models}
+        split={true}
+        renderItem={(item: any) => (
+          <List.Item
+            onClick={() => this.doHandleItemClickEvent(item)}
+            onContextMenu={(event) => this.doHandleContextMenuEvent(event, item)}
+          >
+            <List.Item.Meta title={item.username} description={item.email} />
+          </List.Item>
+        )}
+      />
     );
   }
 }

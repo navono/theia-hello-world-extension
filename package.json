@@ -9,6 +9,7 @@
     "start:electron": "yarn rebuild:electron && yarn --cwd examples/electron-app start",
     "download:plugins": "theia download:plugins -p=true",
     "watch": "lerna run --parallel watch",
+    "build": "lerna run --parallel build",
     "lint": "lerna run lint"
   },
   "devDependencies": {

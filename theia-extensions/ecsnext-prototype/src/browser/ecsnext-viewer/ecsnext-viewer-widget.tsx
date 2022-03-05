@@ -7,8 +7,6 @@ import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager'
 
 import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../ecsnext-server-preference';
 import { Login } from './login/login-widget';
-import { AnyAction } from '@jsonforms/core';
-// import { ProjectDetailWidget } from './project/project-detail-widget';
 
 export const ECSNextViewerWidgetOptions = Symbol('ECSNextViewerWidgetOptions');
 export interface ECSNextViewerWidgetOptions {
@@ -25,7 +23,6 @@ export class ECSNextViewerWidget extends ReactWidget {
   protected currentProject!: any;
   protected backgroundTheme: string;
   protected readonly toDisposeOnNewExplorer = new DisposableCollection();
-  private currentWidget!: any;
 
   // @inject(LoginWidget) protected readonly projectLoginWidget!: LoginWidget;
   // @inject(ProjectDetailWidget) protected readonly projectDetailWidget!: ProjectDetailWidget;
@@ -34,8 +31,8 @@ export class ECSNextViewerWidget extends ReactWidget {
   @inject(ApplicationShell) protected readonly shell: ApplicationShell;
   @inject(ViewContainer.Factory) protected readonly viewContainerFactory!: ViewContainer.Factory;
 
-  private onProjectSelected = (project: any): void => this.doHandleProjectSelectedSignal(project);
-  private onProjectLogin = (projectId: string, user: any): void => this.doHandleProjectLoginSignal(projectId, user);
+  // private onProjectSelected = (project: any): void => this.doHandleProjectSelectedSignal(project);
+  // private onProjectLogin = (projectId: string, user: any): void => this.doHandleProjectLoginSignal(projectId, user);
 
   @postConstruct()
   async init(): Promise<void> {
@@ -107,13 +104,13 @@ export class ECSNextViewerWidget extends ReactWidget {
       console.log('newValue', newValue?.id, newValue?.title);
     });
 
-    signalManager().on(Signals.PROJECT_SELECTED, this.onProjectSelected);
+    signalManager().on(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
     signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
   }
 
   dispose(): void {
     super.dispose();
-    signalManager().off(Signals.PROJECT_SELECTED, this.onProjectSelected);
+    signalManager().off(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
     signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
   }
 
@@ -173,18 +170,19 @@ export class ECSNextViewerWidget extends ReactWidget {
     );
   }
 
-  protected doHandleProjectSelectedSignal(project: any): void {
+  private onProjectChanged = (project: any) => {
     this.currentProject = project;
     const token = localStorage[`${project._id}-jwt`];
     if (token) {
       this.currentProject.bLogin = true;
-      this.getProjectUsers(this.currentProject, token);
+      this.getProjectUsers(project, token);
+      this.getProjectModels(project, token);
     }
 
-    this.shell.activateWidget(this.currentProject._id);
-  }
+    this.shell.activateWidget(project._id);
+  };
 
-  protected doHandleProjectLoginSignal(project: any, _user: any): void {
+  private onProjectLogin = (project: any, _user: any): void => {
     this.currentProject = project;
     const token = localStorage[`${project._id}-jwt`];
     if (token) {
@@ -192,13 +190,13 @@ export class ECSNextViewerWidget extends ReactWidget {
 
       // 获取当前工程的信息
       this.getProjectUsers(project, token);
-      // this.getProjectModels(projectId, token);
+      this.getProjectModels(project, token);
     }
 
     this.update();
-  }
+  };
 
-  protected getProjectUsers = (project: any, token: string) => {
+  private getProjectUsers = (project: any, token: string) => {
     if (token) {
       fetch(`${this.baseUrl}/api/projects/${project._id}/users/`, {
         headers: {
@@ -214,9 +212,9 @@ export class ECSNextViewerWidget extends ReactWidget {
     }
   };
 
-  protected getProjectModels = (projectId: string, token: string) => {
+  private getProjectModels = (project: any, token: string) => {
     if (token) {
-      fetch(`${this.baseUrl}/api/projects/${projectId}/models/`, {
+      fetch(`${this.baseUrl}/api/projects/${project._id}/models/`, {
         headers: {
           Accept: 'application/json',
           authorization: `Bearer ${token}`,
@@ -225,7 +223,7 @@ export class ECSNextViewerWidget extends ReactWidget {
       })
         .then((res) => res.json())
         .then((models) => {
-          signalManager().fireProjectModelLoadedSignal(projectId, models);
+          signalManager().fireProjectModelLoadedSignal(project, models);
         });
     }
   };

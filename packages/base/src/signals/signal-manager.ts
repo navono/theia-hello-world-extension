@@ -48,11 +48,11 @@ export const Signals = {
   MARKER_CATEGORY_CLOSED: 'marker category closed',
 
   PROJECTS_LOADED: 'projects loaded',
-  PROJECT_SELECTED: 'project selected',
+  // PROJECT_SELECTED: 'project selected',
   PROJECT_LOGIN: 'project login',
   PROJECT_USER_LOADED: 'project user loaded',
   PROJECT_MODEL_LOADED: 'project model loaded',
-  PROJECTVIEWERTAB_ACTIVATED: 'widget activated',
+  PROJECT_ACTIVATED: 'project activated',
 };
 
 export class SignalManager extends EventEmitter implements SignalManager {
@@ -114,11 +114,9 @@ export class SignalManager extends EventEmitter implements SignalManager {
   fireProjectsLoadedSignel(projects: any): void {
     this.emit(Signals.PROJECTS_LOADED, projects);
   }
-  fireProjectSelectedSignal(project: any): void {
-    this.emit(Signals.PROJECT_SELECTED, project);
-  }
+
   fireProjectViewerTabActivatedSignal(project: any): void {
-    this.emit(Signals.PROJECTVIEWERTAB_ACTIVATED, project);
+    this.emit(Signals.PROJECT_ACTIVATED, project);
   }
   fireProjectLoginSignal(project: string, user: any): void {
     this.emit(Signals.PROJECT_LOGIN, project, user);

@@ -56,7 +56,7 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
     if (!widget) {
       this.commandService.executeCommand(ProjectViewerCommand.id, { projectUUID: item._id });
     } else {
-      signalManager().fireProjectSelectedSignal(item);
+      signalManager().fireProjectViewerTabActivatedSignal(item);
     }
   }
 

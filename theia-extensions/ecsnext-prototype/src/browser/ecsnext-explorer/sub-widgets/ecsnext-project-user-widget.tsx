@@ -2,12 +2,10 @@ import { List } from 'antd';
 import * as React from '@theia/core/shared/react';
 import { CommandService } from '@theia/core';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
-import { ReactWidget, Widget, Message, WidgetManager, ContextMenuRenderer } from '@theia/core/lib/browser';
+import { ReactWidget, Widget, WidgetManager, ContextMenuRenderer } from '@theia/core/lib/browser';
 
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
-import { ECSNextViewerWidget } from '../../ecsnext-viewer/ecsnext-viewer-widget';
-import { ProjectViewerCommand } from '../../ecsnext-viewer/ecsnext-viewer-command';
 
 export const ECSNextProjectUserWidgetOptions = Symbol('ECSNextProjectUserWidgetOptions');
 export interface ECSNextProjectUserWidgetOptions {
@@ -25,7 +23,6 @@ export class ECSNextProjectUserWidget extends ReactWidget {
   @inject(CommandService) protected readonly commandService!: CommandService;
 
   private users: any;
-  // private currentLoginProjectId: string;
 
   @postConstruct()
   init(): void {
@@ -33,23 +30,20 @@ export class ECSNextProjectUserWidget extends ReactWidget {
     this.title.label = ECSNextProjectUserWidget.LABEL;
 
     signalManager().on(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
-    signalManager().on(Signals.PROJECTVIEWERTAB_ACTIVATED, this.onProjectChanged);
+    signalManager().on(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
 
     this.update();
   }
 
   dispose(): void {
     super.dispose();
-
     signalManager().off(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
-    signalManager().off(Signals.PROJECTVIEWERTAB_ACTIVATED, this.onProjectChanged);
+    signalManager().off(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
   }
 
   protected onProjectUserChanged = (project: any, users: any) => {
-    // this.currentLoginProjectId = projectId;
     this.title.label = `${ECSNextProjectUserWidget.LABEL}: ${project.name}`;
     this.users = users;
-
     this.update();
   };
 

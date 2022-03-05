@@ -8,7 +8,7 @@ import { OpenViewArguments } from '@theia/core/lib/browser/shell/view-contributi
 import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
 
 import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../ecsnext-server-preference';
-import { ECSNextExplorerWidget, ECSNextExplorerWidgetOptions } from './ecsnext-explorer-widget';
+import { ECSNextExplorerWidget } from './ecsnext-explorer-widget';
 import { ECSNextProjectCommands, ECSNextProjectMenus } from './ecsnext-explorer-command';
 
 interface ECSNextExplorerContributionOptions extends ViewContributionOptions {
