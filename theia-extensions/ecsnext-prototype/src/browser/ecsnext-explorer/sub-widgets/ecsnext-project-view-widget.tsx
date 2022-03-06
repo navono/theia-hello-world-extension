@@ -1,4 +1,3 @@
-import { List } from 'antd';
 import * as React from '@theia/core/shared/react';
 import { CommandService } from '@theia/core';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
@@ -8,17 +7,18 @@ import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager'
 import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
 import { ECSNextViewerWidget } from '../../ecsnext-viewer/ecsnext-viewer-widget';
 import { ProjectViewerCommand } from '../../ecsnext-viewer/ecsnext-viewer-command';
+import { ReactProjectViewWidget } from './view-list-widget';
 
 @injectable()
 export class ECSNextProjectViewsWidget extends ReactWidget {
   static ID = 'ecsnext-project-views-widget';
   static LABEL = 'Projects';
 
+  private projects: Array<any> = [];
+
   @inject(WidgetManager) protected readonly widgetManager!: WidgetManager;
   @inject(ContextMenuRenderer) protected readonly contextMenuRenderer!: ContextMenuRenderer;
   @inject(CommandService) protected readonly commandService!: CommandService;
-
-  private projects: any;
 
   @postConstruct()
   init(): void {
@@ -49,41 +49,34 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
     this.update();
   }
 
-  protected doHandleItemClickEvent(item: any): void {
-    const widgets = this.widgetManager.getWidgets(ECSNextViewerWidget.ID);
-    const widget = widgets.find((w) => w.id === item._id);
-    // Don't execute command if widget is already open.
-    if (!widget) {
-      this.commandService.executeCommand(ProjectViewerCommand.id, { projectUUID: item._id });
-    } else {
-      signalManager().fireProjectViewerTabActivatedSignal(item);
-    }
-  }
-
-  protected doHandleContextMenuEvent(event: React.MouseEvent<HTMLDivElement>, item: any): void {
+  protected doHandleContextMenuEvent(e: React.MouseEvent<HTMLDivElement>, project: any): void {
     this.contextMenuRenderer.render({
       menuPath: ECSNextProjectMenus.PREFERENCE_EDITOR_CONTEXT_MENU,
-      anchor: { x: event.clientX, y: event.clientY },
-      args: [item._id],
+      anchor: { x: e.clientX, y: e.clientY },
+      args: [project._id],
     });
+  }
+
+  protected doHandleItemClickEvent(e: React.MouseEvent<HTMLDivElement>, project: any): void {
+    const widgets = this.widgetManager.getWidgets(ECSNextViewerWidget.ID);
+    const widget = widgets.find((w) => w.id === project._id);
+    // Don't execute command if widget is already open.
+    if (!widget) {
+      this.commandService.executeCommand(ProjectViewerCommand.id, { projectUUID: project._id });
+    } else {
+      signalManager().fireProjectViewerTabActivatedSignal(project);
+    }
   }
 
   render(): React.ReactNode {
     return (
-      <List
-        itemLayout="vertical"
-        bordered={true}
-        dataSource={this.projects}
-        split={true}
-        renderItem={(item: any) => (
-          <List.Item
-            onClick={() => this.doHandleItemClickEvent(item)}
-            onContextMenu={(event) => this.doHandleContextMenuEvent(event, item)}
-          >
-            <List.Item.Meta title={item.name} description={item.desc} />
-          </List.Item>
-        )}
-      />
+      <ReactProjectViewWidget
+        id={this.id}
+        title={this.title.label}
+        projects={this.projects}
+        contextMenuRenderer={(e, project) => this.doHandleContextMenuEvent(e, project)}
+        onClick={(e, project) => this.doHandleItemClickEvent(e, project)}
+      ></ReactProjectViewWidget>
     );
   }
 }

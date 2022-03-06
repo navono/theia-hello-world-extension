@@ -1,10 +1,11 @@
-import { List } from 'antd';
+// import { List } from 'antd';
 import * as React from '@theia/core/shared/react';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
 import { ReactWidget, Widget, Message, WidgetManager, ContextMenuRenderer } from '@theia/core/lib/browser';
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 
 import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
+import { ListWidget } from './list-widget';
 
 export const ECSNextProjectModelsWidgetOptions = Symbol('ECSNextProjectModelsWidgetOptions');
 export interface ECSNextProjectModelsWidgetOptions {
@@ -84,21 +85,6 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
   }
 
   render(): React.ReactNode {
-    return (
-      <List
-        itemLayout="vertical"
-        bordered={true}
-        dataSource={this.models}
-        split={true}
-        renderItem={(item: any) => (
-          <List.Item
-            onClick={() => this.doHandleItemClickEvent(item)}
-            onContextMenu={(event) => this.doHandleContextMenuEvent(event, item)}
-          >
-            <List.Item.Meta title={item.username} description={item.email} />
-          </List.Item>
-        )}
-      />
-    );
+    return <ListWidget />;
   }
 }

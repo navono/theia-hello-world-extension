@@ -7,13 +7,13 @@ import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
 export interface ReactProjectViewWidgetProps {
   id: string;
   title: string;
-  // tspClientProvider: ITspClientProvider,
+  projects: Array<any>;
   contextMenuRenderer?: (event: React.MouseEvent<HTMLDivElement>, project: any) => void;
   onClick?: (event: React.MouseEvent<HTMLDivElement>, project: any) => void;
 }
 
 export interface ReactProjectViewWidgetState {
-  avaliableProjects: Array<any>;
+  // avaliableProjects: Array<any>;
   selectedProjectIndex: number;
 }
 
@@ -24,8 +24,14 @@ export class ReactProjectViewWidget extends React.Component<ReactProjectViewWidg
   private _selectedProject: any | undefined;
   private _forceUpdateKey = false;
 
+  constructor(props: ReactProjectViewWidgetProps) {
+    super(props);
+
+    this.state = { selectedProjectIndex: -1 };
+  }
+
   render(): React.ReactNode {
-    const totalHeight = this.getTotalHeight();
+    // const totalHeight = this.getTotalHeight();
     this._forceUpdateKey = !this._forceUpdateKey;
     const key = Number(this._forceUpdateKey);
 
@@ -36,9 +42,9 @@ export class ReactProjectViewWidget extends React.Component<ReactProjectViewWidg
             {({ width }) => (
               <List
                 key={key}
-                height={totalHeight}
+                height={100}
                 width={width}
-                rowCount={this.state.avaliableProjects.length}
+                rowCount={this.props.projects.length}
                 rowHeight={this.getRowHeight}
                 rowRenderer={this.renderProjectRow}
               />
@@ -50,13 +56,13 @@ export class ReactProjectViewWidget extends React.Component<ReactProjectViewWidg
   }
 
   protected renderProjectRow = (props: ListRowProps): React.ReactNode => {
-    const proectName =
-      this.state.avaliableProjects.length && props.index < this.state.avaliableProjects.length
-        ? this.state.avaliableProjects[props.index].name
+    const projectName =
+      this.props.projects.length && props.index < this.props.projects.length
+        ? this.props.projects[props.index].name
         : '';
     const projectUUID =
-      this.state.avaliableProjects.length && props.index < this.state.avaliableProjects.length
-        ? this.state.avaliableProjects[props.index].UUID
+      this.props.projects.length && props.index < this.props.projects.length
+        ? this.props.projects[props.index]._id
         : '';
     let traceContainerClassName = 'trace-list-container';
     if (props.index === this.state.selectedProjectIndex && this.state.selectedProjectIndex >= 0) {
@@ -78,7 +84,7 @@ export class ReactProjectViewWidget extends React.Component<ReactProjectViewWidg
       >
         <div className="trace-element-container">
           <div className="trace-element-info">
-            <h4 className="trace-element-name">{proectName}</h4>
+            <h4 className="trace-element-name">{projectName}</h4>
           </div>
         </div>
       </div>
@@ -87,20 +93,23 @@ export class ReactProjectViewWidget extends React.Component<ReactProjectViewWidg
 
   protected getRowHeight = (index: Index | number): number => {
     const resolvedIndex = typeof index === 'object' ? index.index : index;
-    const project = this.state.avaliableProjects[resolvedIndex];
+    const project = this.props.projects[resolvedIndex];
     let totalHeight = 0;
     if (project.name) {
       totalHeight += ReactProjectViewWidget.LINE_HEIGHT;
     }
-    for (let i = 0; i < project.traces.length; i++) {
-      totalHeight += ReactProjectViewWidget.LINE_HEIGHT;
-    }
+
     return totalHeight;
   };
 
   protected getTotalHeight(): number {
     let totalHeight = 0;
-    for (let i = 0; i < this.state.avaliableProjects.length; i++) {
+
+    if (!this.props.projects) {
+      return totalHeight;
+    }
+
+    for (let i = 0; i < this.props.projects.length; i++) {
       totalHeight += this.getRowHeight(i);
     }
     return totalHeight;
@@ -136,13 +145,13 @@ export class ReactProjectViewWidget extends React.Component<ReactProjectViewWidg
   };
 
   private getProject(projectUUID: string): any | undefined {
-    return this.state.avaliableProjects.find((project) => project._id === projectUUID);
+    return this.props.projects.find((project) => project._id === projectUUID);
   }
 
   private selectProject(index: number): void {
     if (index >= 0 && index !== this.state.selectedProjectIndex) {
       this.setState({ selectedProjectIndex: index });
-      this._selectedProject = this.state.avaliableProjects[index];
+      this._selectedProject = this.props.projects[index];
       signalManager().fireExperimentSelectedSignal(this._selectedProject);
     }
   }

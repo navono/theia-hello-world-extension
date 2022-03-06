@@ -43,6 +43,7 @@
     "@types/jest": "^26.0.20",
     "eslint-plugin-no-null": "^1.0.2",
     "jest": "^26.6.3",
+    "lorem-ipsum": "^2.0.4",
     "rimraf": "latest",
     "ts-jest": "^26.5.6",
     "ts-node": "^9.1.1",
