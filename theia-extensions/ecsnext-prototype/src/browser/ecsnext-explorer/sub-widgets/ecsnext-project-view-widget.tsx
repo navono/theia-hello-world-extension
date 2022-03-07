@@ -4,6 +4,8 @@ import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
 import { ReactWidget, Widget, Message, WidgetManager, ContextMenuRenderer } from '@theia/core/lib/browser';
 
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
+import { ReactOpenTracesWidget } from 'react-component/lib/explorer/explorer-opened-projects-widget';
+
 import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
 import { ECSNextViewerWidget } from '../../ecsnext-viewer/ecsnext-viewer-widget';
 import { ProjectViewerCommand } from '../../ecsnext-viewer/ecsnext-viewer-command';
@@ -70,13 +72,12 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
 
   render(): React.ReactNode {
     return (
-      <ReactProjectViewWidget
+      <ReactOpenTracesWidget
         id={this.id}
         title={this.title.label}
-        projects={this.projects}
-        contextMenuRenderer={(e, project) => this.doHandleContextMenuEvent(e, project)}
-        onClick={(e, project) => this.doHandleItemClickEvent(e, project)}
-      ></ReactProjectViewWidget>
+        contextMenuRenderer={(event, experiment) => this.doHandleContextMenuEvent(event, experiment)}
+        onClick={(event, experiment) => console.log('ReactOpenTracesWidget: ', event, experiment)}
+      ></ReactOpenTracesWidget>
     );
   }
 }

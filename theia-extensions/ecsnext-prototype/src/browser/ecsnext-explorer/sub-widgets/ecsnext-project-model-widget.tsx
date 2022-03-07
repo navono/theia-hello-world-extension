@@ -46,6 +46,7 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
   protected onProjectModelChanged = (project: any, models: any): void => {
     this.title.label = `${ECSNextProjectModelsWidget.LABEL}: ${project.name}`;
     this.models = models;
+    console.log('models ', this.models);
     this.update();
   };
 
