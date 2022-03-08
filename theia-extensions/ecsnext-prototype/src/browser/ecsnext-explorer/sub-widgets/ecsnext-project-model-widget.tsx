@@ -34,13 +34,13 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
 
   protected subscribeToEvents(): void {
     signalManager().on(Signals.PROJECT_MODEL_LOADED, this.onProjectModelChanged);
-    signalManager().on(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
+    signalManager().on(Signals.PROJECT_VIEWTAB_ACTIVATED, this.onProjectTabActivated);
   }
 
   dispose(): void {
     super.dispose();
     signalManager().on(Signals.PROJECT_MODEL_LOADED, this.onProjectModelChanged);
-    signalManager().off(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
+    signalManager().off(Signals.PROJECT_VIEWTAB_ACTIVATED, this.onProjectTabActivated);
   }
 
   protected onProjectModelChanged = (project: any, models: any): void => {
@@ -50,7 +50,7 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
     this.update();
   };
 
-  protected onProjectChanged = (project: any): void => {
+  protected onProjectTabActivated = (project: any): void => {
     this.title.label = `${ECSNextProjectModelsWidget.LABEL}: ${project.name}`;
     this.models = [];
     this.update();

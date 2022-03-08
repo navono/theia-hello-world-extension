@@ -30,7 +30,7 @@ export class ECSNextProjectUserWidget extends ReactWidget {
     this.title.label = ECSNextProjectUserWidget.LABEL;
 
     signalManager().on(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
-    signalManager().on(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
+    signalManager().on(Signals.PROJECT_SELECTED, this.onProjectChanged);
 
     this.update();
   }
@@ -38,7 +38,7 @@ export class ECSNextProjectUserWidget extends ReactWidget {
   dispose(): void {
     super.dispose();
     signalManager().off(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
-    signalManager().off(Signals.PROJECT_ACTIVATED, this.onProjectChanged);
+    signalManager().off(Signals.PROJECT_SELECTED, this.onProjectChanged);
   }
 
   protected onProjectUserChanged = (project: any, users: any) => {
