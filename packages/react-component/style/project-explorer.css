@@ -3,7 +3,7 @@
 }
 
 #trace-explorer-views-widget,
-#trace-explorer-opened-traces-widget,
+#explorer-opened-project-traces-widget,
 #ecsnext-project-views-widget {
     height: 100%;
 }
@@ -13,7 +13,7 @@
     mask: url('chart-line-solid.svg');
 }
 
-.trace-explorer-opened,
+.explorer-opened-project,
 .trace-explorer-views,
 .trace-explorer-tooltip {
     margin: 0 2px;
@@ -28,37 +28,37 @@
     line-height: 25px;
 }
 
-.trace-explorer-panel-content {
+.explorer-opened-project-content {
     grid-row-start: 2;
     border: 1px solid var(--theia-layout-color4);
     /* color: white; */
     white-space: nowrap;
 }
 
-.trace-explorer-panel-content>ul {
+.explorer-opened-project-content>ul {
     list-style-type: none;
     padding-inline-start: 0px;
 }
 
-.trace-list-container, .outputs-list-container {
+.list-container, .outputs-list-container {
     /* color: white; */
     overflow-x: hidden;
     white-space: nowrap;
 }
 
-.trace-list-container:hover,
+.list-container:hover,
 .outputs-list-container:hover {
     background-color: var(--theia-list-hoverBackground);
     cursor: pointer;
 }
 
-.trace-list-container.theia-mod-selected,
+.list-container.theia-mod-selected,
 .outputs-list-container.theia-mod-selected {
     background-color: var(--theia-selection-background);
 }
 
 /* Share options have been commented out, grid is disabled to optimize horizontal space */
-/* .trace-element-container {
+/* .element-container {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 50px;
     grid-template-rows: auto;
@@ -92,13 +92,13 @@
     background: none;
 }
 
-.trace-element-container {
+.element-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.trace-element-container:hover .remove-trace-button {
+.element-container:hover .remove-trace-button {
     visibility: visible;
 }
 
@@ -107,12 +107,12 @@
     outline: none;
 }
 
-.trace-element-info {
+.element-info {
     overflow-x: hidden;
     grid-column-start: 1;
 }
 
-.trace-element-name, .outputs-element-name {
+.element-name, .outputs-element-name {
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: bold;
@@ -131,6 +131,17 @@
 }
 
 .child-element {
+    height: var(--trace-extension-list-line-height);
+}
+
+.element-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: unset;
+    color: var(--theia-ui-font-color2);
+    /* color: rgb(160, 160, 160); */
+    white-space: pre;
+    font-size: .95em;
     height: var(--trace-extension-list-line-height);
 }
 

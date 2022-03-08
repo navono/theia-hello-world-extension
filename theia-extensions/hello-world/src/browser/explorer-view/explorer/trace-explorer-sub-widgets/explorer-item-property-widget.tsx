@@ -117,7 +117,7 @@ export class ExplorerPropertyWidget extends ReactWidget {
   render(): React.ReactNode {
     return (
       <div className="trace-explorer-tooltip">
-        <div className="trace-explorer-panel-content">{this.renderTooltip()}</div>
+        <div className="explorer-opened-project-content">{this.renderTooltip()}</div>
       </div>
     );
   }

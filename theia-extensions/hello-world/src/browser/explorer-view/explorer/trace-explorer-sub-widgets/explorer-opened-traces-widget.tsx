@@ -15,7 +15,7 @@ import { ViewerWidget } from '../../viewer/viewer-widget';
 
 @injectable()
 export class ExplorerOpenedTracesWidget extends ReactWidget {
-  static ID = 'trace-explorer-opened-traces-widget';
+  static ID = 'explorer-opened-project-traces-widget';
 
   static LABEL = 'Opened Traces';
 

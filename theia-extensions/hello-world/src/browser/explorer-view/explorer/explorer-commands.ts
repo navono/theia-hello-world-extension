@@ -2,7 +2,7 @@
 import { Command, MenuPath } from '@theia/core';
 
 export namespace ExplorerMenus {
-  export const PREFERENCE_EDITOR_CONTEXT_MENU: MenuPath = ['trace-explorer-opened-traces-context-menu'];
+  export const PREFERENCE_EDITOR_CONTEXT_MENU: MenuPath = ['explorer-opened-project-traces-context-menu'];
 }
 export namespace ExplorerCommands {
   export const OPEN_TRACE: Command = {

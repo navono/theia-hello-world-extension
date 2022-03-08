@@ -1,5 +1,4 @@
-import '../../style/trace-viewer.css';
-import '../../style/trace-explorer.css';
+import '../../style/project-explorer.css';
 
 import * as React from 'react';
 import { List, ListRowProps, Index, AutoSizer } from 'react-virtualized';
@@ -59,6 +58,7 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
       this.selectProject(selectedIndex);
     }
   };
+
   protected onProjectItemContextMenuEvent = (event: React.MouseEvent<HTMLDivElement>, projectId: string): void => {
     const project = this.getProject(projectId);
     this.doHandleOnProjectSelected(event, project);
@@ -91,8 +91,8 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
     this._forceUpdateKey = !this._forceUpdateKey;
     const key = Number(this._forceUpdateKey);
     return (
-      <div className="trace-explorer-opened">
-        <div className="trace-explorer-panel-content">
+      <div className="explorer-opened-project">
+        <div className="explorer-opened-project-content">
           <AutoSizer>
             {({ width }) => (
               <List
@@ -109,17 +109,14 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
       </div>
     );
   }
-  /*
-        TODO: Implement better visualization of experiment, e.g. a tree
-        with experiment name as root and traces (name and path) as children
-     */
+
   protected renderProjectRow = (props: ListRowProps): React.ReactNode => {
     const project =
       this.state.openedProjects.length && props.index < this.state.openedProjects.length
         ? this.state.openedProjects[props.index]
         : '';
 
-    let traceContainerClassName = 'trace-list-container';
+    let traceContainerClassName = 'list-container';
     if (props.index === this.state.selectedProjectIndex && this.state.selectedProjectIndex >= 0) {
       traceContainerClassName = traceContainerClassName + ' theia-mod-selected';
     }
@@ -137,35 +134,17 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
         }}
         data-id={`${props.index}`}
       >
-        <div className="trace-element-container">
-          <div className="trace-element-info">
-            <h4 className="trace-element-name">{project.name}</h4>
-            {this.renderTracesForExperiment(props.index)}
+        <div className="element-container">
+          <div className="element-info">
+            <h4 className="element-name">{project.name}</h4>
+            <div className="element-description">{`  ${project.desc}`}</div>
           </div>
         </div>
       </div>
     );
   };
 
-  protected renderTracesForExperiment(index: number): React.ReactNode {
-    const project = this.state.openedProjects[index];
-    return (
-      <div className="trace-element-path-container">
-        <div className="trace-element-path child-element" id={project._id} key={project._id}>
-          {`  ${project.desc}`}
-        </div>
-      </div>
-    );
-  }
   protected getRowHeight = (index: Index | number): number => {
-    // const resolvedIndex = typeof index === 'object' ? index.index : index;
-    // const project = this.state.openedProjects[resolvedIndex];
-
-    // if (project.name) {
-    //   totalHeight += ReactProjectsWidget.LINE_HEIGHT;
-    // }
-    // return totalHeight;
-
     // 名字 和 描述 的高度
     return 2.5 * ReactProjectsWidget.LINE_HEIGHT;
   };
