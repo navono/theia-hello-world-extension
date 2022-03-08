@@ -5,36 +5,30 @@ import * as React from 'react';
 import { List, ListRowProps, Index, AutoSizer } from 'react-virtualized';
 import { Experiment } from 'tsp-typescript-client/lib/models/experiment';
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
-// import ReactModal from 'react-modal';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faCopy } from '@fortawesome/free-solid-svg-icons';
-// import { OpenedTracesUpdatedSignalPayload } from 'ecsnext-base/lib/signals/opened-traces-updated-signal-payload';
 // import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-export interface ReactOpenTracesWidgetProps {
+export interface ReactProjectsWidgetProps {
   id: string;
   title: string;
   contextMenuRenderer?: (event: React.MouseEvent<HTMLDivElement>, project: any) => void;
   onClick?: (event: React.MouseEvent<HTMLDivElement>, project: any) => void;
 }
 
-export interface ReactOpenTracesWidgetState {
-  //   openedExperiments: Array<Experiment>;
+export interface ReactProjectsWidgetState {
   openedProjects: Array<any>;
   selectedProjectIndex: number;
 }
 
-export class ReactOpenTracesWidget extends React.Component<ReactOpenTracesWidgetProps, ReactOpenTracesWidgetState> {
+export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProps, ReactProjectsWidgetState> {
   static LIST_MARGIN = 2;
   static LINE_HEIGHT = 16;
 
   private _forceUpdateKey = false;
   private _selectedProject: any | undefined;
 
-  //   private _onProjectsLoaded = (projects: Array<any>): void => this.handleProjectsLoaded(projects);
-  //   private _onProjectsWidgetActivated = (project: any): void => this.handleProjectsWidgetActivated(project);
-
-  constructor(props: ReactOpenTracesWidgetProps) {
+  constructor(props: ReactProjectsWidgetProps) {
     super(props);
 
     signalManager().on(Signals.PROJECTS_LOADED, this.handleProjectsLoaded);
@@ -153,13 +147,6 @@ export class ReactOpenTracesWidget extends React.Component<ReactOpenTracesWidget
     );
   };
 
-  protected doHandleOnExperimentDeleted(e: React.MouseEvent<HTMLButtonElement>, traceUUID: string): void {
-    // this._experimentManager.deleteExperiment(traceUUID);
-    signalManager().fireCloseTraceViewerTabSignal(traceUUID);
-    e.preventDefault();
-    e.stopPropagation();
-  }
-
   protected renderTracesForExperiment(index: number): React.ReactNode {
     const project = this.state.openedProjects[index];
     return (
@@ -170,21 +157,18 @@ export class ReactOpenTracesWidget extends React.Component<ReactOpenTracesWidget
       </div>
     );
   }
-
-  protected getRowHeight = (index: Index | number): number => this.doGetRowHeight(index);
-
-  protected doGetRowHeight(index: Index | number): number {
+  protected getRowHeight = (index: Index | number): number => {
     // const resolvedIndex = typeof index === 'object' ? index.index : index;
     // const project = this.state.openedProjects[resolvedIndex];
 
     // if (project.name) {
-    //   totalHeight += ReactOpenTracesWidget.LINE_HEIGHT;
+    //   totalHeight += ReactProjectsWidget.LINE_HEIGHT;
     // }
     // return totalHeight;
 
     // 名字 和 描述 的高度
-    return 2.5 * ReactOpenTracesWidget.LINE_HEIGHT;
-  }
+    return 2.5 * ReactProjectsWidget.LINE_HEIGHT;
+  };
 
   protected getTotalHeight(): number {
     let totalHeight = 0;
@@ -208,12 +192,4 @@ export class ReactOpenTracesWidget extends React.Component<ReactOpenTracesWidget
       signalManager().fireProjectSelectedSignal(this._selectedProject);
     }
   };
-
-  protected onWidgetActivated(project: any): void {
-    if (project) {
-      this._selectedProject = project;
-      const selectedIndex = this.state.openedProjects.findIndex((openedProject) => openedProject._id === project._id);
-      this.selectProject(selectedIndex);
-    }
-  }
 }

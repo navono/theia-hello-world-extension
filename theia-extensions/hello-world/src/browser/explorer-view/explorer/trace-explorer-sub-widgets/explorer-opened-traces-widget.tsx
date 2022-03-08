@@ -10,7 +10,6 @@ import { signalManager, Signals } from '../../util/signal-manager';
 import { ExplorerPropertyWidget } from './explorer-item-property-widget';
 import { ContextMenuRenderer } from '@theia/core/lib/browser';
 import { TraceViewerCommand } from '../../viewer/viewer-commands';
-// import { ReactOpenTracesWidget } from 'traceviewer-react-components/lib/trace-explorer/trace-explorer-opened-traces-widget';
 import { ExplorerMenus } from '../explorer-commands';
 import { ViewerWidget } from '../../viewer/viewer-widget';
 
@@ -158,13 +157,13 @@ export class ExplorerOpenedTracesWidget extends ReactWidget {
     return (
       <div>
         Open traces widget
-        {/* { <ReactOpenTracesWidget
+        {/* { <ReactProjectsWidget
                 id={this.id}
                 title={this.title.label}
                 tspClientProvider={this.tspClientProvider}
                 contextMenuRenderer={(event, experiment) => this.doHandleContextMenuEvent(event, experiment) }
                 onClick={(event, experiment) => this.doHandleClickEvent(event, experiment) }
-            ></ReactOpenTracesWidget>
+            ></ReactProjectsWidget>
             } */}
       </div>
     );

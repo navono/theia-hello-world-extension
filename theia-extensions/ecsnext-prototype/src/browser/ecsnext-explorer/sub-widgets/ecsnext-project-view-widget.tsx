@@ -3,8 +3,8 @@ import { CommandService } from '@theia/core';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
 import { ReactWidget, Widget, Message, WidgetManager, ContextMenuRenderer } from '@theia/core/lib/browser';
 
-import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
-import { ReactOpenTracesWidget } from 'react-component/lib/explorer/explorer-opened-projects-widget';
+// import { signalManager } from 'ecsnext-base/lib/signals/signal-manager';
+import { ReactProjectsWidget } from 'react-component/lib/explorer/explorer-opened-project-widget';
 
 import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
 import { ECSNextViewerWidget } from '../../ecsnext-viewer/ecsnext-viewer-widget';
@@ -60,12 +60,12 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
 
   render(): React.ReactNode {
     return (
-      <ReactOpenTracesWidget
+      <ReactProjectsWidget
         id={this.id}
         title={this.title.label}
         contextMenuRenderer={(event, project) => this.onContextMenuEvent(event, project)}
         onClick={(event, project) => this.onItemClickEvent(event, project)}
-      ></ReactOpenTracesWidget>
+      ></ReactProjectsWidget>
     );
   }
 }

@@ -5,7 +5,6 @@ import { ReactWidget, Widget, Message, WidgetManager, ContextMenuRenderer } from
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 
 import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
-import { ListWidget } from './list-widget';
 
 export const ECSNextProjectModelsWidgetOptions = Symbol('ECSNextProjectModelsWidgetOptions');
 export interface ECSNextProjectModelsWidgetOptions {
@@ -86,6 +85,6 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
   }
 
   render(): React.ReactNode {
-    return <ListWidget />;
+    return <></>;
   }
 }
