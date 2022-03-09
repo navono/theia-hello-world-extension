@@ -17,7 +17,7 @@ export interface ReactProjectsWidgetProps {
 
 export interface ReactProjectsWidgetState {
   openedProjects: Array<any>;
-  selectedProjectIndex: number;
+  selectedIndex: number;
 }
 
 export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProps, ReactProjectsWidgetState> {
@@ -25,17 +25,18 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
   static LINE_HEIGHT = 16;
 
   private _forceUpdateKey = false;
-  private _selectedProject: any | undefined;
+  private currentProject: any | undefined;
 
   constructor(props: ReactProjectsWidgetProps) {
     super(props);
 
     signalManager().on(Signals.PROJECTS_LOADED, this.handleProjectsLoaded);
+    signalManager().on(Signals.PROJECT_CLOSED, this.handleProjectsClosed);
     signalManager().on(Signals.PROJECT_VIEWTAB_ACTIVATED, this.handleProjectsWidgetActivated);
 
     this.state = {
       openedProjects: [],
-      selectedProjectIndex: -1,
+      selectedIndex: -1,
     };
   }
 
@@ -46,14 +47,21 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
 
   private handleProjectsLoaded = (projects: Array<any>): void => {
     const selectedIndex = projects.findIndex(
-      (project) => this._selectedProject && project._id === this._selectedProject._id
+      (project) => this.currentProject && project._id === this.currentProject._id
     );
-    this.setState({ openedProjects: projects, selectedProjectIndex: selectedIndex });
+    this.setState({ openedProjects: projects, selectedIndex: selectedIndex });
+  };
+
+  private handleProjectsClosed = (project: any): void => {
+    if (this.currentProject?._id === project._id) {
+      this.currentProject = undefined;
+      this.setState({ selectedIndex: -1 });
+    }
   };
 
   private handleProjectsWidgetActivated = (project: any): void => {
-    if (this._selectedProject?._id !== project._id) {
-      this._selectedProject = project;
+    if (this.currentProject?._id !== project._id) {
+      this.currentProject = project;
       const selectedIndex = this.state.openedProjects.findIndex((openedProject) => openedProject._id === project._id);
       this.selectProject(selectedIndex);
     }
@@ -90,6 +98,7 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
     const totalHeight = this.getTotalHeight();
     this._forceUpdateKey = !this._forceUpdateKey;
     const key = Number(this._forceUpdateKey);
+
     return (
       <div className="explorer-opened-project">
         <div className="explorer-opened-project-content">
@@ -116,14 +125,14 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
         ? this.state.openedProjects[props.index]
         : '';
 
-    let traceContainerClassName = 'list-container';
-    if (props.index === this.state.selectedProjectIndex && this.state.selectedProjectIndex >= 0) {
-      traceContainerClassName = traceContainerClassName + ' theia-mod-selected';
+    let containerClassName = 'list-container';
+    if (props.index === this.state.selectedIndex && this.state.selectedIndex >= 0) {
+      containerClassName = containerClassName + ' theia-mod-selected';
     }
     return (
       <div
-        className={traceContainerClassName}
-        id={`${traceContainerClassName}-${props.index}`}
+        className={containerClassName}
+        id={`${containerClassName}-${props.index}`}
         key={props.key}
         style={props.style}
         onClick={(event) => {
@@ -164,10 +173,10 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
   };
 
   private selectProject = (index: number): void => {
-    if (index >= 0 && index !== this.state.selectedProjectIndex) {
-      this.setState({ selectedProjectIndex: index });
-      this._selectedProject = this.state.openedProjects[index];
-      signalManager().fireProjectSelectedSignal(this._selectedProject);
+    if (index >= 0 && index !== this.state.selectedIndex) {
+      this.setState({ selectedIndex: index });
+      this.currentProject = this.state.openedProjects[index];
+      signalManager().fireProjectSelectedSignal(this.currentProject);
     }
   };
 }

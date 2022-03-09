@@ -32,6 +32,8 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
   }
 
   protected subscribeToEvents(): void {
+    // Login and Project changed
+
     signalManager().on(Signals.PROJECT_MODEL_LOADED, this.onProjectModelChanged);
     signalManager().on(Signals.PROJECT_VIEWTAB_ACTIVATED, this.onProjectTabActivated);
   }
@@ -83,6 +85,22 @@ export class ECSNextProjectModelsWidget extends ReactWidget {
       args: [item._id],
     });
   }
+
+  // private getProjectModels = (project: any, token: string) => {
+  //   if (token) {
+  //     fetch(`${this.baseUrl}/api/projects/${project._id}/models/`, {
+  //       headers: {
+  //         Accept: 'application/json',
+  //         authorization: `Bearer ${token}`,
+  //       },
+  //       method: 'GET',
+  //     })
+  //       .then((res) => res.json())
+  //       .then((models) => {
+  //         signalManager().fireProjectModelLoadedSignal(project, models);
+  //       });
+  //   }
+  // };
 
   render(): React.ReactNode {
     return <></>;

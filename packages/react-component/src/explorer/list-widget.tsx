@@ -13,6 +13,8 @@ interface AutoSizeListProps {
 export const AutoSizeList = (props: AutoSizeListProps): JSX.Element => {
   const { totalHeight, rowCount, rowHeight, rowRenderer } = props;
 
+  const noRowsRenderer = (): JSX.Element => <div className="list-container">无数据</div>;
+
   return (
     <div className="explorer-opened-project">
       <div className="explorer-opened-project-content">
@@ -24,6 +26,7 @@ export const AutoSizeList = (props: AutoSizeListProps): JSX.Element => {
               rowCount={rowCount}
               rowHeight={rowHeight}
               rowRenderer={rowRenderer}
+              noRowsRenderer={noRowsRenderer}
             />
           )}
         </AutoSizer>

@@ -54,13 +54,13 @@ export class ECSNextViewerWidget extends ReactWidget {
   protected subscribeToEvents(): void {
     this.toDisposeOnNewExplorer.dispose();
 
-    signalManager().on(Signals.PROJECT_SELECTED, this.onProjectSelectionChanged);
     signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
+    signalManager().on(Signals.PROJECT_SELECTED, this.onProjectChanged);
   }
 
   dispose(): void {
     super.dispose();
-    signalManager().off(Signals.PROJECT_SELECTED, this.onProjectSelectionChanged);
+    signalManager().off(Signals.PROJECT_SELECTED, this.onProjectChanged);
     signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
   }
 
@@ -74,8 +74,8 @@ export class ECSNextViewerWidget extends ReactWidget {
 
     if (this.currentProject) {
       signalManager().fireProjectViewerTabActivatedSignal(this.currentProject);
-      const token = localStorage[`${this.currentProject._id}-jwt`];
-      this.getProjectUsers(this.currentProject, token);
+      // const token = localStorage[`${this.currentProject._id}-jwt`];
+      // this.getProjectUsers(this.currentProject, token);
     }
   };
 
@@ -108,7 +108,7 @@ export class ECSNextViewerWidget extends ReactWidget {
     );
   }
 
-  private onProjectSelectionChanged = (project: any) => {
+  private onProjectChanged = (project: any) => {
     if (this.currentProject && this.currentProject._id === project._id) {
       this.shell.activateWidget(this.currentProject._id);
     }
@@ -116,51 +116,11 @@ export class ECSNextViewerWidget extends ReactWidget {
 
   private onProjectLogin = (project: any, _user: any): void => {
     this.currentProject = project;
-    const token = localStorage[`${project._id}-jwt`];
-    if (token) {
-      this.currentProject.bLogin = true;
-
-      // 获取当前工程的信息
-      this.getProjectUsers(project, token);
-      this.getProjectModels(project, token);
-    }
 
     this.update();
   };
 
-  private getProjectUsers = (project: any, token: string) => {
-    if (token) {
-      fetch(`${this.baseUrl}/api/projects/${project._id}/users/`, {
-        headers: {
-          Accept: 'application/json',
-          authorization: `Bearer ${token}`,
-        },
-        method: 'GET',
-      })
-        .then((res) => res.json())
-        .then((users) => {
-          signalManager().fireProjectUserLoadedSignal(project, users);
-        });
-    }
-  };
-
-  private getProjectModels = (project: any, token: string) => {
-    if (token) {
-      fetch(`${this.baseUrl}/api/projects/${project._id}/models/`, {
-        headers: {
-          Accept: 'application/json',
-          authorization: `Bearer ${token}`,
-        },
-        method: 'GET',
-      })
-        .then((res) => res.json())
-        .then((models) => {
-          signalManager().fireProjectModelLoadedSignal(project, models);
-        });
-    }
-  };
-
-  protected get baseUrl(): string | undefined {
+  private get baseUrl(): string | undefined {
     return `${this.serverPreferences[SERVER_IP]}:${this.serverPreferences[SERVER_PORT]}`;
   }
 

@@ -4,15 +4,16 @@ import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
 import { ReactWidget, Widget, WidgetManager, ContextMenuRenderer } from '@theia/core/lib/browser';
 
 import { ReactProjectUserWidget } from 'react-component/lib/explorer/explorer-project-user-widget';
-
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
+
+import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../../ecsnext-server-preference';
+
 // import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
 
 export const ECSNextProjectUserWidgetOptions = Symbol('ECSNextProjectUserWidgetOptions');
 export interface ECSNextProjectUserWidgetOptions {
   baseUrl?: string;
 }
-
 @injectable()
 export class ECSNextProjectUserWidget extends ReactWidget {
   static ID = 'ecsnext-project-user-widget';
@@ -22,32 +23,56 @@ export class ECSNextProjectUserWidget extends ReactWidget {
   @inject(WidgetManager) protected readonly widgetManager!: WidgetManager;
   @inject(ContextMenuRenderer) protected readonly contextMenuRenderer!: ContextMenuRenderer;
   @inject(CommandService) protected readonly commandService!: CommandService;
+  @inject(ECSNextPreferences) protected serverPreferences: ECSNextPreferences;
+
+  private currentProject: any;
 
   @postConstruct()
   init(): void {
     this.id = ECSNextProjectUserWidget.ID;
     this.title.label = ECSNextProjectUserWidget.LABEL;
 
-    signalManager().on(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
+    // Login and Project changed
+    signalManager().on(Signals.PROJECT_LOGIN, this.onProjectLogin);
     signalManager().on(Signals.PROJECT_SELECTED, this.onProjectChanged);
+    signalManager().on(Signals.PROJECT_CLOSED, this.onProjectsClosed);
 
     this.update();
   }
 
   dispose(): void {
     super.dispose();
-    signalManager().off(Signals.PROJECT_USER_LOADED, this.onProjectUserChanged);
+    signalManager().off(Signals.PROJECT_LOGIN, this.onProjectLogin);
     signalManager().off(Signals.PROJECT_SELECTED, this.onProjectChanged);
   }
 
-  protected onProjectUserChanged = (project: any, users: any) => {
+  private onProjectLogin = (project: any, _user: any): void => {
+    this.currentProject = project;
     this.title.label = `${ECSNextProjectUserWidget.LABEL}: ${project.name}`;
+    this.getProjectUsers(project);
+
     this.update();
   };
 
-  protected onProjectChanged = (project: any) => {
+  private onProjectChanged = (project: any) => {
+    this.currentProject = project;
     this.title.label = `${ECSNextProjectUserWidget.LABEL}: ${project.name}`;
+
+    const token = localStorage[`${this.currentProject._id}-jwt`];
+    if (token) {
+      this.getProjectUsers(project);
+    } else {
+      signalManager().fireProjectUserLoadedSignal(project, []);
+    }
+
     this.update();
+  };
+
+  private onProjectsClosed = (project: any) => {
+    if (this.currentProject?._id === project._id) {
+      this.currentProject = undefined;
+      this.title.label = `${ECSNextProjectUserWidget.LABEL}`;
+    }
   };
 
   protected onResize(msg: Widget.ResizeMessage): void {
@@ -55,10 +80,22 @@ export class ECSNextProjectUserWidget extends ReactWidget {
     this.update();
   }
 
-  // protected onAfterShow(msg: Message): void {
-  //   super.onAfterShow(msg);
-  //   this.update();
-  // }
+  private getProjectUsers = (project: any) => {
+    const token = localStorage[`${this.currentProject._id}-jwt`];
+    if (token) {
+      fetch(`${this.baseUrl}/api/projects/${project._id}/users/`, {
+        headers: {
+          Accept: 'application/json',
+          authorization: `Bearer ${token}`,
+        },
+        method: 'GET',
+      })
+        .then((res) => res.json())
+        .then((users) => {
+          signalManager().fireProjectUserLoadedSignal(project, users);
+        });
+    }
+  };
 
   protected onContextMenuEvent(e: React.MouseEvent<HTMLDivElement>, item: any): void {
     // this.contextMenuRenderer.render({
@@ -89,5 +126,9 @@ export class ECSNextProjectUserWidget extends ReactWidget {
         onClick={(event, item) => this.onItemClickEvent(event, item)}
       ></ReactProjectUserWidget>
     );
+  }
+
+  private get baseUrl(): string | undefined {
+    return `${this.serverPreferences[SERVER_IP]}:${this.serverPreferences[SERVER_PORT]}`;
   }
 }
