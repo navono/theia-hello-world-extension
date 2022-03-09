@@ -63,8 +63,8 @@ export class ECSNextProjectViewsWidget extends ReactWidget {
       <ReactProjectsWidget
         id={this.id}
         title={this.title.label}
-        contextMenuRenderer={(event, project) => this.onContextMenuEvent(event, project)}
-        onClick={(event, project) => this.onItemClickEvent(event, project)}
+        contextMenuRenderer={(event, item) => this.onContextMenuEvent(event, item)}
+        onClick={(event, item) => this.onItemClickEvent(event, item)}
       ></ReactProjectsWidget>
     );
   }

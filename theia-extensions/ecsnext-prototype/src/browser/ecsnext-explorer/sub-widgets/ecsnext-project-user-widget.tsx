@@ -1,11 +1,12 @@
-import { List } from 'antd';
 import * as React from '@theia/core/shared/react';
 import { CommandService } from '@theia/core';
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify';
 import { ReactWidget, Widget, WidgetManager, ContextMenuRenderer } from '@theia/core/lib/browser';
 
+import { ReactProjectUserWidget } from 'react-component/lib/explorer/explorer-project-user-widget';
+
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
-import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
+// import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
 
 export const ECSNextProjectUserWidgetOptions = Symbol('ECSNextProjectUserWidgetOptions');
 export interface ECSNextProjectUserWidgetOptions {
@@ -21,8 +22,6 @@ export class ECSNextProjectUserWidget extends ReactWidget {
   @inject(WidgetManager) protected readonly widgetManager!: WidgetManager;
   @inject(ContextMenuRenderer) protected readonly contextMenuRenderer!: ContextMenuRenderer;
   @inject(CommandService) protected readonly commandService!: CommandService;
-
-  private users: any;
 
   @postConstruct()
   init(): void {
@@ -43,13 +42,11 @@ export class ECSNextProjectUserWidget extends ReactWidget {
 
   protected onProjectUserChanged = (project: any, users: any) => {
     this.title.label = `${ECSNextProjectUserWidget.LABEL}: ${project.name}`;
-    this.users = users;
     this.update();
   };
 
   protected onProjectChanged = (project: any) => {
     this.title.label = `${ECSNextProjectUserWidget.LABEL}: ${project.name}`;
-    this.users = [];
     this.update();
   };
 
@@ -63,7 +60,15 @@ export class ECSNextProjectUserWidget extends ReactWidget {
   //   this.update();
   // }
 
-  protected doHandleItemClickEvent(item: any): void {
+  protected onContextMenuEvent(e: React.MouseEvent<HTMLDivElement>, item: any): void {
+    // this.contextMenuRenderer.render({
+    //   menuPath: ECSNextProjectMenus.PREFERENCE_EDITOR_CONTEXT_MENU,
+    //   anchor: { x: e.clientX, y: e.clientY },
+    //   args: [item._id],
+    // });
+  }
+
+  protected onItemClickEvent(e: React.MouseEvent<HTMLDivElement>, item: any): void {
     // const widgets = this.widgetManager.getWidgets(ECSNextViewerWidget.ID);
     // const widget = widgets.find((w) => w.id === item._id);
     // // Don't execute command if widget is already open.
@@ -72,32 +77,17 @@ export class ECSNextProjectUserWidget extends ReactWidget {
     // } else {
     //   signalManager().fireProjectSelectedSignal(item);
     // }
-  }
-
-  protected doHandleContextMenuEvent(event: React.MouseEvent<HTMLDivElement>, item: any): void {
-    this.contextMenuRenderer.render({
-      menuPath: ECSNextProjectMenus.PREFERENCE_EDITOR_CONTEXT_MENU,
-      anchor: { x: event.clientX, y: event.clientY },
-      args: [item._id],
-    });
+    console.log('接收到用户点击', item);
   }
 
   render(): React.ReactNode {
     return (
-      <List
-        itemLayout="vertical"
-        bordered={true}
-        dataSource={this.users}
-        split={true}
-        renderItem={(item: any) => (
-          <List.Item
-            onClick={() => this.doHandleItemClickEvent(item)}
-            onContextMenu={(event) => this.doHandleContextMenuEvent(event, item)}
-          >
-            <List.Item.Meta title={item.username} description={item.email} />
-          </List.Item>
-        )}
-      />
+      <ReactProjectUserWidget
+        id={this.id}
+        title={this.title.label}
+        contextMenuRenderer={(event, project) => this.onContextMenuEvent(event, project)}
+        onClick={(event, item) => this.onItemClickEvent(event, item)}
+      ></ReactProjectUserWidget>
     );
   }
 }

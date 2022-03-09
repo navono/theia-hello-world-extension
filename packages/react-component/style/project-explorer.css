@@ -4,7 +4,8 @@
 
 #trace-explorer-views-widget,
 #explorer-opened-project-traces-widget,
-#ecsnext-project-views-widget {
+#ecsnext-project-views-widget,
+#ecsnext-project-user-widget {
     height: 100%;
 }
 

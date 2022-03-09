@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf lib *.tsbuildinfo",
-    "lint": "eslint .",
+    "lint": "eslint --fix --ext .tsx,.ts ./src",
     "test": "jest  --config jest.config.json",
     "watch": "tsc -b -w"
   },

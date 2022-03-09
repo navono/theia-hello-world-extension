@@ -88,6 +88,14 @@ export class ECSNextViewerWidget extends ReactWidget {
 
     this.node.focus();
   };
+
+  async onCloseRequest(msg: Message): Promise<void> {
+    super.onCloseRequest(msg);
+    if (this.currentProject) {
+      signalManager().fireProjectClosedSignal(this.currentProject);
+    }
+  }
+
   render(): React.ReactNode {
     return (
       <div className="ecsnext-viewer-container">

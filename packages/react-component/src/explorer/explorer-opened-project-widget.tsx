@@ -144,10 +144,9 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
     );
   };
 
-  protected getRowHeight = (index: Index | number): number => {
+  protected getRowHeight = (index: Index | number): number =>
     // 名字 和 描述 的高度
-    return 2.5 * ReactProjectsWidget.LINE_HEIGHT;
-  };
+    2.5 * ReactProjectsWidget.LINE_HEIGHT;
 
   protected getTotalHeight(): number {
     let totalHeight = 0;
