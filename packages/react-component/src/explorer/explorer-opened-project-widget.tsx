@@ -129,6 +129,7 @@ export class ReactProjectsWidget extends React.Component<ReactProjectsWidgetProp
     if (props.index === this.state.selectedIndex && this.state.selectedIndex >= 0) {
       containerClassName = containerClassName + ' theia-mod-selected';
     }
+
     return (
       <div
         className={containerClassName}

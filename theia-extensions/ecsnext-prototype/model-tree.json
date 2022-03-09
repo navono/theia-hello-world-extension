@@ -1,0 +1,102 @@
+{
+  "CMD": 65800,
+  "RES": {
+    "Head": {
+      "SessionID": "1",
+      "StationKey": "",
+      "PrjID": "b1f94b45-2c4a-4f77-9801-39b048f9bdb4",
+      "UserID": "1E37DEF5-CEB5-4352-83BC-1D0BC8D5D9F9",
+      "No": 4
+    },
+    "Log": [],
+    "Tree": [
+      {
+        "ID": "0",
+        "Title": "组态资源库",
+        "Type": "CRL",
+        "children": [
+          {
+            "ID": "15",
+            "Title": "数据类型定义",
+            "Type": "DTD"
+          },
+          {
+            "ID": "16",
+            "Title": "功能块库(Function Block Library)",
+            "Type": "FBL",
+            "children": [
+              {
+                "ID": "17",
+                "Title": "自定义功能块",
+                "Type": "UFB"
+              }
+            ]
+          },
+          {
+            "ID": "18",
+            "Title": "组态对象库",
+            "Type": "COL",
+            "children": [
+              {
+                "ID": "19",
+                "Title": "过程单元类(Process Cell Classes)",
+                "Type": "PCC"
+              },
+              {
+                "ID": "22",
+                "Title": "控制单元类(Unit Classes)",
+                "Type": "UC"
+              },
+              {
+                "ID": "21",
+                "Title": "装备模块类(Equipment Module Classes)",
+                "Type": "EMC",
+                "children": [
+                  {
+                    "ID": "25",
+                    "Title": "fbd",
+                    "Type": "emc",
+                    "Lang": "IDS_FBD",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "ID": "20",
+                "Title": "控制模块类(Control Module Classes)",
+                "Type": "CMC"
+              },
+              {
+                "ID": "23",
+                "Title": "Phase类(Phase Classes)",
+                "Type": "PHASE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ID": "24",
+        "Title": "工厂组态",
+        "Type": "SITE",
+        "children": []
+      },
+      {
+        "ID": "12",
+        "Title": "系统网络结构",
+        "Type": "SNS",
+        "children": [
+          {
+            "ID": "13",
+            "Title": "控制网",
+            "Type": "CN",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "ErrCode": 0,
+    "ErrMsg": {},
+    "ToolBarStatusList": []
+  }
+}
