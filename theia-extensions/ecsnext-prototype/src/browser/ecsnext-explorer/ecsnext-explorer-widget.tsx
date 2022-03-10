@@ -1,17 +1,41 @@
 import { injectable, inject, postConstruct, interfaces, Container } from '@theia/core/shared/inversify';
-import { codicon, ViewContainer, BaseWidget, PanelLayout } from '@theia/core/lib/browser';
+import { codicon, ViewContainer, BaseWidget, PanelLayout, Tree, TreeImpl } from '@theia/core/lib/browser';
+import {
+  createTreeContainer,
+  defaultTreeProps,
+  TreeProps,
+  TreeWidget as TheiaTreeWidget,
+} from '@theia/core/lib/browser/tree';
 
 import { ECSNextProjectViewsWidget } from './sub-widgets/ecsnext-project-view-widget';
 import { ECSNextProjectUserWidget, ECSNextProjectUserWidgetOptions } from './sub-widgets/ecsnext-project-user-widget';
-import {
-  ECSNextProjectModelsWidget,
-  ECSNextProjectModelsWidgetOptions,
-} from './sub-widgets/ecsnext-project-model-widget';
+import { ECSNextProjectModelTreeWidget, TreeContextMenu } from './sub-widgets/model/ecsnext-project-model-widget';
+import { ModelTreeNodeFactory } from './sub-widgets/model/model-model';
 
 export const ECSNextExplorerWidgetOptions = Symbol('ECSNextExplorerWidgetOptions');
 export interface ECSNextExplorerWidgetOptions {
   baseUrl?: string;
 }
+
+export const TREE_PROPS = {
+  ...defaultTreeProps,
+  contextMenuPath: TreeContextMenu.CONTEXT_MENU,
+  multiSelect: false,
+  search: false,
+} as TreeProps;
+
+const createModelTreeWidget = (parent: interfaces.Container): ECSNextProjectModelTreeWidget => {
+  const treeContainer = createTreeContainer(parent);
+
+  treeContainer.unbind(TreeImpl);
+  treeContainer.bind(ModelTreeNodeFactory).toSelf();
+  treeContainer.rebind(Tree).toService(ModelTreeNodeFactory);
+
+  treeContainer.unbind(TheiaTreeWidget);
+  treeContainer.bind(ECSNextProjectModelTreeWidget).toSelf();
+  treeContainer.rebind(TreeProps).toConstantValue(TREE_PROPS);
+  return treeContainer.get(ECSNextProjectModelTreeWidget);
+};
 
 @injectable()
 export class ECSNextExplorerWidget extends BaseWidget {
@@ -24,7 +48,7 @@ export class ECSNextExplorerWidget extends BaseWidget {
   @inject(ECSNextExplorerWidgetOptions) protected readonly options: ECSNextExplorerWidgetOptions;
   @inject(ECSNextProjectViewsWidget) protected readonly projectViewsWidget!: ECSNextProjectViewsWidget;
   @inject(ECSNextProjectUserWidget) protected readonly projectUserWidget!: ECSNextProjectUserWidget;
-  @inject(ECSNextProjectModelsWidget) protected readonly projectModelsWidget!: ECSNextProjectModelsWidget;
+  @inject(ECSNextProjectModelTreeWidget) protected readonly projectModelTreeWidget!: ECSNextProjectModelTreeWidget;
 
   static createWidget(parent: interfaces.Container, opt: ECSNextExplorerWidgetOptions): ECSNextExplorerWidget {
     return ECSNextExplorerWidget.createContainer(parent, opt).get(ECSNextExplorerWidget);
@@ -35,12 +59,13 @@ export class ECSNextExplorerWidget extends BaseWidget {
     child.parent = parent;
 
     child.bind(ECSNextProjectViewsWidget).toSelf();
-    child.bind(ECSNextProjectModelsWidgetOptions).toConstantValue(opt);
+    // child.bind(ECSNextProjectModelsWidgetOptions).toConstantValue(opt);
 
     child.bind(ECSNextProjectUserWidget).toSelf();
     child.bind(ECSNextProjectUserWidgetOptions).toConstantValue(opt);
 
-    child.bind(ECSNextProjectModelsWidget).toSelf();
+    child.bind(ECSNextProjectModelTreeWidget).toDynamicValue((ctx) => createModelTreeWidget(ctx.container));
+
     child.bind(ECSNextExplorerWidgetOptions).toConstantValue(opt);
     child.bind(ECSNextExplorerWidget).toSelf().inSingletonScope();
 
@@ -59,7 +84,7 @@ export class ECSNextExplorerWidget extends BaseWidget {
     });
     this.viewContainer.addWidget(this.projectViewsWidget);
     this.viewContainer.addWidget(this.projectUserWidget);
-    this.viewContainer.addWidget(this.projectModelsWidget);
+    this.viewContainer.addWidget(this.projectModelTreeWidget);
     this.toDispose.push(this.viewContainer);
 
     const layout = (this.layout = new PanelLayout());
