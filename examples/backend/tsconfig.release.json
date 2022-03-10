@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "removeComments": true
+  },
+  "include": [
+    "services/**/*",
+    "mixins/**/*"
+  ]
+}

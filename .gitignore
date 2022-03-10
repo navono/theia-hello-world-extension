@@ -6,6 +6,7 @@ lib
 !/examples/*-app/package.json
 !/examples/workspace/*
 !/examples/preload.html
+!/examples/backend
 examples/plugins
 *.exe
 *.tsbuildinfo
