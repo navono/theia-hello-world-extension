@@ -6,7 +6,7 @@ import { ReactWidget, Widget, WidgetManager, ContextMenuRenderer } from '@theia/
 import { ReactProjectUserWidget } from 'react-component/lib/explorer/explorer-project-user-widget';
 import { signalManager, Signals } from 'ecsnext-base/lib/signals/signal-manager';
 
-import { ECSNextPreferences, SERVER_IP, SERVER_ARGS, SERVER_PORT } from '../../ecsnext-server-preference';
+import { ECSNextPreferences, SERVER_IP, SERVER_PORT } from '../../ecsnext-server-preference';
 
 // import { ECSNextProjectMenus } from '../ecsnext-explorer-command';
 
