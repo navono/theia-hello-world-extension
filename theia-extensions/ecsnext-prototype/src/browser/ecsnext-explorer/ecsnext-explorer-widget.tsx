@@ -59,12 +59,12 @@ export class ECSNextExplorerWidget extends BaseWidget {
     child.parent = parent;
 
     child.bind(ECSNextProjectViewsWidget).toSelf();
+
     // child.bind(ECSNextProjectModelsWidgetOptions).toConstantValue(opt);
+    child.bind(ECSNextProjectModelTreeWidget).toDynamicValue((ctx) => createModelTreeWidget(ctx.container));
 
     child.bind(ECSNextProjectUserWidget).toSelf();
     child.bind(ECSNextProjectUserWidgetOptions).toConstantValue(opt);
-
-    child.bind(ECSNextProjectModelTreeWidget).toDynamicValue((ctx) => createModelTreeWidget(ctx.container));
 
     child.bind(ECSNextExplorerWidgetOptions).toConstantValue(opt);
     child.bind(ECSNextExplorerWidget).toSelf().inSingletonScope();
@@ -83,8 +83,8 @@ export class ECSNextExplorerWidget extends BaseWidget {
       id: this.id,
     });
     this.viewContainer.addWidget(this.projectViewsWidget);
-    this.viewContainer.addWidget(this.projectUserWidget);
     this.viewContainer.addWidget(this.projectModelTreeWidget);
+    this.viewContainer.addWidget(this.projectUserWidget);
     this.toDispose.push(this.viewContainer);
 
     const layout = (this.layout = new PanelLayout());
